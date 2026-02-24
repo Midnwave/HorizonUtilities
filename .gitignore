@@ -10,3 +10,6 @@ out/
 .classpath
 .project
 .vscode/
+
+hs_err_pid*.log
+replay_pid*.log
