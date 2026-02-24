@@ -1,0 +1,184 @@
+name: HorizonUtilities
+main: com.blockforge.horizonutilities.HorizonUtilitiesPlugin
+version: "${version}"
+api-version: "1.21"
+authors: [BlockForge]
+depend: [GriefPreventionFlagsReborn]
+softdepend: [Vault, AuraSkills]
+commands:
+  ah:
+    description: Auction House
+    usage: /ah [sell|search|collect|history|stats|admin|reload]
+  chatgames:
+    description: Chat Games
+    usage: /chatgames [start|stop|top|stats|reload]
+  jobs:
+    description: Jobs system - earn money by working
+    aliases: [job]
+    usage: /<command> [join|leave|info|list|stats|top|quests|prestige|admin]
+    permission: horizonutilities.jobs.use
+  bm:
+    description: Black Market - buy rare items
+    aliases: [blackmarket]
+    usage: /<command>
+    permission: horizonutilities.blackmarket.use
+  trade:
+    description: Trade items and money with other players
+    usage: /<command> <player>
+    permission: horizonutilities.trade.use
+  lottery:
+    description: Lottery system - buy tickets and win big
+    usage: /<command> [buy|info|history|admin]
+    permission: horizonutilities.lottery.use
+  bounty:
+    description: Place bounties on other players
+    usage: /<command> [set|list|top|admin]
+    permission: horizonutilities.bounty.use
+  eco:
+    description: Economy administration
+    usage: /<command> admin [audit|stats|reset|boost]
+    permission: horizonutilities.eco.admin
+permissions:
+  horizonutilities.ah.use:
+    default: true
+  horizonutilities.ah.list:
+    default: true
+  horizonutilities.ah.buy:
+    default: true
+  horizonutilities.ah.admin:
+    default: op
+  horizonutilities.ah.bypass.fee:
+    default: false
+  horizonutilities.ah.bypass.tax:
+    default: false
+  horizonutilities.ah.bypass.cooldown:
+    default: false
+  horizonutilities.placeholder.item:
+    default: true
+  horizonutilities.placeholder.pos:
+    default: true
+  horizonutilities.placeholder.health:
+    default: true
+  horizonutilities.placeholder.balance:
+    default: true
+  horizonutilities.placeholder.ping:
+    default: true
+  horizonutilities.chatgames.play:
+    default: true
+  horizonutilities.chatgames.admin:
+    default: op
+  horizonutilities.chatgames.top:
+    default: true
+  # Jobs
+  horizonutilities.jobs.use:
+    description: Use the jobs system
+    default: true
+  horizonutilities.jobs.join:
+    description: Join jobs
+    default: true
+  horizonutilities.jobs.leave:
+    description: Leave jobs
+    default: true
+  horizonutilities.jobs.info:
+    description: View job info
+    default: true
+  horizonutilities.jobs.stats:
+    description: View job stats
+    default: true
+  horizonutilities.jobs.top:
+    description: View job leaderboard
+    default: true
+  horizonutilities.jobs.quests:
+    description: View daily quests
+    default: true
+  horizonutilities.jobs.prestige:
+    description: Prestige a maxed job
+    default: true
+  horizonutilities.jobs.admin:
+    description: Job admin commands
+    default: op
+    children:
+      horizonutilities.jobs.admin.setlevel: true
+      horizonutilities.jobs.admin.addxp: true
+      horizonutilities.jobs.admin.reset: true
+      horizonutilities.jobs.admin.forcejoin: true
+      horizonutilities.jobs.admin.boost: true
+      horizonutilities.jobs.admin.reload: true
+  horizonutilities.jobs.admin.setlevel:
+    default: op
+  horizonutilities.jobs.admin.addxp:
+    default: op
+  horizonutilities.jobs.admin.reset:
+    default: op
+  horizonutilities.jobs.admin.forcejoin:
+    default: op
+  horizonutilities.jobs.admin.boost:
+    default: op
+  horizonutilities.jobs.admin.reload:
+    default: op
+  horizonutilities.jobs.earn.break:
+    default: true
+  horizonutilities.jobs.earn.place:
+    default: true
+  horizonutilities.jobs.earn.kill:
+    default: true
+  horizonutilities.jobs.earn.fish:
+    default: true
+  horizonutilities.jobs.earn.craft:
+    default: true
+  horizonutilities.jobs.earn.smelt:
+    default: true
+  horizonutilities.jobs.earn.brew:
+    default: true
+  horizonutilities.jobs.earn.enchant:
+    default: true
+  horizonutilities.jobs.earn.explore:
+    default: true
+  horizonutilities.jobs.earn.farm:
+    default: true
+  horizonutilities.jobs.earn.trade:
+    default: true
+  horizonutilities.jobs.earn.tame:
+    default: true
+  horizonutilities.jobs.earn.shear:
+    default: true
+  horizonutilities.jobs.earn.milk:
+    default: true
+  horizonutilities.jobs.earn.repair:
+    default: true
+  horizonutilities.tax.exempt:
+    description: Exempt from claim job taxes
+    default: false
+  horizonutilities.blackmarket.use:
+    description: Access the black market
+    default: true
+  horizonutilities.blackmarket.admin:
+    description: Black market admin commands
+    default: op
+  horizonutilities.trade.use:
+    description: Use the trade system
+    default: true
+  horizonutilities.trade.bypass.blacklist:
+    description: Bypass trade item blacklist
+    default: false
+  horizonutilities.lottery.use:
+    description: Participate in the lottery
+    default: true
+  horizonutilities.lottery.admin:
+    description: Lottery admin commands
+    default: op
+  horizonutilities.bounty.use:
+    description: View bounties
+    default: true
+  horizonutilities.bounty.set:
+    description: Place bounties on players
+    default: true
+  horizonutilities.bounty.anonymous:
+    description: Place anonymous bounties
+    default: true
+  horizonutilities.bounty.admin:
+    description: Bounty admin commands
+    default: op
+  horizonutilities.eco.admin:
+    description: Economy audit and admin commands
+    default: op

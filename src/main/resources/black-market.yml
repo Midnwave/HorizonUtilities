@@ -1,0 +1,72 @@
+config-version: 1
+gui-title: "<gradient:#7B2FF7:#FF5733>Black Market</gradient>"
+categories:
+  Blocks:
+    icon: GRASS_BLOCK
+    slot: 1
+  Tools:
+    icon: DIAMOND_PICKAXE
+    slot: 2
+  Special:
+    icon: NETHER_STAR
+    slot: 3
+  Claim Blocks:
+    icon: GOLD_BLOCK
+    slot: 4
+items:
+  bedrock:
+    material: BEDROCK
+    display-name: "<dark_gray>Bedrock"
+    category: "Blocks"
+    price: 100000
+    amount: 1
+  enchanted_golden_apple:
+    material: ENCHANTED_GOLDEN_APPLE
+    display-name: "<gold>Enchanted Golden Apple"
+    category: "Special"
+    price: 50000
+    amount: 1
+  reinforced_deepslate:
+    material: REINFORCED_DEEPSLATE
+    display-name: "<dark_gray>Reinforced Deepslate"
+    category: "Blocks"
+    price: 150000
+    amount: 1
+  bedrock_breaker:
+    material: NETHERITE_PICKAXE
+    display-name: "<red><bold>Bedrock Breaker</bold></red>"
+    category: "Tools"
+    price: 500000
+    amount: 1
+    custom-model-data: 1
+    max-uses: 5
+    is-breaker: true
+    breakable-blocks:
+      - BEDROCK
+    lore:
+      - "<gray>A legendary pickaxe capable of"
+      - "<gray>breaking bedrock itself."
+      - ""
+      - "<yellow>Uses remaining: <white><uses>/5"
+  reinforced_deepslate_breaker:
+    material: NETHERITE_PICKAXE
+    display-name: "<blue><bold>Reinforced Deepslate Breaker</bold></blue>"
+    category: "Tools"
+    price: 300000
+    amount: 1
+    custom-model-data: 2
+    max-uses: 5
+    is-breaker: true
+    breakable-blocks:
+      - REINFORCED_DEEPSLATE
+    lore:
+      - "<gray>Shatters reinforced deepslate."
+      - ""
+      - "<yellow>Uses remaining: <white><uses>/5"
+  claim_blocks_100:
+    material: GOLD_BLOCK
+    display-name: "<gold>100 Claim Blocks"
+    category: "Claim Blocks"
+    price: 10000
+    amount: 1
+    claim-blocks: 100

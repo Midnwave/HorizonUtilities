@@ -1,0 +1,70 @@
+display-name: "Fisherman"
+icon: FISHING_ROD
+description: "Fish for profit and rare catches"
+max-level: 100
+hourly-income-cap: -1
+actions:
+  FISH:
+    COD:
+      money: 0.5
+      xp: 3.0
+    SALMON:
+      money: 0.8
+      xp: 4.0
+    TROPICAL_FISH:
+      money: 1.5
+      xp: 6.0
+    PUFFERFISH:
+      money: 2.0
+      xp: 8.0
+    LEATHER:
+      money: 0.3
+      xp: 2.0
+    STICK:
+      money: 0.1
+      xp: 0.5
+    STRING:
+      money: 0.2
+      xp: 1.0
+    LILY_PAD:
+      money: 0.3
+      xp: 1.5
+    SADDLE:
+      money: 10.0
+      xp: 30.0
+    NAME_TAG:
+      money: 15.0
+      xp: 40.0
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: fisherman_cod
+    description: "Catch 20 cod"
+    action: FISH
+    material: COD
+    amount: 20
+    reward-money: 30.0
+    reward-xp: 60.0
+    weight: 5
+    enabled: true
+  - id: fisherman_salmon
+    description: "Catch 10 salmon"
+    action: FISH
+    material: SALMON
+    amount: 10
+    reward-money: 40.0
+    reward-xp: 80.0
+    weight: 4
+    enabled: true
+  - id: fisherman_tropical
+    description: "Catch 5 tropical fish"
+    action: FISH
+    material: TROPICAL_FISH
+    amount: 5
+    reward-money: 60.0
+    reward-xp: 120.0
+    weight: 3
+    enabled: true

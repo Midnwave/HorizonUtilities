@@ -1,0 +1,13 @@
+config-version: 1
+request-timeout-seconds: 60
+same-world-only: true
+gui-title: "<gradient:#7B2FF7:#FF5733>Trade</gradient>"
+blacklisted-materials:
+  - BEDROCK
+  - COMMAND_BLOCK
+  - BARRIER
+  - STRUCTURE_BLOCK
+  - STRUCTURE_VOID
+  - JIGSAW
+  - DEBUG_STICK
+log-trades: true

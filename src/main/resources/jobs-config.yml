@@ -1,0 +1,49 @@
+config-version: 1
+max-concurrent-jobs: 3
+max-level: 200
+max-prestige: 10
+prestige-multiplier: 0.10
+payment-mode: "per-action"
+periodic-interval-seconds: 300
+xp-formula:
+  base: 100
+  exponent: 1.5
+anti-exploit:
+  block-tracking: true
+  spawner-pay-multiplier: 0.25
+  area-farming:
+    enabled: true
+    radius: 5
+    action-threshold: 50
+    timeframe-seconds: 60
+  cooldowns:
+    enabled: true
+    break: 100
+    kill: 200
+    fish: 500
+    craft: 0
+  income-cap:
+    enabled: true
+    default-hourly-cap: 5000
+explore-mode: "chunk-discovery"
+explore-chunk-reward: 5.0
+explore-distance-per-block: 0.1
+quests:
+  daily-count: 3
+  reset-hour: 0
+boost:
+  scheduled: []
+tax:
+  enabled: true
+  default-rate: 0.10
+  exempt-permission: "horizonutilities.tax.exempt"
+  notify-player: true
+  notify-claim-owner: true
+perks:
+  milestones:
+    25: 0.05
+    50: 0.05
+    75: 0.05
+    100: 0.10
+    150: 0.10
+    200: 0.15

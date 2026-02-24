@@ -1,0 +1,76 @@
+display-name: "Builder"
+icon: BRICKS
+description: "Place blocks to earn rewards"
+max-level: 100
+hourly-income-cap: 1000
+actions:
+  PLACE:
+    STONE:
+      money: 0.05
+      xp: 0.5
+    COBBLESTONE:
+      money: 0.05
+      xp: 0.5
+    BRICKS:
+      money: 0.10
+      xp: 1.0
+    STONE_BRICKS:
+      money: 0.10
+      xp: 1.0
+    OAK_PLANKS:
+      money: 0.05
+      xp: 0.5
+    SPRUCE_PLANKS:
+      money: 0.05
+      xp: 0.5
+    BIRCH_PLANKS:
+      money: 0.05
+      xp: 0.5
+    GLASS:
+      money: 0.10
+      xp: 1.0
+    QUARTZ_BLOCK:
+      money: 0.20
+      xp: 2.0
+    TERRACOTTA:
+      money: 0.10
+      xp: 1.0
+    CONCRETE:
+      money: 0.15
+      xp: 1.5
+    SMOOTH_STONE:
+      money: 0.10
+      xp: 1.0
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: builder_stone
+    description: "Place 256 stone blocks"
+    action: PLACE
+    material: STONE
+    amount: 256
+    reward-money: 30.0
+    reward-xp: 60.0
+    weight: 5
+    enabled: true
+  - id: builder_planks
+    description: "Place 128 oak planks"
+    action: PLACE
+    material: OAK_PLANKS
+    amount: 128
+    reward-money: 25.0
+    reward-xp: 50.0
+    weight: 5
+    enabled: true
+  - id: builder_quartz
+    description: "Place 64 quartz blocks"
+    action: PLACE
+    material: QUARTZ_BLOCK
+    amount: 64
+    reward-money: 50.0
+    reward-xp: 100.0
+    weight: 3
+    enabled: true

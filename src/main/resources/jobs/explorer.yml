@@ -1,0 +1,25 @@
+display-name: "Explorer"
+icon: COMPASS
+description: "Explore new lands and discover chunks"
+max-level: 100
+hourly-income-cap: 500
+actions:
+  EXPLORE:
+    CHUNK:
+      money: 5.0
+      xp: 20.0
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: explorer_chunks
+    description: "Discover 10 new chunks"
+    action: EXPLORE
+    material: CHUNK
+    amount: 10
+    reward-money: 100.0
+    reward-xp: 200.0
+    weight: 4
+    enabled: true

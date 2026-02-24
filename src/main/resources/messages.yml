@@ -1,0 +1,112 @@
+config-version: 1
+
+prefix: "<dark_gray>[<gradient:#7B2FF7:#FF5733>Horizon</gradient><dark_gray>]"
+
+no-permission: "<prefix> <red>You don't have permission to do that."
+player-only: "<prefix> <red>This command can only be run by a player."
+no-economy: "<prefix> <red>Economy not available. Is Vault installed?"
+reload-success: "<prefix> <green>Configuration reloaded."
+
+# Auction House
+ah-not-enough-money: "<prefix> <red>You don't have enough money."
+ah-listing-created: "<prefix> <gray>Listed item for <gold><price></gold>. Fee: <gold><fee></gold>."
+ah-listing-cancelled: "<prefix> <gray>Listing cancelled."
+ah-listing-expired: "<prefix> <gray>Your listing for <gold><item></gold> has expired. Collect it from <gold>/ah collect</gold>."
+ah-item-sold: "<prefix> <green>Your <gold><item></gold> sold for <gold><price></gold>! Tax: <gold><tax></gold>. Collect from <gold>/ah collect</gold>."
+ah-item-purchased: "<prefix> <green>Purchased <gold><item></gold> for <gold><price></gold>."
+ah-bid-placed: "<prefix> <green>Bid of <gold><amount></gold> placed on <gold><item></gold>."
+ah-bid-outbid: "<prefix> <red>You've been outbid on <gold><item></gold>! New bid: <gold><amount></gold>. Your escrow of <gold><refund></gold> returned."
+ah-bid-won: "<prefix> <green>You won the auction for <gold><item></gold>! Collect from <gold>/ah collect</gold>."
+ah-listing-cooldown: "<prefix> <red>Please wait <gold><seconds></gold>s before listing another item."
+ah-max-listings: "<prefix> <red>You've reached your listing limit of <gold><limit></gold>."
+ah-blacklisted: "<prefix> <red>This item cannot be listed on the auction house."
+ah-banned: "<prefix> <red>You are banned from the auction house."
+ah-nothing-in-hand: "<prefix> <red>Hold an item to list it."
+ah-no-listings: "<prefix> <gray>No listings found."
+ah-collection-empty: "<prefix> <gray>Nothing to collect."
+ah-collection-collected: "<prefix> <green>Collected <gold><count></gold> item(s) and <gold><money></gold>."
+ah-search-results: "<prefix> <gray>Search results for '<gold><query></gold>':"
+ah-price-too-low: "<prefix> <red>Minimum price is <gold><min></gold>."
+ah-price-too-high: "<prefix> <red>Maximum price is <gold><max></gold>."
+ah-bid-too-low: "<prefix> <red>Minimum bid is <gold><min></gold>."
+
+# AH Admin
+ah-admin-removed: "<prefix> <gray>Removed listing <gold>#<id></gold>."
+ah-admin-banned: "<prefix> <gray>Banned <gold><player></gold> from the auction house."
+ah-admin-unbanned: "<prefix> <gray>Unbanned <gold><player></gold> from the auction house."
+ah-admin-not-found: "<prefix> <red>Listing not found."
+ah-admin-player-not-found: "<prefix> <red>Player not found."
+
+# AH GUI
+ah-gui-title: "<gradient:#7B2FF7:#FF5733>Auction House</gradient>"
+ah-gui-category-all: "<bold><white>All Items</white></bold>"
+ah-gui-category-weapons: "<bold><red>Weapons</red></bold>"
+ah-gui-category-armor: "<bold><aqua>Armor</aqua></bold>"
+ah-gui-category-tools: "<bold><yellow>Tools</yellow></bold>"
+ah-gui-category-blocks: "<bold><green>Blocks</green></bold>"
+ah-gui-category-consumables: "<bold><gold>Consumables</gold></bold>"
+ah-gui-category-books: "<bold><light_purple>Enchanted Books</light_purple></bold>"
+ah-gui-category-misc: "<bold><gray>Misc</gray></bold>"
+ah-gui-next-page: "<green>Next Page ▶</green>"
+ah-gui-prev-page: "<green>◀ Prev Page</green>"
+ah-gui-page-info: "<gray>Page <gold><page></gold> / <gold><total></gold>"
+ah-gui-sort: "<yellow>Sort</yellow>"
+ah-gui-search: "<yellow>Search</yellow>"
+ah-gui-collection: "<gold>Collection Box</gold>"
+ah-gui-history: "<gold>Transaction History</gold>"
+ah-gui-my-listings: "<gold>My Listings</gold>"
+ah-gui-listing-lore: |
+  <gray>Seller: <gold><seller>
+  <gray>Starting Bid: <gold><start_price>
+  <gray>Buy It Now: <gold><buyout_price>
+  <gray>Current Bid: <gold><current_bid>
+  <gray>Time Left: <gold><time_left>
+  <dark_gray>Left-click to buy/bid
+ah-gui-collection-title: "<gradient:#7B2FF7:#FF5733>Collection Box</gradient>"
+ah-gui-history-title: "<gradient:#7B2FF7:#FF5733>Transaction History</gradient>"
+ah-gui-price-history-title: "<gradient:#7B2FF7:#FF5733>Price History: <item></gradient>"
+
+# AH Dialogs
+ah-dialog-confirm-title: "Confirm Purchase"
+ah-dialog-confirm-body: "Buy this item for <price>?"
+ah-dialog-confirm-yes: "Confirm Purchase"
+ah-dialog-confirm-no: "Cancel"
+ah-dialog-create-title: "Create Listing"
+ah-dialog-bid-title: "Place Bid"
+ah-dialog-cancel-title: "Cancel Listing"
+ah-dialog-cancel-body: "Cancel your listing?"
+
+# Chat Placeholders
+placeholder-empty-hand: "<gray>[Empty Hand]"
+
+# Chat Games
+game-prefix: "<dark_gray>[<gradient:#FFD700:#FF6B35>Games</gradient><dark_gray>]"
+game-started: "<game-prefix> <gold><bold><type></bold></gold> <gray>— <question>"
+game-winner: "<game-prefix> <green><player></green> <gray>answered correctly in <gold><time>s</gold>! Answer: <gold><answer></gold>. Reward: <gold><reward></gold>."
+game-timeout: "<game-prefix> <red>Time's up! The answer was <gold><answer></gold>."
+game-already-active: "<prefix> <red>A game is already in progress."
+game-none-active: "<prefix> <red>No game is currently active."
+game-started-admin: "<prefix> <gray>Started a <gold><type></gold> game."
+game-stopped: "<prefix> <gray>Current game stopped."
+
+# Game type names
+game-type-unscramble: "Unscramble"
+game-type-retype: "Retype"
+game-type-math: "Math"
+game-type-unreverse: "Unreverse"
+game-type-recipe: "Recipe Guess"
+
+# Game prompts
+game-unscramble-prompt: "Unscramble this word: <gold><bold><scrambled></bold></gold>"
+game-retype-prompt: "Type this exactly: <gold><bold><text></bold></gold>"
+game-math-prompt: "Solve: <gold><bold><equation></bold></gold>"
+game-unreverse-prompt: "Unreverse this word: <gold><bold><reversed></bold></gold>"
+game-recipe-prompt: "What does this recipe craft?"
+
+# Leaderboard
+leaderboard-title: "<gradient:#FFD700:#FF6B35>Chat Games Leaderboard</gradient>"
+leaderboard-gui-title: "<gradient:#FFD700:#FF6B35>Leaderboard</gradient>"
+leaderboard-entry: "<gray><rank>. <gold><player></gold> <gray>— <gold><wins></gold> wins, best streak: <gold><streak></gold>"
+leaderboard-empty: "<prefix> <gray>No leaderboard data yet."
+leaderboard-stats: "<prefix> <gray>Stats for <gold><player></gold>: <gold><wins></gold> wins, streak: <gold><streak></gold>, best: <gold><best_streak></gold>, fastest: <gold><fastest>ms</gold>"
+leaderboard-reset: "<prefix> <green>Leaderboard reset."

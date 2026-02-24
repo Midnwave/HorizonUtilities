@@ -1,0 +1,24 @@
+config-version: 1
+
+enabled: true
+
+placeholders:
+  item:
+    enabled: true
+    token: "<item>"
+  pos:
+    enabled: true
+    token: "<pos>"
+    format: "<gold><x>, <y>, <z></gold>"
+  health:
+    enabled: true
+    token: "<health>"
+    format: "<red>❤ <current>/<max></red>"
+  balance:
+    enabled: true
+    token: "<balance>"
+    format: "<green><amount></green>"
+  ping:
+    enabled: true
+    token: "<ping>"
+    format: "<yellow><ms>ms</yellow>"

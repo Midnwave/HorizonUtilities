@@ -1,0 +1,61 @@
+config-version: 1
+
+durations: [1, 6, 12, 24, 48, 72]
+default-duration: 24
+
+listing-fee-percent: 2.0
+sales-tax-percent: 5.0
+listing-cooldown-seconds: 10
+max-listings-default: 5
+
+anti-snipe:
+  enabled: true
+  trigger-seconds: 30
+  extension-seconds: 30
+  max-extensions: 3
+
+escrow: true
+
+min-price: 1.0
+max-price: 1000000.0
+min-bid-increment-percent: 5.0
+
+blacklisted-materials:
+  - BEDROCK
+  - COMMAND_BLOCK
+  - COMMAND_BLOCK_MINECART
+  - CHAIN_COMMAND_BLOCK
+  - REPEATING_COMMAND_BLOCK
+  - BARRIER
+  - STRUCTURE_BLOCK
+  - STRUCTURE_VOID
+  - JIGSAW
+  - DEBUG_STICK
+  - KNOWLEDGE_BOOK
+
+categories:
+  Weapons:
+    icon: DIAMOND_SWORD
+    auto-detect: true
+  Armor:
+    icon: DIAMOND_CHESTPLATE
+    auto-detect: true
+  Tools:
+    icon: DIAMOND_PICKAXE
+    auto-detect: true
+  Blocks:
+    icon: GRASS_BLOCK
+    auto-detect: true
+  Consumables:
+    icon: GOLDEN_APPLE
+    auto-detect: true
+  Enchanted Books:
+    icon: ENCHANTED_BOOK
+    auto-detect: true
+  Misc:
+    icon: CHEST
+    auto-detect: true
+
+notifications:
+  sound: ENTITY_EXPERIENCE_ORB_PICKUP
+  queue-offline: true

@@ -1,0 +1,74 @@
+display-name: "Farmer"
+icon: GOLDEN_HOE
+description: "Grow and harvest crops"
+max-level: 100
+hourly-income-cap: -1
+actions:
+  FARM:
+    WHEAT:
+      money: 0.15
+      xp: 1.5
+    CARROTS:
+      money: 0.15
+      xp: 1.5
+    POTATOES:
+      money: 0.15
+      xp: 1.5
+    BEETROOTS:
+      money: 0.20
+      xp: 2.0
+    MELON_SLICE:
+      money: 0.10
+      xp: 1.0
+    PUMPKIN:
+      money: 0.25
+      xp: 2.5
+    SUGAR_CANE:
+      money: 0.10
+      xp: 1.0
+    COCOA_BEANS:
+      money: 0.20
+      xp: 2.0
+    NETHER_WART:
+      money: 0.30
+      xp: 3.0
+  BREAK:
+    SWEET_BERRY_BUSH:
+      money: 0.20
+      xp: 2.0
+    GLOW_BERRIES:
+      money: 0.25
+      xp: 2.5
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: farmer_wheat
+    description: "Harvest 128 wheat"
+    action: FARM
+    material: WHEAT
+    amount: 128
+    reward-money: 40.0
+    reward-xp: 80.0
+    weight: 5
+    enabled: true
+  - id: farmer_carrot
+    description: "Harvest 64 carrots"
+    action: FARM
+    material: CARROTS
+    amount: 64
+    reward-money: 35.0
+    reward-xp: 70.0
+    weight: 5
+    enabled: true
+  - id: farmer_pumpkin
+    description: "Harvest 16 pumpkins"
+    action: FARM
+    material: PUMPKIN
+    amount: 16
+    reward-money: 60.0
+    reward-xp: 120.0
+    weight: 3
+    enabled: true

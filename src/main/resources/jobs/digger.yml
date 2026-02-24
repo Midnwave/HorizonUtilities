@@ -1,0 +1,76 @@
+display-name: "Digger"
+icon: IRON_SHOVEL
+description: "Excavate dirt, sand, and gravel"
+max-level: 100
+hourly-income-cap: -1
+actions:
+  BREAK:
+    DIRT:
+      money: 0.03
+      xp: 0.5
+    GRASS_BLOCK:
+      money: 0.03
+      xp: 0.5
+    SAND:
+      money: 0.08
+      xp: 1.0
+    RED_SAND:
+      money: 0.08
+      xp: 1.0
+    GRAVEL:
+      money: 0.10
+      xp: 1.2
+    CLAY:
+      money: 0.15
+      xp: 1.5
+    SOUL_SAND:
+      money: 0.20
+      xp: 2.0
+    SOUL_SOIL:
+      money: 0.20
+      xp: 2.0
+    MYCELIUM:
+      money: 0.25
+      xp: 2.5
+    PODZOL:
+      money: 0.15
+      xp: 1.5
+    COARSE_DIRT:
+      money: 0.05
+      xp: 0.5
+    ROOTED_DIRT:
+      money: 0.10
+      xp: 1.0
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: digger_dirt
+    description: "Dig 256 dirt or grass"
+    action: BREAK
+    material: DIRT
+    amount: 256
+    reward-money: 25.0
+    reward-xp: 50.0
+    weight: 5
+    enabled: true
+  - id: digger_sand
+    description: "Dig 128 sand"
+    action: BREAK
+    material: SAND
+    amount: 128
+    reward-money: 30.0
+    reward-xp: 60.0
+    weight: 4
+    enabled: true
+  - id: digger_clay
+    description: "Dig 64 clay"
+    action: BREAK
+    material: CLAY
+    amount: 64
+    reward-money: 45.0
+    reward-xp: 90.0
+    weight: 3
+    enabled: true

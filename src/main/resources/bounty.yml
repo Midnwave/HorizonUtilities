@@ -1,0 +1,11 @@
+config-version: 1
+enabled: true
+min-amount: 100.0
+max-amount: 1000000.0
+max-bounties-per-target: 5
+expiration-days: 7
+anonymous-cost-multiplier: 1.5
+stacking: true
+proximity-alert-range: 50
+broadcast-new-bounty: true
+broadcast-claim: true

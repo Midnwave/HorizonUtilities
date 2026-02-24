@@ -1,0 +1,70 @@
+display-name: "Woodcutter"
+icon: IRON_AXE
+description: "Chop trees and collect wood"
+max-level: 100
+hourly-income-cap: -1
+actions:
+  BREAK:
+    OAK_LOG:
+      money: 0.3
+      xp: 2.0
+    SPRUCE_LOG:
+      money: 0.3
+      xp: 2.0
+    BIRCH_LOG:
+      money: 0.3
+      xp: 2.0
+    JUNGLE_LOG:
+      money: 0.4
+      xp: 2.5
+    ACACIA_LOG:
+      money: 0.4
+      xp: 2.5
+    DARK_OAK_LOG:
+      money: 0.4
+      xp: 2.5
+    CHERRY_LOG:
+      money: 0.5
+      xp: 3.0
+    MANGROVE_LOG:
+      money: 0.5
+      xp: 3.0
+    CRIMSON_STEM:
+      money: 0.6
+      xp: 3.5
+    WARPED_STEM:
+      money: 0.6
+      xp: 3.5
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: woodcutter_oak
+    description: "Chop 64 oak logs"
+    action: BREAK
+    material: OAK_LOG
+    amount: 64
+    reward-money: 40.0
+    reward-xp: 80.0
+    weight: 5
+    enabled: true
+  - id: woodcutter_jungle
+    description: "Chop 32 jungle logs"
+    action: BREAK
+    material: JUNGLE_LOG
+    amount: 32
+    reward-money: 50.0
+    reward-xp: 100.0
+    weight: 4
+    enabled: true
+  - id: woodcutter_nether
+    description: "Chop 32 crimson or warped stems"
+    action: BREAK
+    material: CRIMSON_STEM
+    amount: 32
+    reward-money: 60.0
+    reward-xp: 120.0
+    weight: 3
+    enabled: true

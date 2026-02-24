@@ -1,0 +1,23 @@
+config-version: 1
+tiers:
+  mini:
+    display-name: "<green>Mini Lottery"
+    schedule: "DAILY"
+    draw-time: "20:00"
+    starting-pot: 1000.0
+    ticket-price: 100.0
+    max-tickets-per-player: 10
+    min-players: 3
+    broadcast-buy: false
+    broadcast-draw: true
+  grand:
+    display-name: "<gold>Grand Lottery"
+    schedule: "WEEKLY"
+    draw-time: "18:00"
+    draw-day: "SATURDAY"
+    starting-pot: 10000.0
+    ticket-price: 500.0
+    max-tickets-per-player: 20
+    min-players: 5
+    broadcast-buy: true
+    broadcast-draw: true

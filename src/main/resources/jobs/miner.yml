@@ -1,0 +1,112 @@
+display-name: "Miner"
+icon: IRON_PICKAXE
+description: "Mine ores and stone for profit"
+max-level: 100
+hourly-income-cap: -1
+actions:
+  BREAK:
+    STONE:
+      money: 0.02
+      xp: 0.5
+    COBBLESTONE:
+      money: 0.01
+      xp: 0.3
+    COAL_ORE:
+      money: 0.5
+      xp: 3.0
+    DEEPSLATE_COAL_ORE:
+      money: 0.6
+      xp: 3.5
+    IRON_ORE:
+      money: 1.0
+      xp: 5.0
+    DEEPSLATE_IRON_ORE:
+      money: 1.2
+      xp: 5.5
+    COPPER_ORE:
+      money: 0.8
+      xp: 4.0
+    DEEPSLATE_COPPER_ORE:
+      money: 1.0
+      xp: 4.5
+    GOLD_ORE:
+      money: 2.0
+      xp: 8.0
+    DEEPSLATE_GOLD_ORE:
+      money: 2.5
+      xp: 9.0
+    LAPIS_ORE:
+      money: 1.5
+      xp: 6.0
+    DEEPSLATE_LAPIS_ORE:
+      money: 2.0
+      xp: 7.0
+    REDSTONE_ORE:
+      money: 1.5
+      xp: 6.0
+    DEEPSLATE_REDSTONE_ORE:
+      money: 2.0
+      xp: 7.0
+    DIAMOND_ORE:
+      money: 10.0
+      xp: 30.0
+    DEEPSLATE_DIAMOND_ORE:
+      money: 12.0
+      xp: 35.0
+    EMERALD_ORE:
+      money: 15.0
+      xp: 40.0
+    DEEPSLATE_EMERALD_ORE:
+      money: 18.0
+      xp: 45.0
+    ANCIENT_DEBRIS:
+      money: 50.0
+      xp: 100.0
+    NETHER_GOLD_ORE:
+      money: 1.5
+      xp: 6.0
+    NETHER_QUARTZ_ORE:
+      money: 1.0
+      xp: 5.0
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: miner_coal
+    description: "Mine 64 coal ore"
+    action: BREAK
+    material: COAL_ORE
+    amount: 64
+    reward-money: 50.0
+    reward-xp: 100.0
+    weight: 5
+    enabled: true
+  - id: miner_iron
+    description: "Mine 32 iron ore"
+    action: BREAK
+    material: IRON_ORE
+    amount: 32
+    reward-money: 75.0
+    reward-xp: 150.0
+    weight: 4
+    enabled: true
+  - id: miner_diamond
+    description: "Mine 5 diamond ore"
+    action: BREAK
+    material: DIAMOND_ORE
+    amount: 5
+    reward-money: 200.0
+    reward-xp: 400.0
+    weight: 2
+    enabled: true
+  - id: miner_stone
+    description: "Mine 256 stone"
+    action: BREAK
+    material: STONE
+    amount: 256
+    reward-money: 30.0
+    reward-xp: 80.0
+    weight: 6
+    enabled: true

@@ -1,0 +1,12 @@
+config-version: 1
+
+custom-unscramble-words:
+  - "diamond"
+  - "creeper"
+  - "enderman"
+  - "obsidian"
+  - "netherite"
+
+custom-retype-words: []
+
+custom-recipes: []

@@ -1,0 +1,70 @@
+display-name: "Enchanter"
+icon: ENCHANTING_TABLE
+description: "Enchant items and brew potions"
+max-level: 100
+hourly-income-cap: -1
+actions:
+  ENCHANT:
+    SWORD:
+      money: 5.0
+      xp: 15.0
+    PICKAXE:
+      money: 5.0
+      xp: 15.0
+    AXE:
+      money: 5.0
+      xp: 15.0
+    SHOVEL:
+      money: 3.0
+      xp: 10.0
+    BOW:
+      money: 5.0
+      xp: 15.0
+    HELMET:
+      money: 4.0
+      xp: 12.0
+    CHESTPLATE:
+      money: 6.0
+      xp: 18.0
+    LEGGINGS:
+      money: 5.0
+      xp: 15.0
+    BOOTS:
+      money: 4.0
+      xp: 12.0
+    FISHING_ROD:
+      money: 3.0
+      xp: 10.0
+perks:
+  25: 0.05
+  50: 0.10
+  75: 0.10
+  100: 0.15
+quests:
+  - id: enchanter_sword
+    description: "Enchant 5 swords"
+    action: ENCHANT
+    material: SWORD
+    amount: 5
+    reward-money: 80.0
+    reward-xp: 160.0
+    weight: 4
+    enabled: true
+  - id: enchanter_pickaxe
+    description: "Enchant 5 pickaxes"
+    action: ENCHANT
+    material: PICKAXE
+    amount: 5
+    reward-money: 80.0
+    reward-xp: 160.0
+    weight: 4
+    enabled: true
+  - id: enchanter_armor
+    description: "Enchant 3 chestplates"
+    action: ENCHANT
+    material: CHESTPLATE
+    amount: 3
+    reward-money: 100.0
+    reward-xp: 200.0
+    weight: 3
+    enabled: true

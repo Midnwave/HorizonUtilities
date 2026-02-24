@@ -1,0 +1,35 @@
+config-version: 1
+
+scheduling:
+  interval-seconds: 300
+  variance-seconds: 60
+  timeout-seconds: 30
+
+games:
+  unscramble:
+    enabled: true
+    reward-money: 100.0
+    reward-commands: []
+    difficulty: MEDIUM
+  retype:
+    enabled: true
+    reward-money: 75.0
+    reward-commands: []
+    min-length: 5
+    max-length: 12
+    use-minecraft-names: true
+    use-random-letters: true
+  math:
+    enabled: true
+    reward-money: 80.0
+    reward-commands: []
+    max-number: 100
+    operations: [ADD, SUBTRACT, MULTIPLY]
+  unreverse:
+    enabled: true
+    reward-money: 90.0
+    reward-commands: []
+  recipe-guess:
+    enabled: true
+    reward-money: 150.0
+    reward-commands: []

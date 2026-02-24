@@ -1,0 +1,28 @@
+config-version: 1
+enabled: false
+xp-sync:
+  enabled: true
+  ratios:
+    miner:
+      mining: 0.5
+    woodcutter:
+      foraging: 0.5
+    farmer:
+      farming: 0.5
+    fisherman:
+      fishing: 0.5
+    hunter:
+      fighting: 0.5
+    enchanter:
+      enchanting: 0.5
+milestone-rewards:
+  enabled: true
+  rewards:
+    "50":
+      xp-lamp-amount: 500
+    "100":
+      xp-lamp-amount: 2000
+      bonus-stat-points: 1
+    "200":
+      xp-lamp-amount: 10000
+      bonus-stat-points: 5
