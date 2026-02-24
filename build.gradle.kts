@@ -25,7 +25,7 @@ dependencies {
     compileOnly(files("../GriefPrevetionFlagsReborn/build/libs/GriefPreventionFlagsReborn-1.0.0.jar"))
     compileOnly("com.github.TechFortress:GriefPrevention:16.18.4")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
-    compileOnly(files("C:/Users/crens/Downloads/Quests-5.2.8.jar"))
+    compileOnly(files("libs/Quests-5.2.8.jar"))
     implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 
