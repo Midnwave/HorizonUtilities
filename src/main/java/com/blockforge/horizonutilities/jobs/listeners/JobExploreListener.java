@@ -1,6 +1,7 @@
 package com.blockforge.horizonutilities.jobs.listeners;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
+import com.blockforge.horizonutilities.events.JobExploreEvent;
 import com.blockforge.horizonutilities.jobs.JobAction;
 import com.blockforge.horizonutilities.jobs.config.JobsConfig;
 import org.bukkit.Chunk;
@@ -81,8 +82,10 @@ public class JobExploreListener implements Listener {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (isChunkDiscovered(uuid, world, cx, cz)) return;
             insertDiscoveredChunk(uuid, world, cx, cz);
-            plugin.getServer().getScheduler().runTask(plugin, () ->
-                    plugin.getJobManager().processAction(player, JobAction.EXPLORE_CHUNK, "CHUNK"));
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                plugin.getJobManager().processAction(player, JobAction.EXPLORE_CHUNK, "CHUNK");
+                plugin.getServer().getPluginManager().callEvent(new JobExploreEvent(player));
+            });
         });
     }
 
@@ -129,6 +132,7 @@ public class JobExploreListener implements Listener {
             accum -= times * threshold;
             for (int i = 0; i < times; i++) {
                 plugin.getJobManager().processAction(player, JobAction.EXPLORE_DISTANCE, "DISTANCE");
+                plugin.getServer().getPluginManager().callEvent(new JobExploreEvent(player));
             }
         }
         distanceAccum.put(uuid, accum);

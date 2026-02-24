@@ -14,8 +14,7 @@ import org.bukkit.inventory.InventoryHolder;
 import java.util.Optional;
 
 /**
- * Handles all clicks inside every Jobs GUI
- * (Browse, Info, Quests, QuestEditor, Leaderboard).
+ * Handles all clicks inside every Jobs GUI (Browse, Info, Leaderboard).
  */
 public class JobsGUIListener implements Listener {
 
@@ -40,18 +39,6 @@ public class JobsGUIListener implements Listener {
             if (event.getClickedInventory() != event.getView().getTopInventory()) return;
             // Close slot = 26
             if (event.getRawSlot() == 26) player.closeInventory();
-
-        } else if (holder instanceof JobQuestsGUI) {
-            event.setCancelled(true);
-            if (event.getClickedInventory() != event.getView().getTopInventory()) return;
-            // Close slot = 22
-            if (event.getRawSlot() == 22) player.closeInventory();
-
-        } else if (holder instanceof QuestEditorGUI editorGUI) {
-            event.setCancelled(true);
-            if (event.getClickedInventory() != event.getView().getTopInventory()) return;
-            handleEditorClick(player, editorGUI, event.getRawSlot(),
-                    event.getClick().isRightClick());
 
         } else if (holder instanceof JobLeaderboardGUI) {
             event.setCancelled(true);
@@ -121,61 +108,5 @@ public class JobsGUIListener implements Listener {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Quest editor handler
-    // -------------------------------------------------------------------------
-
-    private void handleEditorClick(Player player, QuestEditorGUI gui, int slot, boolean rightClick) {
-        QuestEditorGUI.EditorState state = gui.getState();
-
-        // Close
-        if (slot == 49) { player.closeInventory(); return; }
-
-        // Back
-        if (slot == 45 && state.page != QuestEditorGUI.Page.JOB_SELECT) {
-            player.closeInventory();
-            if (state.page == QuestEditorGUI.Page.QUEST_DETAIL) {
-                state.page = QuestEditorGUI.Page.QUEST_LIST;
-            } else {
-                state.page = QuestEditorGUI.Page.JOB_SELECT;
-            }
-            new QuestEditorGUI(plugin, player, state).open();
-            return;
-        }
-
-        switch (state.page) {
-            case JOB_SELECT -> {
-                // Clicking a job icon opens quest list for that job
-                var item = gui.getInventory().getItem(slot);
-                if (item == null) return;
-                for (Job job : plugin.getJobManager().getAllJobs()) {
-                    if (job.getIcon() == item.getType()) {
-                        state.selectedJobId = job.getId();
-                        state.page = QuestEditorGUI.Page.QUEST_LIST;
-                        player.closeInventory();
-                        new QuestEditorGUI(plugin, player, state).open();
-                        return;
-                    }
-                }
-            }
-            case QUEST_LIST -> {
-                // Add button
-                if (slot == 53) {
-                    player.closeInventory();
-                    player.sendMessage(net.kyori.adventure.text.Component.text(
-                            "[Jobs] Quest creation via chat is not yet implemented.", net.kyori.adventure.text.format.NamedTextColor.YELLOW));
-                    return;
-                }
-                // Quest item click — detail or delete
-                var item = gui.getInventory().getItem(slot);
-                if (item == null) return;
-                // We can't easily reverse-lookup the quest def from the item here without storing it;
-                // left-click opens detail, right-click is handled in a real implementation via NBT tags.
-                // For now just close; a full implementation would store quest ids in PDC.
-            }
-            case QUEST_DETAIL -> {
-                // No interactive elements beyond back/close
-            }
-        }
-    }
 }
+

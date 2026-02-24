@@ -2,6 +2,7 @@ package com.blockforge.horizonutilities.trade;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
 import com.blockforge.horizonutilities.economy.EconomyAuditLog;
+import com.blockforge.horizonutilities.events.JobTradeEvent;
 import com.blockforge.horizonutilities.trade.gui.TradeGUI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -343,6 +344,10 @@ public class TradeManager {
         activeSessions.remove(session.getPlayer2Uuid());
         openGuis.remove(session.getPlayer1Uuid());
         openGuis.remove(session.getPlayer2Uuid());
+
+        // Fire job trade events (for PikaMug/Quests objective tracking)
+        plugin.getServer().getPluginManager().callEvent(new JobTradeEvent(p1));
+        plugin.getServer().getPluginManager().callEvent(new JobTradeEvent(p2));
 
         // Notify success
         plugin.getMessagesManager().send(p1, "trade-completed",

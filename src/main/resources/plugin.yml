@@ -4,7 +4,7 @@ version: "${version}"
 api-version: "1.21"
 authors: [BlockForge]
 depend: [GriefPreventionFlagsReborn]
-softdepend: [Vault, AuraSkills]
+softdepend: [Vault, AuraSkills, Quests]
 commands:
   ah:
     description: Auction House

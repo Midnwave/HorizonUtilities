@@ -46,6 +46,7 @@ import com.blockforge.horizonutilities.games.listeners.GameAnswerListener;
 import com.blockforge.horizonutilities.auraskills.AuraSkillsManager;
 import com.blockforge.horizonutilities.hooks.GPFRHook;
 import com.blockforge.horizonutilities.jobs.JobManager;
+import com.blockforge.horizonutilities.jobs.quests.QuestsIntegration;
 import com.blockforge.horizonutilities.tax.TaxManager;
 import com.blockforge.horizonutilities.jobs.commands.JobsCommand;
 import com.blockforge.horizonutilities.jobs.commands.JobsTabCompleter;
@@ -77,6 +78,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private GPFRHook gpfrHook;
     private AuraSkillsManager auraSkillsManager;
     private JobManager jobManager;
+    private QuestsIntegration questsIntegration;
     private TaxManager taxManager;
     private TradeConfig tradeConfig;
     private TradeManager tradeManager;
@@ -139,6 +141,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
 
         taxManager = new TaxManager(this);
         jobManager = new JobManager(this);
+        questsIntegration = new QuestsIntegration(this);
 
         tradeConfig = new TradeConfig(this);
         tradeConfig.load();
@@ -268,6 +271,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public GPFRHook getGpfrHook() { return gpfrHook; }
     public AuraSkillsManager getAuraSkillsManager() { return auraSkillsManager; }
     public JobManager getJobManager() { return jobManager; }
+    public QuestsIntegration getQuestsIntegration() { return questsIntegration; }
     public TaxManager getTaxManager() { return taxManager; }
     public TradeConfig getTradeConfig() { return tradeConfig; }
     public TradeManager getTradeManager() { return tradeManager; }

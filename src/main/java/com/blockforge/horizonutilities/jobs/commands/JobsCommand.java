@@ -158,7 +158,13 @@ public class JobsCommand implements CommandExecutor {
 
     private void cmdQuests(CommandSender sender) {
         if (!(sender instanceof Player player)) { noConsole(sender); return; }
-        new JobQuestsGUI(plugin, player).open();
+        player.sendMessage(Component.text("[Jobs] Quest system is powered by ", NamedTextColor.YELLOW)
+                .append(Component.text("PikaMug/Quests", NamedTextColor.GOLD))
+                .append(Component.text(".", NamedTextColor.YELLOW)));
+        player.sendMessage(Component.text("[Jobs] Use ", NamedTextColor.GRAY)
+                .append(Component.text("/quests", NamedTextColor.AQUA))
+                .append(Component.text(" to view and take quests.", NamedTextColor.GRAY)));
+        player.sendMessage(Component.text("[Jobs] Look for quests with Job objectives matching your work!", NamedTextColor.DARK_GRAY));
     }
 
     private void cmdPrestige(CommandSender sender, String[] args) {

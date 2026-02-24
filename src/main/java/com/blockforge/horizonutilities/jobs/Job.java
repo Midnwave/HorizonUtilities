@@ -1,6 +1,5 @@
 package com.blockforge.horizonutilities.jobs;
 
-import com.blockforge.horizonutilities.jobs.quests.QuestDefinition;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,8 +27,6 @@ public class Job {
     /** -1 means fall back to the global income cap. */
     private final double hourlyIncomeCap;
 
-    private final List<QuestDefinition> questPool;
-
     public Job(String id,
                String displayName,
                Material icon,
@@ -37,8 +34,7 @@ public class Job {
                int maxLevel,
                Map<JobAction, Map<String, JobActionEntry>> actions,
                Map<Integer, Double> perks,
-               double hourlyIncomeCap,
-               List<QuestDefinition> questPool) {
+               double hourlyIncomeCap) {
         this.id = id;
         this.displayName = displayName;
         this.icon = icon;
@@ -47,7 +43,6 @@ public class Job {
         this.actions = Collections.unmodifiableMap(actions);
         this.perks = Collections.unmodifiableMap(perks);
         this.hourlyIncomeCap = hourlyIncomeCap;
-        this.questPool = Collections.unmodifiableList(questPool);
     }
 
     // -------------------------------------------------------------------------
@@ -73,15 +68,6 @@ public class Job {
      * perks:
      *   10: 0.05
      *   25: 0.10
-     * quests:
-     *   - id: miner_daily_1
-     *     description: "Mine 64 stone"
-     *     action: BREAK
-     *     material: STONE
-     *     amount: 64
-     *     reward-money: 50
-     *     reward-xp: 100
-     *     weight: 5
      * </pre>
      */
     public static Job loadFromConfig(String jobId, FileConfiguration config) {
@@ -153,29 +139,7 @@ public class Job {
             }
         }
 
-        // Quest pool (inline definitions)
-        List<QuestDefinition> questPool = new ArrayList<>();
-        List<Map<?, ?>> questList = config.getMapList("quests");
-        for (Map<?, ?> qMapRaw : questList) { @SuppressWarnings("unchecked") Map<Object, Object> qMap = (Map<Object, Object>) qMapRaw;
-            try {
-                String questId = String.valueOf(qMap.get("id"));
-                String desc = String.valueOf(qMap.getOrDefault("description", "Complete tasks"));
-                String actionStr = String.valueOf(qMap.getOrDefault("action", "BREAK"));
-                JobAction qAction = JobAction.valueOf(actionStr.toUpperCase(Locale.ROOT));
-                String material = qMap.containsKey("material") ? String.valueOf(qMap.get("material")).toUpperCase(Locale.ROOT) : null;
-                int amount = Integer.parseInt(String.valueOf(qMap.getOrDefault("amount", "1")));
-                double rewardMoney = Double.parseDouble(String.valueOf(qMap.getOrDefault("reward-money", "0")));
-                double rewardXp = Double.parseDouble(String.valueOf(qMap.getOrDefault("reward-xp", "0")));
-                int weight = Integer.parseInt(String.valueOf(qMap.getOrDefault("weight", "1")));
-                boolean enabled = Boolean.parseBoolean(String.valueOf(qMap.getOrDefault("enabled", "true")));
-                questPool.add(new QuestDefinition(questId, jobId, desc, qAction, material, amount,
-                        rewardMoney, rewardXp, weight, enabled));
-            } catch (Exception ex) {
-                if (logger != null) logger.warning("[Jobs] Failed to parse quest entry in job " + jobId + ": " + ex.getMessage());
-            }
-        }
-
-        return new Job(jobId, displayName, icon, description, maxLevel, actions, perks, hourlyIncomeCap, questPool);
+        return new Job(jobId, displayName, icon, description, maxLevel, actions, perks, hourlyIncomeCap);
     }
 
     // -------------------------------------------------------------------------
@@ -204,5 +168,4 @@ public class Job {
     public Map<JobAction, Map<String, JobActionEntry>> getActions() { return actions; }
     public Map<Integer, Double> getPerks() { return perks; }
     public double getHourlyIncomeCap() { return hourlyIncomeCap; }
-    public List<QuestDefinition> getQuestPool() { return questPool; }
 }

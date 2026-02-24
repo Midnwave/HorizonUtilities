@@ -8,8 +8,7 @@ import com.blockforge.horizonutilities.jobs.boost.BoostManager;
 import com.blockforge.horizonutilities.jobs.config.JobConfigLoader;
 import com.blockforge.horizonutilities.jobs.config.JobsConfig;
 import com.blockforge.horizonutilities.jobs.leaderboard.JobLeaderboard;
-import com.blockforge.horizonutilities.jobs.quests.QuestManager;
-import com.blockforge.horizonutilities.jobs.quests.QuestStorageManager;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
@@ -47,7 +46,6 @@ public class JobManager {
     private final CooldownManager cooldownManager;
     private final IncomeCapManager incomeCapManager;
     private final BoostManager boostManager;
-    private final QuestManager questManager;
     private final JobLeaderboard leaderboard;
     private final EconomyAuditLog auditLog;
 
@@ -74,17 +72,6 @@ public class JobManager {
         // Boosts
         boostManager = new BoostManager(plugin);
         boostManager.loadFromDb();
-
-        // Quests
-        QuestStorageManager questStorage = new QuestStorageManager(plugin);
-        questManager = new QuestManager(plugin, questStorage);
-        // Inject callbacks to avoid importing JobManager inside QuestManager
-        questManager.setJobManagerCallbacks(
-                uuid -> getPlayerJobs(uuid),
-                id   -> getJob(id),
-                ()   -> config.getQuestDailyCount(),
-                (player, jobId, xp) -> grantQuestXp(player, jobId, xp)
-        );
 
         // Leaderboard
         leaderboard = new JobLeaderboard(storage);
@@ -336,8 +323,6 @@ public class JobManager {
 
             jp.touch();
 
-            // Update quest progress
-            questManager.updateProgress(player.getUniqueId(), action, material, 1);
         }
 
         // Record for area farming detector
@@ -475,7 +460,6 @@ public class JobManager {
     public CooldownManager getCooldownManager()     { return cooldownManager; }
     public IncomeCapManager getIncomeCapManager()   { return incomeCapManager; }
     public BoostManager getBoostManager()           { return boostManager; }
-    public QuestManager getQuestManager()           { return questManager; }
     public JobLeaderboard getLeaderboard()          { return leaderboard; }
 
     // -------------------------------------------------------------------------
