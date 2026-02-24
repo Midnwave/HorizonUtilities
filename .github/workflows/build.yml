@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'releases/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout HorizonUtilities
+        uses: actions/checkout@v4
+        with:
+          path: HorizonUtilities
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout GriefPreventionFlagsReborn
+        uses: actions/checkout@v4
+        with:
+          repository: Midnwave/GriefPreventionFlagsReborn
+          path: GriefPrevetionFlagsReborn
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build GriefPreventionFlagsReborn
+        working-directory: GriefPrevetionFlagsReborn
+        run: |
+          chmod +x gradlew
+          ./gradlew shadowJar --no-daemon
+
+      - name: Build HorizonUtilities
+        working-directory: HorizonUtilities
+        run: |
+          chmod +x gradlew
+          ./gradlew shadowJar --no-daemon
+
+      - name: Copy JAR to releases folder
+        working-directory: HorizonUtilities
+        run: |
+          mkdir -p releases
+          cp build/libs/HorizonUtilities-1.0.0.jar releases/HorizonUtilitiesDev${{ github.run_number }}.jar
+
+      - name: Commit dev build
+        working-directory: HorizonUtilities
+        run: |
+          git config user.name "Midnwave"
+          git config user.email "212578924+Midnwave@users.noreply.github.com"
+          git add releases/
+          git diff --staged --quiet || git commit -m "ci: dev build ${{ github.run_number }} [skip ci]"
+          git push
