@@ -19,7 +19,11 @@ public class BountyTabCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return filter(ROOT_SUBS, args[0]);
+            List<String> subs = new ArrayList<>(List.of("set", "list", "top"));
+            if (sender.hasPermission("horizonutilities.bounty.admin")) {
+                subs.add("admin");
+            }
+            return filter(subs, args[0]);
         }
 
         if (args.length == 2) {
@@ -29,6 +33,7 @@ public class BountyTabCompleter implements TabCompleter {
                     return onlinePlayerNames(sender, args[1]);
                 }
                 case "admin" -> {
+                    if (!sender.hasPermission("horizonutilities.bounty.admin")) return List.of();
                     return filter(ADMIN_SUBS, args[1]);
                 }
             }

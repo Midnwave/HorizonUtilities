@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
 
@@ -61,14 +62,23 @@ public class AuctionGUIListener implements Listener {
 
         // defer cleanup to allow GUI transitions
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            if (player.getOpenInventory().getTopInventory().getSize() <= 4) {
-                openGUIs.remove(uuid);
-                AuctionMainGUI.removeState(uuid);
-                AuctionListingGUI.removeViewedListing(uuid);
-                AuctionCollectionGUI.removeState(uuid);
-                AuctionHistoryGUI.removeState(uuid);
+            if (!player.isOnline() || player.getOpenInventory().getTopInventory().getSize() <= 4) {
+                cleanupPlayer(uuid);
             }
         }, 1L);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        cleanupPlayer(event.getPlayer().getUniqueId());
+    }
+
+    private void cleanupPlayer(UUID uuid) {
+        openGUIs.remove(uuid);
+        AuctionMainGUI.removeState(uuid);
+        AuctionListingGUI.removeViewedListing(uuid);
+        AuctionCollectionGUI.removeState(uuid);
+        AuctionHistoryGUI.removeState(uuid);
     }
 
     private void handleMainClick(Player player, int slot) {

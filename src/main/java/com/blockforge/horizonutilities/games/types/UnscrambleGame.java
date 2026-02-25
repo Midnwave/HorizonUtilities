@@ -22,16 +22,26 @@ public class UnscrambleGame extends ChatGame {
     }
 
     private String scramble(String input) {
+        // scramble each word individually, preserving spaces between words
+        String[] words = input.split(" ");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            if (i > 0) result.append(" ");
+            result.append(scrambleWord(words[i]));
+        }
+        return result.toString();
+    }
+
+    private String scrambleWord(String word) {
         List<Character> chars = new ArrayList<>();
-        for (char c : input.toCharArray()) chars.add(c);
-        // keep shuffling until it's different
+        for (char c : word.toCharArray()) chars.add(c);
         String result;
         do {
             Collections.shuffle(chars);
             StringBuilder sb = new StringBuilder();
             for (char c : chars) sb.append(c);
             result = sb.toString();
-        } while (result.equals(input) && input.length() > 1);
+        } while (result.equalsIgnoreCase(word) && word.length() > 1);
         return result;
     }
 

@@ -37,6 +37,7 @@ public class JobsTabCompleter implements TabCompleter {
         if (args.length == 1) {
             String partial = args[0].toLowerCase(Locale.ROOT);
             TOP_LEVEL.stream()
+                    .filter(s -> !s.equals("admin") || sender.hasPermission("horizonutilities.jobs.admin"))
                     .filter(s -> s.startsWith(partial))
                     .forEach(completions::add);
             return completions;
@@ -59,16 +60,18 @@ public class JobsTabCompleter implements TabCompleter {
                             .forEach(completions::add);
                 }
                 case "admin" -> {
-                    ADMIN_SUBS.stream()
-                            .filter(s -> s.startsWith(partial))
-                            .forEach(completions::add);
+                    if (sender.hasPermission("horizonutilities.jobs.admin")) {
+                        ADMIN_SUBS.stream()
+                                .filter(s -> s.startsWith(partial))
+                                .forEach(completions::add);
+                    }
                 }
             }
             return completions;
         }
 
         // /jobs admin <sub> ...
-        if ("admin".equals(sub) && args.length >= 3) {
+        if ("admin".equals(sub) && sender.hasPermission("horizonutilities.jobs.admin") && args.length >= 3) {
             String adminSub = args[1].toLowerCase(Locale.ROOT);
             String partial  = args[args.length - 1].toLowerCase(Locale.ROOT);
 

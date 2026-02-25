@@ -26,7 +26,11 @@ public class LotteryTabCompleter implements TabCompleter {
                                       String alias, String[] args) {
         // /lottery <arg1>
         if (args.length == 1) {
-            return filter(TOP_LEVEL, args[0]);
+            List<String> subs = new java.util.ArrayList<>(List.of("buy", "info", "history"));
+            if (sender.hasPermission("horizonutilities.lottery.admin")) {
+                subs.add("admin");
+            }
+            return filter(subs, args[0]);
         }
 
         String sub = args[0].toLowerCase();
