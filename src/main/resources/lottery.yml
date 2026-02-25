@@ -1,4 +1,9 @@
 config-version: 1
+
+# Broadcast a reminder before each draw at these intervals (in minutes)
+# e.g. [60, 30, 10, 5, 1] will announce at 1h, 30m, 10m, 5m, and 1m before draw
+draw-reminders: [60, 30, 10, 5, 1]
+
 tiers:
   mini:
     display-name: "<green>Mini Lottery"

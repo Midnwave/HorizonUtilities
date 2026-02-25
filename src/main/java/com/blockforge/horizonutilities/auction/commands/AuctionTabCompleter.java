@@ -34,7 +34,7 @@ public class AuctionTabCompleter implements TabCompleter {
 
         if (args.length == 2) {
             return switch (args[0].toLowerCase()) {
-                case "sell" -> List.of("<price>");
+                case "sell" -> List.of("<starting price>");
                 case "search" -> List.of("<query>");
                 case "stats" -> {
                     String partial = args[1].toUpperCase();
@@ -56,7 +56,7 @@ public class AuctionTabCompleter implements TabCompleter {
 
         if (args.length == 3) {
             return switch (args[0].toLowerCase()) {
-                case "sell" -> List.of("[buyout]");
+                case "sell" -> List.of("<buyout price>");
                 case "admin" -> {
                     String adminSub = args[1].toLowerCase();
                     if (adminSub.equals("remove")) yield List.of("<id>");
@@ -71,7 +71,7 @@ public class AuctionTabCompleter implements TabCompleter {
 
         if (args.length == 4 && args[0].equalsIgnoreCase("sell")) {
             return filter(plugin.getAuctionHouseConfig().getDurations().stream()
-                    .map(String::valueOf).toList(), args[3]);
+                    .map(h -> h + "h").toList(), args[3]);
         }
 
         return List.of();

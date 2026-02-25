@@ -160,7 +160,8 @@ public class AuctionCommand implements CommandExecutor {
         int duration = cfg.getDefaultDuration();
         if (args.length >= 4) {
             try {
-                int d = Integer.parseInt(args[3]);
+                String durationArg = args[3].toLowerCase().replace("h", "");
+                int d = Integer.parseInt(durationArg);
                 if (cfg.getDurations().contains(d)) duration = d;
             } catch (NumberFormatException ignored) {}
         }

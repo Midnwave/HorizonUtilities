@@ -292,6 +292,11 @@ public class JobManager {
                 incomeCapManager.trackEarning(player.getUniqueId(), jp.getJobId(), moneyEarned);
                 jp.addEarned(moneyEarned);
 
+                // Action bar notification
+                player.sendActionBar(Component.text(
+                        "+" + plugin.getVaultHook().format(moneyEarned) + " ", NamedTextColor.GREEN)
+                        .append(Component.text(job.getDisplayName(), NamedTextColor.GOLD)));
+
                 // Audit log
                 auditLog.log(player.getUniqueId(), player.getName(),
                         EconomyAuditLog.JOB_INCOME, moneyEarned,

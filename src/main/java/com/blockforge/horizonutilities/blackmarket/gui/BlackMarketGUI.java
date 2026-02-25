@@ -32,11 +32,11 @@ public class BlackMarketGUI implements InventoryHolder {
     private static final int SIZE = 54;
     private static final int ITEMS_PER_PAGE = 36;
 
-    // Row 6 control slots
-    private static final int SLOT_PREV  = 45;
+    // Row 6 control slots (centered)
+    private static final int SLOT_PREV  = 47;
     private static final int SLOT_INFO  = 49;
-    private static final int SLOT_CLOSE = 51;
-    private static final int SLOT_NEXT  = 53;
+    private static final int SLOT_CLOSE = 50;
+    private static final int SLOT_NEXT  = 51;
 
     private final HorizonUtilitiesPlugin plugin;
     private final Player player;
@@ -49,6 +49,8 @@ public class BlackMarketGUI implements InventoryHolder {
 
     // Tracks itemId per display slot so clicks can be resolved
     private final String[] slotItemIds = new String[SIZE];
+    // Tracks category name per tab slot
+    private final String[] slotCategories = new String[9];
 
     public BlackMarketGUI(HorizonUtilitiesPlugin plugin, Player player, BlackMarketManager manager) {
         this.plugin = plugin;
@@ -102,21 +104,25 @@ public class BlackMarketGUI implements InventoryHolder {
     // -------------------------------------------------------------------------
 
     private void buildCategoryTabs() {
-        // Slot 0 = "All"
-        inventory.setItem(0, makeCategoryTab("All", Material.NETHER_STAR));
-
-        List<String> categories = manager.getCategories();
-        int slot = 1;
-        for (String cat : categories) {
-            if (slot > 8) break;
-            Material icon = getCategoryIcon(cat);
-            inventory.setItem(slot, makeCategoryTab(cat, icon));
-            slot++;
+        // Fill entire tab row with glass panes first
+        java.util.Arrays.fill(slotCategories, null);
+        for (int s = 0; s <= 8; s++) {
+            inventory.setItem(s, makeFillerPane(Material.GRAY_STAINED_GLASS_PANE));
         }
 
-        // Fill remaining tab slots with glass panes
-        for (int s = slot; s <= 8; s++) {
-            inventory.setItem(s, makeFillerPane(Material.GRAY_STAINED_GLASS_PANE));
+        // Build list of tabs: "All" + each category
+        List<String> categories = manager.getCategories();
+        int totalTabs = 1 + categories.size(); // "All" + categories
+        int startSlot = Math.max(0, (9 - totalTabs) / 2); // center in 9 slots
+
+        inventory.setItem(startSlot, makeCategoryTab("All", Material.NETHER_STAR));
+        slotCategories[startSlot] = "All";
+        int slot = startSlot + 1;
+        for (String cat : categories) {
+            if (slot > 8) break;
+            inventory.setItem(slot, makeCategoryTab(cat, getCategoryIcon(cat)));
+            slotCategories[slot] = cat;
+            slot++;
         }
     }
 
@@ -240,19 +246,21 @@ public class BlackMarketGUI implements InventoryHolder {
         List<BlackMarketItem> displayed = manager.getItemsByCategory(currentCategory);
         int totalPages = Math.max(1, (int) Math.ceil(displayed.size() / (double) ITEMS_PER_PAGE));
 
+        // Fill entire nav row with glass panes first
+        for (int s = 45; s <= 53; s++) {
+            inventory.setItem(s, makeFillerPane(Material.GRAY_STAINED_GLASS_PANE));
+        }
+
         // Prev arrow
         if (currentPage > 0) {
             inventory.setItem(SLOT_PREV, makeButton(Material.ARROW,
                     Component.text("Previous Page", NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
-        } else {
-            inventory.setItem(SLOT_PREV, makeFillerPane(Material.GRAY_STAINED_GLASS_PANE));
         }
 
         // Page info
-        ItemStack info = makeButton(Material.PAPER,
+        inventory.setItem(SLOT_INFO, makeButton(Material.PAPER,
                 Component.text("Page " + (currentPage + 1) + " / " + totalPages, NamedTextColor.AQUA)
-                        .decoration(TextDecoration.ITALIC, false));
-        inventory.setItem(SLOT_INFO, info);
+                        .decoration(TextDecoration.ITALIC, false)));
 
         // Close
         inventory.setItem(SLOT_CLOSE, makeButton(Material.BARRIER,
@@ -262,8 +270,6 @@ public class BlackMarketGUI implements InventoryHolder {
         if (currentPage < totalPages - 1) {
             inventory.setItem(SLOT_NEXT, makeButton(Material.ARROW,
                     Component.text("Next Page", NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
-        } else {
-            inventory.setItem(SLOT_NEXT, makeFillerPane(Material.GRAY_STAINED_GLASS_PANE));
         }
     }
 
@@ -276,14 +282,9 @@ public class BlackMarketGUI implements InventoryHolder {
 
         // Row 1: category tabs (slots 0-8)
         if (slot <= 8) {
-            if (slot == 0) {
-                setCategory("All");
-            } else {
-                List<String> cats = manager.getCategories();
-                int catIndex = slot - 1;
-                if (catIndex < cats.size()) {
-                    setCategory(cats.get(catIndex));
-                }
+            String cat = slotCategories[slot];
+            if (cat != null) {
+                setCategory(cat);
             }
             return;
         }

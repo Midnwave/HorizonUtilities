@@ -1,12 +1,12 @@
 package com.blockforge.horizonutilities.games.content;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
@@ -41,12 +41,7 @@ public class RecipeData {
                         grid[row * 3 + col] = new ItemStack(Material.AIR);
                     } else {
                         var choice = ingredientMap.get(c);
-                        if (choice != null) {
-                            var stack = choice.getItemStack();
-                            grid[row * 3 + col] = stack != null ? stack : new ItemStack(Material.AIR);
-                        } else {
-                            grid[row * 3 + col] = new ItemStack(Material.AIR);
-                        }
+                        grid[row * 3 + col] = resolveChoice(choice);
                     }
                 }
             }
@@ -57,6 +52,22 @@ public class RecipeData {
 
             recipes.add(new RecipeEntry(result, grid));
         }
+    }
+
+    private static ItemStack resolveChoice(RecipeChoice choice) {
+        if (choice == null) return new ItemStack(Material.AIR);
+        if (choice instanceof RecipeChoice.MaterialChoice mc) {
+            List<Material> materials = mc.getChoices();
+            return materials.isEmpty() ? new ItemStack(Material.AIR) : new ItemStack(materials.getFirst());
+        }
+        if (choice instanceof RecipeChoice.ExactChoice ec) {
+            List<ItemStack> stacks = ec.getChoices();
+            return stacks.isEmpty() ? new ItemStack(Material.AIR) : stacks.getFirst().clone();
+        }
+        // fallback for any other RecipeChoice type
+        @SuppressWarnings("deprecation")
+        ItemStack stack = choice.getItemStack();
+        return stack != null ? stack : new ItemStack(Material.AIR);
     }
 
     public static RecipeEntry randomRecipe() {

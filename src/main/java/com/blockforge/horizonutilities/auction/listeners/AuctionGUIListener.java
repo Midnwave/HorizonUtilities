@@ -60,9 +60,15 @@ public class AuctionGUIListener implements Listener {
         if (!(event.getPlayer() instanceof Player player)) return;
         UUID uuid = player.getUniqueId();
 
-        // defer cleanup to allow GUI transitions
+        // defer cleanup to allow GUI transitions (opening a new AH GUI closes then reopens)
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            if (!player.isOnline() || player.getOpenInventory().getTopInventory().getSize() <= 4) {
+            if (!player.isOnline()) {
+                cleanupPlayer(uuid);
+                return;
+            }
+            // If no AH GUI was re-opened, the top inventory will be the default crafting
+            // view (size 5) rather than a 54-slot chest. Clean up the stale tracking entry.
+            if (player.getOpenInventory().getTopInventory().getSize() < 54) {
                 cleanupPlayer(uuid);
             }
         }, 1L);

@@ -15,6 +15,7 @@ public class LotteryConfig {
 
     private final HorizonUtilitiesPlugin plugin;
     private final List<LotteryTierConfig> tiers = new ArrayList<>();
+    private List<Integer> drawReminders = List.of(60, 30, 10, 5, 1);
 
     public LotteryConfig(HorizonUtilitiesPlugin plugin) {
         this.plugin = plugin;
@@ -27,6 +28,9 @@ public class LotteryConfig {
             plugin.saveResource("lottery.yml", false);
         }
         YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        drawReminders = cfg.getIntegerList("draw-reminders");
+        if (drawReminders.isEmpty()) drawReminders = List.of(60, 30, 10, 5, 1);
+
         ConfigurationSection tiersSection = cfg.getConfigurationSection("tiers");
         if (tiersSection == null) {
             plugin.getLogger().warning("[Lottery] No 'tiers' section found in lottery.yml");
@@ -59,5 +63,10 @@ public class LotteryConfig {
     /** Returns an unmodifiable view of all configured tiers. */
     public List<LotteryTierConfig> getAllTiers() {
         return java.util.Collections.unmodifiableList(tiers);
+    }
+
+    /** Returns the list of draw reminder intervals in minutes. */
+    public List<Integer> getDrawReminders() {
+        return drawReminders;
     }
 }

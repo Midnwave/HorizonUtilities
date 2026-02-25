@@ -233,7 +233,11 @@ public class AuctionManager {
         returnAllEscrow(listing.getId());
 
         double sellerAmount = price - tax;
-        addToCollection(listing.getSellerUuid(), "MONEY", null, sellerAmount, "Item sold: " + listing.getItemDisplayName());
+
+        // Deposit money directly to seller's account
+        plugin.getVaultHook().deposit(
+                org.bukkit.Bukkit.getOfflinePlayer(java.util.UUID.fromString(listing.getSellerUuid())),
+                sellerAmount);
 
         // record transaction
         recordTransaction(listing, buyer.getUniqueId().toString(), price, "BUYOUT", tax, listing.getListingFee());
@@ -261,7 +265,10 @@ public class AuctionManager {
         // escrow already held, just delete it
         deleteEscrow(listing.getId(), listing.getCurrentBidderUuid());
 
-        addToCollection(listing.getSellerUuid(), "MONEY", null, sellerAmount, "Auction won: " + listing.getItemDisplayName());
+        // Deposit money directly to seller's account
+        plugin.getVaultHook().deposit(
+                org.bukkit.Bukkit.getOfflinePlayer(java.util.UUID.fromString(listing.getSellerUuid())),
+                sellerAmount);
         addToCollection(listing.getCurrentBidderUuid(), "ITEM", listing.getItem(), 0, "Won auction: " + listing.getItemDisplayName());
 
         recordTransaction(listing, listing.getCurrentBidderUuid(), price, "AUCTION", tax, listing.getListingFee());

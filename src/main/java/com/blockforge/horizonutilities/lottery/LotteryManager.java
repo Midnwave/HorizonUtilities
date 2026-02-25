@@ -3,6 +3,7 @@ package com.blockforge.horizonutilities.lottery;
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
 import com.blockforge.horizonutilities.economy.EconomyAuditLog;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -161,16 +162,17 @@ public class LotteryManager {
                 "lottery:" + tierId, null);
 
         // Feedback
-        player.sendMessage(miniMessage.deserialize(
-                "<green>You bought <white>" + count + "</white> ticket(s) for <gold>" +
-                config.getDisplayName() + "</gold>! Current pot: <yellow>" +
-                plugin.getVaultHook().format(inst.getCurrentPot()) + "</yellow>."));
+        plugin.getMessagesManager().send(player, "lottery-ticket-bought",
+                Placeholder.unparsed("count", String.valueOf(count)),
+                Placeholder.parsed("tier", config.getDisplayName()),
+                Placeholder.unparsed("pot", plugin.getVaultHook().format(inst.getCurrentPot())));
 
         // Broadcast
         if (config.isBroadcastBuy()) {
-            Bukkit.broadcast(miniMessage.deserialize(
-                    "<gold>[Lottery] <white>" + player.getName() + "</white> bought <white>" +
-                    count + "</white> ticket(s) for <gold>" + config.getDisplayName() + "</gold>!"));
+            Bukkit.broadcast(plugin.getMessagesManager().format("lottery-broadcast-buy",
+                    Placeholder.unparsed("player", player.getName()),
+                    Placeholder.unparsed("count", String.valueOf(count)),
+                    Placeholder.parsed("tier", config.getDisplayName())));
         }
 
         return true;
@@ -200,9 +202,8 @@ public class LotteryManager {
             inst.markCancelled();
             activeInstances.remove(tierId);
 
-            Bukkit.broadcast(miniMessage.deserialize(
-                    "<gold>[Lottery] <red>" + config.getDisplayName() +
-                    "</red> was cancelled — not enough players. All tickets have been refunded."));
+            Bukkit.broadcast(plugin.getMessagesManager().format("lottery-broadcast-cancel",
+                    Placeholder.parsed("tier", config.getDisplayName())));
 
             // Start fresh
             startNewInstance(tierId);
@@ -240,19 +241,18 @@ public class LotteryManager {
 
         // Broadcast
         if (config.isBroadcastDraw()) {
-            Bukkit.broadcast(miniMessage.deserialize(
-                    "<gold>[Lottery] <green>" + winnerName + "</green> won the <gold>" +
-                    config.getDisplayName() + "</gold> lottery and took home <yellow>" +
-                    plugin.getVaultHook().format(pot) + "</yellow>! Congratulations!"));
+            Bukkit.broadcast(plugin.getMessagesManager().format("lottery-broadcast-draw",
+                    Placeholder.unparsed("player", winnerName),
+                    Placeholder.parsed("tier", config.getDisplayName()),
+                    Placeholder.unparsed("amount", plugin.getVaultHook().format(pot))));
         }
 
         // Message the winner directly if online
         Player onlineWinner = Bukkit.getPlayer(winnerUuid);
         if (onlineWinner != null) {
-            onlineWinner.sendMessage(miniMessage.deserialize(
-                    "<gold>[Lottery] <green>You won the <gold>" + config.getDisplayName() +
-                    "</gold> lottery! <yellow>" + plugin.getVaultHook().format(pot) +
-                    "</yellow> has been deposited into your account!"));
+            plugin.getMessagesManager().send(onlineWinner, "lottery-winner-direct",
+                    Placeholder.parsed("tier", config.getDisplayName()),
+                    Placeholder.unparsed("amount", plugin.getVaultHook().format(pot)));
         }
 
         // Start the next instance
@@ -271,9 +271,8 @@ public class LotteryManager {
         storage.updateInstanceStatus(inst.getId(), "CANCELLED", null, null);
         inst.markCancelled();
         activeInstances.remove(tierId);
-        Bukkit.broadcast(miniMessage.deserialize(
-                "<gold>[Lottery] <red>" + inst.getTierConfig().getDisplayName() +
-                "</red> has been cancelled by an admin. All tickets have been refunded."));
+        Bukkit.broadcast(plugin.getMessagesManager().format("lottery-broadcast-admin-cancel",
+                Placeholder.parsed("tier", inst.getTierConfig().getDisplayName())));
         startNewInstance(tierId);
     }
 
@@ -328,6 +327,8 @@ public class LotteryManager {
     }
 
     public LotteryStorageManager getStorage() { return storage; }
+
+    public java.util.List<Integer> getDrawReminders() { return lotteryConfig.getDrawReminders(); }
 
     // -------------------------------------------------------------------------
     // Private helpers
