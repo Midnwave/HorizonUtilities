@@ -63,19 +63,27 @@ public class AuctionManager {
         return -1;
     }
 
+    private static final boolean isEquipment(String category) {
+        return "Equipment".equals(category);
+    }
+
     public List<AuctionListing> getActiveListings(String category, int page, int perPage) {
         List<AuctionListing> listings = new ArrayList<>();
         try {
             Connection conn = plugin.getDatabaseManager().getConnection();
             String sql = "SELECT * FROM ah_listings WHERE status = 'ACTIVE'";
             if (category != null && !category.equals("All")) {
-                sql += " AND category = ?";
+                if (isEquipment(category)) {
+                    sql += " AND category IN ('Equipment', 'Weapons', 'Armor', 'Tools')";
+                } else {
+                    sql += " AND category = ?";
+                }
             }
             sql += " ORDER BY listed_at DESC LIMIT ? OFFSET ?";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             int idx = 1;
-            if (category != null && !category.equals("All")) {
+            if (category != null && !category.equals("All") && !isEquipment(category)) {
                 stmt.setString(idx++, category);
             }
             stmt.setInt(idx++, perPage);
@@ -96,10 +104,14 @@ public class AuctionManager {
             Connection conn = plugin.getDatabaseManager().getConnection();
             String sql = "SELECT COUNT(*) FROM ah_listings WHERE status = 'ACTIVE'";
             if (category != null && !category.equals("All")) {
-                sql += " AND category = ?";
+                if (isEquipment(category)) {
+                    sql += " AND category IN ('Equipment', 'Weapons', 'Armor', 'Tools')";
+                } else {
+                    sql += " AND category = ?";
+                }
             }
             PreparedStatement stmt = conn.prepareStatement(sql);
-            if (category != null && !category.equals("All")) {
+            if (category != null && !category.equals("All") && !isEquipment(category)) {
                 stmt.setString(1, category);
             }
             ResultSet rs = stmt.executeQuery();

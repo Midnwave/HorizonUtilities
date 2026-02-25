@@ -11,9 +11,7 @@ public class AuctionCategory {
 
         if (item.getItemMeta() instanceof EnchantmentStorageMeta) return "Enchanted Books";
 
-        if (isWeapon(mat)) return "Weapons";
-        if (isArmor(mat)) return "Armor";
-        if (isTool(mat)) return "Tools";
+        if (isWeapon(mat) || isArmor(mat) || isTool(mat)) return "Equipment";
         if (isConsumable(mat)) return "Consumables";
         if (mat.isBlock()) return "Blocks";
 

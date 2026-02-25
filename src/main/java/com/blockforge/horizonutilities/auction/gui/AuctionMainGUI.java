@@ -30,13 +30,11 @@ public class AuctionMainGUI {
     };
 
     public static final int SLOT_CAT_ALL = 0;
-    public static final int SLOT_CAT_WEAPONS = 9;
-    public static final int SLOT_CAT_ARMOR = 18;
-    public static final int SLOT_CAT_TOOLS = 27;
-    public static final int SLOT_CAT_BLOCKS = 36;
-    public static final int SLOT_CAT_CONSUMABLES = 45;
-    public static final int SLOT_CAT_BOOKS = 37;
-    public static final int SLOT_CAT_MISC = 38;
+    public static final int SLOT_CAT_EQUIPMENT = 9;
+    public static final int SLOT_CAT_BLOCKS = 18;
+    public static final int SLOT_CAT_CONSUMABLES = 27;
+    public static final int SLOT_CAT_BOOKS = 36;
+    public static final int SLOT_CAT_MISC = 45;
     public static final int SLOT_SORT = 40;
     public static final int SLOT_SEARCH = 41;
     public static final int SLOT_PREV = 43;
@@ -66,9 +64,7 @@ public class AuctionMainGUI {
 
         // category buttons
         setCategoryButton(inv, msg, SLOT_CAT_ALL, "ah-gui-category-all", Material.NETHER_STAR, "All", category);
-        setCategoryButton(inv, msg, SLOT_CAT_WEAPONS, "ah-gui-category-weapons", Material.DIAMOND_SWORD, "Weapons", category);
-        setCategoryButton(inv, msg, SLOT_CAT_ARMOR, "ah-gui-category-armor", Material.DIAMOND_CHESTPLATE, "Armor", category);
-        setCategoryButton(inv, msg, SLOT_CAT_TOOLS, "ah-gui-category-tools", Material.DIAMOND_PICKAXE, "Tools", category);
+        setCategoryButton(inv, msg, SLOT_CAT_EQUIPMENT, "ah-gui-category-equipment", Material.SHIELD, "Equipment", category);
         setCategoryButton(inv, msg, SLOT_CAT_BLOCKS, "ah-gui-category-blocks", Material.GRASS_BLOCK, "Blocks", category);
         setCategoryButton(inv, msg, SLOT_CAT_CONSUMABLES, "ah-gui-category-consumables", Material.GOLDEN_APPLE, "Consumables", category);
         setCategoryButton(inv, msg, SLOT_CAT_BOOKS, "ah-gui-category-books", Material.ENCHANTED_BOOK, "Enchanted Books", category);
@@ -158,9 +154,7 @@ public class AuctionMainGUI {
     public static String categoryForSlot(int slot) {
         return switch (slot) {
             case SLOT_CAT_ALL -> "All";
-            case SLOT_CAT_WEAPONS -> "Weapons";
-            case SLOT_CAT_ARMOR -> "Armor";
-            case SLOT_CAT_TOOLS -> "Tools";
+            case SLOT_CAT_EQUIPMENT -> "Equipment";
             case SLOT_CAT_BLOCKS -> "Blocks";
             case SLOT_CAT_CONSUMABLES -> "Consumables";
             case SLOT_CAT_BOOKS -> "Enchanted Books";

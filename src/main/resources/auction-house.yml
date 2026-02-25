@@ -34,14 +34,8 @@ blacklisted-materials:
   - KNOWLEDGE_BOOK
 
 categories:
-  Weapons:
-    icon: DIAMOND_SWORD
-    auto-detect: true
-  Armor:
-    icon: DIAMOND_CHESTPLATE
-    auto-detect: true
-  Tools:
-    icon: DIAMOND_PICKAXE
+  Equipment:
+    icon: SHIELD
     auto-detect: true
   Blocks:
     icon: GRASS_BLOCK
