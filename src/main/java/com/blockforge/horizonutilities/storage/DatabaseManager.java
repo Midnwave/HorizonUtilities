@@ -316,7 +316,24 @@ public class DatabaseManager {
         }
     }
 
-    public Connection getConnection() { return connection; }
+    public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                plugin.getLogger().info("Database connection was closed, reconnecting...");
+                File dbFile = new File(plugin.getDataFolder(), plugin.getConfigManager().getDatabaseFile());
+                String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
+                connection = DriverManager.getConnection(url);
+                try (Statement stmt = connection.createStatement()) {
+                    stmt.executeUpdate("PRAGMA journal_mode=WAL");
+                    stmt.executeUpdate("PRAGMA foreign_keys=ON");
+                }
+                plugin.getLogger().info("Database reconnected successfully.");
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Failed to reconnect to database: " + e.getMessage());
+        }
+        return connection;
+    }
 
     public void close() {
         try {

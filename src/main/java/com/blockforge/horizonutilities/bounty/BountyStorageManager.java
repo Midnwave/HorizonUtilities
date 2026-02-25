@@ -30,8 +30,7 @@ public class BountyStorageManager {
     public int placeBounty(Bounty bounty) {
         String sql = "INSERT INTO bounties (target_uuid, target_name, setter_uuid, setter_name, " +
                      "amount, anonymous, created_at, expires_at, status) VALUES (?,?,?,?,?,?,?,?,?)";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, bounty.getTargetUuid().toString());
             ps.setString(2, bounty.getTargetName());
             ps.setString(3, bounty.getSetterUuid().toString());
@@ -59,8 +58,7 @@ public class BountyStorageManager {
     public List<Bounty> getActiveBountiesOnTarget(UUID targetUuid) {
         List<Bounty> list = new ArrayList<>();
         String sql = "SELECT * FROM bounties WHERE target_uuid = ? AND status = 'ACTIVE'";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, targetUuid.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(fromRow(rs));
@@ -74,8 +72,7 @@ public class BountyStorageManager {
     /** Returns the sum of all ACTIVE bounty amounts on the given target. */
     public double getTotalBountyValue(UUID targetUuid) {
         String sql = "SELECT COALESCE(SUM(amount), 0) FROM bounties WHERE target_uuid = ? AND status = 'ACTIVE'";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, targetUuid.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getDouble(1);
@@ -90,8 +87,7 @@ public class BountyStorageManager {
     public List<Bounty> getAllActiveBounties() {
         List<Bounty> list = new ArrayList<>();
         String sql = "SELECT * FROM bounties WHERE status = 'ACTIVE' ORDER BY amount DESC";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql);
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(fromRow(rs));
         } catch (SQLException e) {
@@ -109,8 +105,7 @@ public class BountyStorageManager {
         String sql = "SELECT target_uuid, target_name, SUM(amount) AS total " +
                      "FROM bounties WHERE status = 'ACTIVE' " +
                      "GROUP BY target_uuid ORDER BY total DESC LIMIT ?";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setInt(1, limit);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -130,8 +125,7 @@ public class BountyStorageManager {
     public List<Bounty> getBountiesSetBy(UUID setterUuid) {
         List<Bounty> list = new ArrayList<>();
         String sql = "SELECT * FROM bounties WHERE setter_uuid = ? ORDER BY created_at DESC";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, setterUuid.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(fromRow(rs));
@@ -145,8 +139,7 @@ public class BountyStorageManager {
     /** Returns the count of ACTIVE bounties on the given target. */
     public int getCountOnTarget(UUID targetUuid) {
         String sql = "SELECT COUNT(*) FROM bounties WHERE target_uuid = ? AND status = 'ACTIVE'";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, targetUuid.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getInt(1);
@@ -168,8 +161,7 @@ public class BountyStorageManager {
         String sql = "UPDATE bounties SET status = 'CLAIMED', claimed_by_uuid = ?, " +
                      "claimed_by_name = ?, claimed_at = ? " +
                      "WHERE target_uuid = ? AND status = 'ACTIVE'";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, claimerUuid.toString());
             ps.setString(2, claimerName);
             ps.setLong(3, System.currentTimeMillis());
@@ -186,8 +178,7 @@ public class BountyStorageManager {
     public void expireOldBounties() {
         String sql = "UPDATE bounties SET status = 'EXPIRED' " +
                      "WHERE status = 'ACTIVE' AND expires_at < ?";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setLong(1, System.currentTimeMillis());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -198,8 +189,7 @@ public class BountyStorageManager {
     /** Deletes a specific bounty by its database ID. */
     public void removeBounty(int id) {
         String sql = "DELETE FROM bounties WHERE id = ?";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -210,8 +200,7 @@ public class BountyStorageManager {
     /** Deletes all bounties (any status) on the given target. */
     public void clearBountiesOnTarget(UUID targetUuid) {
         String sql = "DELETE FROM bounties WHERE target_uuid = ?";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, targetUuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {

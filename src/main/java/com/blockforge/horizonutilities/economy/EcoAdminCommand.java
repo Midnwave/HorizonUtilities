@@ -81,7 +81,8 @@ public class EcoAdminCommand implements CommandExecutor {
 
         String sql;
         PreparedStatement ps = null;
-        try (Connection conn = plugin.getDatabaseManager().getConnection()) {
+        try {
+            Connection conn = plugin.getDatabaseManager().getConnection();
             if (typeFilter != null) {
                 sql = "SELECT action_type, amount, balance_after, source, created_at " +
                       "FROM economy_audit_log WHERE player_uuid = ? AND action_type = ? " +
@@ -147,7 +148,8 @@ public class EcoAdminCommand implements CommandExecutor {
     // -------------------------------------------------------------------------
 
     private void handleStats(CommandSender sender) {
-        try (Connection conn = plugin.getDatabaseManager().getConnection()) {
+        try {
+            Connection conn = plugin.getDatabaseManager().getConnection();
             // Total number of audit entries
             long totalEntries = 0;
             try (PreparedStatement ps = conn.prepareStatement(
@@ -247,8 +249,7 @@ public class EcoAdminCommand implements CommandExecutor {
         }
 
         String sql = "DELETE FROM " + table + " WHERE " + whereColumn + " = ?";
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(sql)) {
             ps.setString(1, uuid.toString());
             int rows = ps.executeUpdate();
             sender.sendMessage(mm.deserialize(

@@ -9,7 +9,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
@@ -467,8 +466,7 @@ public class TradeManager {
             }
         }
 
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(
                      "INSERT INTO trade_log (player1_uuid, player1_name, player2_uuid, player2_name, " +
                      "player1_items, player1_money, player2_items, player2_money, completed_at) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {

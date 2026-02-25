@@ -30,8 +30,7 @@ public class EconomyAuditLog {
     public void log(UUID playerUuid, String playerName, String actionType,
                     double amount, Double balanceAfter, String source, UUID relatedUuid) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try (Connection conn = plugin.getDatabaseManager().getConnection();
-                 PreparedStatement ps = conn.prepareStatement(
+            try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(
                      "INSERT INTO economy_audit_log (player_uuid, player_name, action_type, amount, balance_after, source, related_uuid, created_at) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
                 ps.setString(1, playerUuid.toString());
