@@ -71,31 +71,31 @@ public class JobsConfig {
         }
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-        maxConcurrentJobs   = cfg.getInt("general.max-concurrent-jobs", 3);
-        maxLevel            = cfg.getInt("general.max-level", 100);
-        maxPrestige         = cfg.getInt("general.max-prestige", 5);
-        prestigeMultiplier  = cfg.getDouble("general.prestige-multiplier", 0.10);
+        maxConcurrentJobs   = cfg.getInt("max-concurrent-jobs", 3);
+        maxLevel            = cfg.getInt("max-level", 200);
+        maxPrestige         = cfg.getInt("max-prestige", 10);
+        prestigeMultiplier  = cfg.getDouble("prestige-multiplier", 0.10);
 
-        String pmStr = cfg.getString("payment.mode", "PER_ACTION").toUpperCase(Locale.ROOT);
+        String pmStr = cfg.getString("payment-mode", "PER_ACTION").toUpperCase(Locale.ROOT).replace("-", "_");
         paymentMode = safeEnum(PaymentMode.class, pmStr, PaymentMode.PER_ACTION);
 
-        xpBase     = cfg.getDouble("xp.base", 100.0);
-        xpExponent = cfg.getDouble("xp.exponent", 1.8);
+        xpBase     = cfg.getDouble("xp-formula.base", 100.0);
+        xpExponent = cfg.getDouble("xp-formula.exponent", 1.5);
 
         blockTracking           = cfg.getBoolean("anti-exploit.block-tracking", true);
         spawnerPayMultiplier    = cfg.getDouble("anti-exploit.spawner-pay-multiplier", 0.25);
-        areaFarmingRadius       = cfg.getInt("anti-exploit.area-farming.radius", 8);
-        areaFarmingMaxActions   = cfg.getInt("anti-exploit.area-farming.max-actions", 20);
-        areaFarmingTimeframeMs  = cfg.getLong("anti-exploit.area-farming.timeframe-ms", 10000L);
-        actionCooldownMs        = cfg.getLong("anti-exploit.action-cooldown-ms", 0L);
+        areaFarmingRadius       = cfg.getInt("anti-exploit.area-farming.radius", 5);
+        areaFarmingMaxActions   = cfg.getInt("anti-exploit.area-farming.action-threshold", 50);
+        areaFarmingTimeframeMs  = cfg.getLong("anti-exploit.area-farming.timeframe-seconds", 60) * 1000L;
+        actionCooldownMs        = cfg.getLong("anti-exploit.cooldowns.break", 100L);
         incomeCapEnabled        = cfg.getBoolean("anti-exploit.income-cap.enabled", true);
-        incomeCapDefault        = cfg.getDouble("anti-exploit.income-cap.default", 1000.0);
+        incomeCapDefault        = cfg.getDouble("anti-exploit.income-cap.default-hourly-cap", 5000.0);
 
-        String emStr = cfg.getString("explore.mode", "CHUNK_DISCOVERY").toUpperCase(Locale.ROOT);
+        String emStr = cfg.getString("explore-mode", "CHUNK_DISCOVERY").toUpperCase(Locale.ROOT).replace("-", "_");
         exploreMode               = safeEnum(ExploreMode.class, emStr, ExploreMode.CHUNK_DISCOVERY);
-        exploreChunkReward        = cfg.getDouble("explore.chunk-reward", 5.0);
-        exploreDistancePerBlock   = cfg.getDouble("explore.distance-per-block", 0.05);
-        exploreDistanceThreshold  = cfg.getInt("explore.distance-threshold-blocks", 10);
+        exploreChunkReward        = cfg.getDouble("explore-chunk-reward", 5.0);
+        exploreDistancePerBlock   = cfg.getDouble("explore-distance-per-block", 0.1);
+        exploreDistanceThreshold  = cfg.getInt("explore-distance-threshold-blocks", 10);
 
         questDailyCount = cfg.getInt("quests.daily-count", 3);
         questResetHour  = cfg.getInt("quests.reset-hour", 0);
@@ -107,11 +107,11 @@ public class JobsConfig {
         taxNotifyOwner      = cfg.getBoolean("tax.notify-owner", false);
 
         perkMilestones = new TreeMap<>();
-        var perksSection = cfg.getConfigurationSection("perks");
-        if (perksSection != null) {
-            for (String key : perksSection.getKeys(false)) {
+        var milestonesSection = cfg.getConfigurationSection("perks.milestones");
+        if (milestonesSection != null) {
+            for (String key : milestonesSection.getKeys(false)) {
                 try {
-                    perkMilestones.put(Integer.parseInt(key), perksSection.getDouble(key));
+                    perkMilestones.put(Integer.parseInt(key), milestonesSection.getDouble(key));
                 } catch (NumberFormatException ignored) {}
             }
         }
