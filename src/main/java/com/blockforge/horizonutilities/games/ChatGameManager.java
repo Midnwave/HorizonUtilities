@@ -78,6 +78,7 @@ public class ChatGameManager {
         Bukkit.getOnlinePlayers().forEach(p -> {
             if (p.hasPermission("horizonutilities.chatgames.play")) {
                 p.sendMessage(message);
+                p.playSound(p.getLocation(), org.bukkit.Sound.ENTITY_ITEM_PICKUP, 1.0f, 1.0f);
             }
         });
 
