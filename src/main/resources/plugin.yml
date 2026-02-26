@@ -38,6 +38,10 @@ commands:
     description: Economy administration
     usage: /<command> admin [audit|stats|reset|boost]
     permission: horizonutilities.eco.admin
+  maintenance:
+    description: Toggle server maintenance mode
+    usage: /<command> <on|off|status>
+    aliases: [maint]
 permissions:
   horizonutilities.ah.use:
     default: true

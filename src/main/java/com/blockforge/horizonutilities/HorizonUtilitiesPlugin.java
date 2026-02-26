@@ -47,6 +47,9 @@ import com.blockforge.horizonutilities.auraskills.AuraSkillsManager;
 import com.blockforge.horizonutilities.hooks.GPFRHook;
 import com.blockforge.horizonutilities.jobs.JobManager;
 import com.blockforge.horizonutilities.jobs.quests.QuestsIntegration;
+import com.blockforge.horizonutilities.maintenance.MaintenanceCommand;
+import com.blockforge.horizonutilities.maintenance.MaintenanceListener;
+import com.blockforge.horizonutilities.maintenance.MaintenanceManager;
 import com.blockforge.horizonutilities.tax.TaxManager;
 import com.blockforge.horizonutilities.jobs.commands.JobsCommand;
 import com.blockforge.horizonutilities.jobs.commands.JobsTabCompleter;
@@ -84,6 +87,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private TradeManager tradeManager;
     private BountyConfig bountyConfig;
     private BountyManager bountyManager;
+    private MaintenanceManager maintenanceManager;
 
     @Override
     public void onEnable() {
@@ -152,7 +156,11 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         bountyManager = new BountyManager(this, bountyConfig, gpfrHook);
         bountyManager.loadCache();
 
+        maintenanceManager = new MaintenanceManager(this);
+        maintenanceManager.load();
+
         var pm = getServer().getPluginManager();
+        pm.registerEvents(new MaintenanceListener(maintenanceManager), this);
         pm.registerEvents(new AuctionGUIListener(this), this);
         pm.registerEvents(new AuctionPlayerListener(this), this);
         pm.registerEvents(new ChatListener(this), this);
@@ -224,6 +232,13 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             jobsCmd.setTabCompleter(new JobsTabCompleter(this));
         }
 
+        var maintCmd = getCommand("maintenance");
+        if (maintCmd != null) {
+            var maintenanceCommand = new MaintenanceCommand(this);
+            maintCmd.setExecutor(maintenanceCommand);
+            maintCmd.setTabCompleter(maintenanceCommand);
+        }
+
         new AuctionExpireTask(this).start();
         chatGameManager.startScheduler();
         new LotteryDrawTask(this, lotteryManager).start();
@@ -277,4 +292,5 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public TradeManager getTradeManager() { return tradeManager; }
     public BountyConfig getBountyConfig() { return bountyConfig; }
     public BountyManager getBountyManager() { return bountyManager; }
+    public MaintenanceManager getMaintenanceManager() { return maintenanceManager; }
 }
