@@ -40,67 +40,73 @@ public class GPFRHook {
 
     public void registerCustomFlags() {
         if (!available) return;
+        int registered = 0;
+        // Register each flag individually — skip if GPFR already provides it natively
+        registered += tryRegister(new BooleanFlag(
+            FlagDefinition.builder()
+                .id("job-tax-enabled")
+                .displayName("Job Tax Enabled")
+                .description("Whether job income earned in this claim is taxed")
+                .type(FlagType.BOOLEAN)
+                .category(FlagCategory.ECONOMY)
+                .defaultValue(false)
+                .allowedScopes(FlagScope.SERVER, FlagScope.WORLD, FlagScope.CLAIM)
+                .guiIcon(Material.GOLD_NUGGET)
+                .adminOnly(false)
+                .build()
+        ));
+        registered += tryRegister(new NumberFlag(
+            FlagDefinition.builder()
+                .id("job-tax-rate")
+                .displayName("Job Tax Rate")
+                .description("Percentage of job income taken as tax (0.0 to 1.0). Requires job-tax-enabled.")
+                .type(FlagType.DOUBLE)
+                .category(FlagCategory.ECONOMY)
+                .defaultValue(0.10)
+                .allowedScopes(FlagScope.SERVER, FlagScope.WORLD, FlagScope.CLAIM)
+                .guiIcon(Material.GOLD_INGOT)
+                .adminOnly(false)
+                .build(),
+            0.0, 1.0
+        ));
+        registered += tryRegister(new BooleanFlag(
+            FlagDefinition.builder()
+                .id("bounty-hunting-allowed")
+                .displayName("Bounty Hunting Allowed")
+                .description("Whether bounty kills in this claim are rewarded (HorizonUtilities)")
+                .type(FlagType.BOOLEAN)
+                .category(FlagCategory.PVP)
+                .defaultValue(true)
+                .allowedScopes(FlagScope.SERVER, FlagScope.WORLD, FlagScope.CLAIM, FlagScope.SUBCLAIM)
+                .guiIcon(Material.DIAMOND_SWORD)
+                .adminOnly(false)
+                .build()
+        ));
+        registered += tryRegister(new BooleanFlag(
+            FlagDefinition.builder()
+                .id("skill-boost-zone")
+                .displayName("Skill Boost Zone")
+                .description("Players in this claim receive bonus AuraSkills XP")
+                .type(FlagType.BOOLEAN)
+                .category(FlagCategory.ECONOMY)
+                .defaultValue(false)
+                .allowedScopes(FlagScope.CLAIM, FlagScope.SUBCLAIM)
+                .guiIcon(Material.EXPERIENCE_BOTTLE)
+                .adminOnly(true)
+                .build()
+        ));
+        if (registered > 0) {
+            logger.info("Registered " + registered + " custom HorizonUtilities flags in GPFR");
+        }
+    }
+
+    private int tryRegister(com.blockforge.griefpreventionflagsreborn.flags.AbstractFlag<?> flag) {
         try {
-            // JobTaxEnabled flag
-            registry.registerFlag(new BooleanFlag(
-                FlagDefinition.builder()
-                    .id("job-tax-enabled")
-                    .displayName("Job Tax Enabled")
-                    .description("Whether job income earned in this claim is taxed")
-                    .type(FlagType.BOOLEAN)
-                    .category(FlagCategory.ECONOMY)
-                    .defaultValue(false)
-                    .allowedScopes(FlagScope.SERVER, FlagScope.WORLD, FlagScope.CLAIM)
-                    .guiIcon(Material.GOLD_NUGGET)
-                    .adminOnly(false)
-                    .build()
-            ));
-            // JobTaxRate flag
-            registry.registerFlag(new NumberFlag(
-                FlagDefinition.builder()
-                    .id("job-tax-rate")
-                    .displayName("Job Tax Rate")
-                    .description("Percentage of job income taken as tax (0.0 to 1.0). Requires job-tax-enabled.")
-                    .type(FlagType.DOUBLE)
-                    .category(FlagCategory.ECONOMY)
-                    .defaultValue(0.10)
-                    .allowedScopes(FlagScope.SERVER, FlagScope.WORLD, FlagScope.CLAIM)
-                    .guiIcon(Material.GOLD_INGOT)
-                    .adminOnly(false)
-                    .build(),
-                0.0, 1.0
-            ));
-            // BountyHuntingAllowed flag
-            registry.registerFlag(new BooleanFlag(
-                FlagDefinition.builder()
-                    .id("bounty-hunting-allowed")
-                    .displayName("Bounty Hunting Allowed")
-                    .description("Whether bounty kills in this claim are rewarded (HorizonUtilities)")
-                    .type(FlagType.BOOLEAN)
-                    .category(FlagCategory.PVP)
-                    .defaultValue(true)
-                    .allowedScopes(FlagScope.SERVER, FlagScope.WORLD, FlagScope.CLAIM, FlagScope.SUBCLAIM)
-                    .guiIcon(Material.DIAMOND_SWORD)
-                    .adminOnly(false)
-                    .build()
-            ));
-            // SkillBoostZone flag
-            registry.registerFlag(new BooleanFlag(
-                FlagDefinition.builder()
-                    .id("skill-boost-zone")
-                    .displayName("Skill Boost Zone")
-                    .description("Players in this claim receive bonus AuraSkills XP")
-                    .type(FlagType.BOOLEAN)
-                    .category(FlagCategory.ECONOMY)
-                    .defaultValue(false)
-                    .allowedScopes(FlagScope.CLAIM, FlagScope.SUBCLAIM)
-                    .guiIcon(Material.EXPERIENCE_BOTTLE)
-                    .adminOnly(true)
-                    .build()
-            ));
-            logger.info("Registered 4 custom HorizonUtilities flags in GPFR");
+            registry.registerFlag(flag);
+            return 1;
         } catch (Exception e) {
-            logger.warning("Failed to register custom GPFR flags: " + e.getMessage());
+            // Flag already registered by GPFR natively — skip silently
+            return 0;
         }
     }
 

@@ -1,5 +1,6 @@
 package com.blockforge.horizonutilities.auraskills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
@@ -31,10 +32,25 @@ public class AuraSkillsHook {
      * @return true if the hook was set up successfully
      */
     public boolean setup() {
+        // Check if AuraSkills plugin is actually loaded before attempting reflection
+        if (Bukkit.getPluginManager().getPlugin("AuraSkills") == null) {
+            logger.info("[AuraSkills] AuraSkills not found, integration disabled.");
+            return false;
+        }
         try {
-            // AuraSkills 2.x provider class
+            // Try AuraSkills 2.x provider — method may be "get" or "getInstance"
             Class<?> providerClass = Class.forName("dev.aurelium.auraskills.api.AuraSkillsProvider");
-            Method getApiMethod = providerClass.getMethod("get");
+            Method getApiMethod = null;
+            for (String methodName : new String[]{"get", "getInstance", "getApi"}) {
+                try {
+                    getApiMethod = providerClass.getMethod(methodName);
+                    break;
+                } catch (NoSuchMethodException ignored) {}
+            }
+            if (getApiMethod == null) {
+                logger.warning("[AuraSkills] Could not find API accessor method in AuraSkillsProvider. Version may be incompatible.");
+                return false;
+            }
             apiInstance = getApiMethod.invoke(null);
 
             // Get user manager
@@ -52,7 +68,7 @@ public class AuraSkillsHook {
             logger.info("[AuraSkills] Hooked into AuraSkills successfully.");
             return true;
         } catch (ClassNotFoundException ignored) {
-            logger.info("[AuraSkills] AuraSkills not found, integration disabled.");
+            logger.info("[AuraSkills] AuraSkills API classes not found, integration disabled.");
         } catch (Exception e) {
             logger.log(Level.WARNING, "[AuraSkills] Failed to hook into AuraSkills", e);
         }
