@@ -80,7 +80,7 @@ placeholder-empty-hand: "<gray>[Empty Hand]"
 
 # Chat Games
 game-prefix: "<dark_gray>[<gradient:#FFD700:#FF6B35>Games</gradient><dark_gray>]"
-game-started: "\n<dark_gray><strikethrough>                                                                    </strikethrough>\n\n   <gradient:#FFD700:#FF6B35><bold>  ✦ Chat Game ✦  </bold></gradient>\n   <gray><type>\n   <question>\n\n<dark_gray><strikethrough>                                                                    </strikethrough>\n"
+game-started: "\n<dark_gray><strikethrough>                                                                    </strikethrough>\n\n                  <gradient:#FFD700:#FF6B35><bold>✦ Chat Game ✦</bold></gradient>\n                         <gray><type>\n\n   <question>\n\n   <green>First to answer correctly wins!\n\n<dark_gray><strikethrough>                                                                    </strikethrough>\n"
 game-winner: "\n<dark_gray><strikethrough>                                                                    </strikethrough>\n\n   <green><bold>★</bold> <player></green> <gray>answered correctly in <gold><time>s</gold>!\n   <gray>Answer: <gold><answer></gold> <dark_gray>| <gray>Reward: <gold><reward></gold>\n\n<dark_gray><strikethrough>                                                                    </strikethrough>\n"
 game-timeout: "\n<dark_gray><strikethrough>                                                                    </strikethrough>\n\n   <red><bold>✦ Time's Up! ✦</bold></red>\n   <gray>The answer was: <gold><bold><answer></bold></gold>\n\n<dark_gray><strikethrough>                                                                    </strikethrough>\n"
 game-already-active: "<prefix> <red>A game is already in progress."
