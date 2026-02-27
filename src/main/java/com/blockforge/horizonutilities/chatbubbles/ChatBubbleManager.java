@@ -10,7 +10,6 @@ import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +30,17 @@ public class ChatBubbleManager {
     private final Map<UUID, TextDisplay> activeBubbles = new ConcurrentHashMap<>();
     /** Scheduled removal tasks per player. */
     private final Map<UUID, BukkitTask> removeTasks = new ConcurrentHashMap<>();
+    /** Repeating tracking tasks that keep the bubble above the player. */
+    private final Map<UUID, BukkitTask> trackingTasks = new ConcurrentHashMap<>();
     /** Cached preference: true = bubbles enabled for this player. */
     private final Map<UUID, Boolean> preferences = new ConcurrentHashMap<>();
+
+    /** Line width in pixels for automatic text wrapping (200px ≈ 33 chars). */
+    private static final int LINE_WIDTH_PIXELS = 200;
+    /** Approximate pixels per character for height estimation. */
+    private static final double AVG_CHAR_WIDTH = 6.0;
+    /** Height per line of text in blocks. */
+    private static final double LINE_HEIGHT_BLOCKS = 0.25;
 
     public ChatBubbleManager(HorizonUtilitiesPlugin plugin, ChatBubbleConfig config) {
         this.plugin = plugin;
@@ -41,8 +49,7 @@ public class ChatBubbleManager {
     }
 
     private void initTable() {
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(
+        try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(
                      "CREATE TABLE IF NOT EXISTS chatbubble_preferences " +
                      "(player_uuid TEXT PRIMARY KEY, enabled INTEGER NOT NULL DEFAULT 1)")) {
             ps.executeUpdate();
@@ -58,8 +65,7 @@ public class ChatBubbleManager {
     /** Loads the player's bubble preference from DB into the cache. */
     public void loadPreference(UUID uuid) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try (Connection conn = plugin.getDatabaseManager().getConnection();
-                 PreparedStatement ps = conn.prepareStatement(
+            try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(
                          "SELECT enabled FROM chatbubble_preferences WHERE player_uuid = ?")) {
                 ps.setString(1, uuid.toString());
                 try (ResultSet rs = ps.executeQuery()) {
@@ -94,8 +100,7 @@ public class ChatBubbleManager {
         boolean newValue = !isEnabled(player.getUniqueId());
         preferences.put(player.getUniqueId(), newValue);
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try (Connection conn = plugin.getDatabaseManager().getConnection();
-                 PreparedStatement ps = conn.prepareStatement(
+            try (PreparedStatement ps = plugin.getDatabaseManager().getConnection().prepareStatement(
                          "INSERT INTO chatbubble_preferences(player_uuid, enabled) VALUES(?,?) " +
                          "ON CONFLICT(player_uuid) DO UPDATE SET enabled=excluded.enabled")) {
                 ps.setString(1, player.getUniqueId().toString());
@@ -114,6 +119,7 @@ public class ChatBubbleManager {
 
     /**
      * Spawns a chat bubble above the player's head. Must be called on the main thread.
+     * The bubble follows the player and wraps long messages onto multiple lines.
      */
     public void spawnBubble(Player player, Component message) {
         if (!config.isEnabled()) return;
@@ -122,17 +128,26 @@ public class ChatBubbleManager {
         // Remove any existing bubble for this player
         removeBubble(player.getUniqueId());
 
-        // Truncate message if needed
+        // Truncate at a generous limit (wrapping handles the visual)
         String plain = PlainTextComponentSerializer.plainText().serialize(message);
         Component display = message;
-        if (plain.length() > config.getMaxMessageLength()) {
-            display = Component.text(plain.substring(0, config.getMaxMessageLength()) + "...");
+        int maxLen = config.getMaxMessageLength();
+        if (plain.length() > maxLen) {
+            display = Component.text(plain.substring(0, maxLen) + "...");
+            plain = plain.substring(0, maxLen) + "...";
         }
         final Component finalDisplay = display;
 
-        // Spawn location: above the player's head
+        // Estimate line count for height adjustment
+        int charsPerLine = (int) (LINE_WIDTH_PIXELS / AVG_CHAR_WIDTH);
+        int lineCount = Math.max(1, (int) Math.ceil((double) plain.length() / charsPerLine));
+        // Extra height so multi-line bubbles don't overlap the name tag
+        double extraHeight = (lineCount - 1) * LINE_HEIGHT_BLOCKS;
+
+        // Spawn location: above the player's name tag
+        double heightAboveHead = config.getHeightOffset() + extraHeight;
         Location loc = player.getLocation().add(0,
-                player.getEyeHeight() + config.getHeightOffset(), 0);
+                player.getEyeHeight() + heightAboveHead, 0);
 
         TextDisplay entity = player.getWorld().spawn(loc, TextDisplay.class, td -> {
             td.text(finalDisplay);
@@ -141,21 +156,43 @@ public class ChatBubbleManager {
             td.setBackgroundColor(Color.fromARGB(config.getBackgroundOpacity(), 0, 0, 0));
             td.setShadowed(false);
             td.setDefaultBackground(false);
+            td.setLineWidth(LINE_WIDTH_PIXELS); // auto-wrap long text
+            td.setAlignment(TextDisplay.TextAlignment.CENTER);
         });
 
         activeBubbles.put(player.getUniqueId(), entity);
 
-        // Schedule removal
+        // Start a repeating task to follow the player (every 2 ticks = 10 updates/sec)
+        final double finalHeightAboveHead = heightAboveHead;
+        BukkitTask tracker = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            if (!entity.isValid() || !player.isOnline()) {
+                removeBubble(player.getUniqueId());
+                return;
+            }
+            // Only track if in the same world
+            if (!entity.getWorld().equals(player.getWorld())) {
+                removeBubble(player.getUniqueId());
+                return;
+            }
+            Location target = player.getLocation().add(0,
+                    player.getEyeHeight() + finalHeightAboveHead, 0);
+            entity.teleport(target);
+        }, 2L, 2L);
+        trackingTasks.put(player.getUniqueId(), tracker);
+
+        // Schedule removal after duration
         long ticks = config.getDurationSeconds() * 20L;
-        BukkitTask task = plugin.getServer().getScheduler().runTaskLater(plugin, () ->
+        BukkitTask removeTask = plugin.getServer().getScheduler().runTaskLater(plugin, () ->
                 removeBubble(player.getUniqueId()), ticks);
-        removeTasks.put(player.getUniqueId(), task);
+        removeTasks.put(player.getUniqueId(), removeTask);
     }
 
     /** Removes the active bubble for the given player UUID. */
     public void removeBubble(UUID uuid) {
-        BukkitTask task = removeTasks.remove(uuid);
-        if (task != null) task.cancel();
+        BukkitTask removeTask = removeTasks.remove(uuid);
+        if (removeTask != null) removeTask.cancel();
+        BukkitTask tracker = trackingTasks.remove(uuid);
+        if (tracker != null) tracker.cancel();
         TextDisplay display = activeBubbles.remove(uuid);
         if (display != null && display.isValid()) {
             display.remove();

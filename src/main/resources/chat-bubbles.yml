@@ -10,11 +10,12 @@ enabled: true
 # How many seconds a bubble stays visible before fading out
 duration-seconds: 5
 
-# Vertical distance above the player's eye level to spawn the bubble (in blocks)
+# Vertical distance above the player's eye level to spawn the bubble (in blocks).
+# Increase this if the bubble overlaps the name tag.
 height-offset: 0.5
 
-# Messages longer than this will be truncated to avoid giant bubbles
-max-message-length: 50
+# Messages longer than this will be truncated (wrapping handles shorter text visually)
+max-message-length: 150
 
 # Bubble background opacity (0 = fully transparent, 255 = fully opaque)
 background-opacity: 180
