@@ -316,10 +316,14 @@ public class DatabaseManager {
         }
     }
 
-    public Connection getConnection() {
+    public synchronized Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
+            if (connection == null || connection.isClosed() || !connection.isValid(1)) {
                 plugin.getLogger().info("Database connection was closed, reconnecting...");
+                // Close the old connection if it still exists but is broken
+                if (connection != null) {
+                    try { connection.close(); } catch (SQLException ignored) {}
+                }
                 File dbFile = new File(plugin.getDataFolder(), plugin.getConfigManager().getDatabaseFile());
                 String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
                 connection = DriverManager.getConnection(url);
@@ -335,7 +339,7 @@ public class DatabaseManager {
         return connection;
     }
 
-    public void close() {
+    public synchronized void close() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();

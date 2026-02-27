@@ -35,20 +35,29 @@ public class JobStorageManager {
 
     /**
      * Returns all job records for the given player.
+     * Retries once on connection failure to handle stale/broken connections.
      */
     public List<JobPlayer> loadPlayerJobs(UUID playerUuid) {
-        List<JobPlayer> result = new ArrayList<>();
-        try (PreparedStatement ps = conn().prepareStatement(
-                "SELECT * FROM jobs_players WHERE player_uuid = ?")) {
-            ps.setString(1, playerUuid.toString());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(JobPlayer.fromResultSet(rs));
+        for (int attempt = 0; attempt < 2; attempt++) {
+            List<JobPlayer> result = new ArrayList<>();
+            try (PreparedStatement ps = conn().prepareStatement(
+                    "SELECT * FROM jobs_players WHERE player_uuid = ?")) {
+                ps.setString(1, playerUuid.toString());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        result.add(JobPlayer.fromResultSet(rs));
+                    }
+                }
+                return result;
+            } catch (SQLException e) {
+                if (attempt == 0) {
+                    plugin.getLogger().info("[Jobs] Database error loading jobs, retrying...");
+                } else {
+                    plugin.getLogger().log(Level.WARNING, "[Jobs] Failed to load player jobs for " + playerUuid, e);
+                }
             }
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.WARNING, "[Jobs] Failed to load player jobs for " + playerUuid, e);
         }
-        return result;
+        return new ArrayList<>();
     }
 
     /**
@@ -101,9 +110,10 @@ public class JobStorageManager {
                 "ORDER BY prestige DESC, level DESC, xp DESC LIMIT ?")) {
             ps.setString(1, jobId);
             ps.setInt(2, limit);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(JobPlayer.fromResultSet(rs));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(JobPlayer.fromResultSet(rs));
+                }
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "[Jobs] Failed to get top players for " + jobId, e);
@@ -122,9 +132,10 @@ public class JobStorageManager {
                 "FROM jobs_players GROUP BY player_uuid " +
                 "ORDER BY total_level DESC LIMIT ?")) {
             ps.setInt(1, limit);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(Map.entry(rs.getString("player_name"), rs.getInt("total_level")));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(Map.entry(rs.getString("player_name"), rs.getInt("total_level")));
+                }
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "[Jobs] Failed to get overall top players", e);
@@ -166,8 +177,9 @@ public class JobStorageManager {
             ps.setString(1, playerUuid.toString());
             ps.setString(2, jobId);
             ps.setString(3, hourKey);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getDouble("earned");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getDouble("earned");
+            }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "[Jobs] Failed to get hourly earned", e);
         }
