@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.*;
@@ -56,6 +57,14 @@ public class AuctionGUIListener implements Listener {
     }
 
     @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        GUIType type = openGUIs.get(player.getUniqueId());
+        if (type == null) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player player)) return;
         UUID uuid = player.getUniqueId();
@@ -67,8 +76,9 @@ public class AuctionGUIListener implements Listener {
                 return;
             }
             // If no AH GUI was re-opened, the top inventory will be the default crafting
-            // view (size 5) rather than a 54-slot chest. Clean up the stale tracking entry.
-            if (player.getOpenInventory().getTopInventory().getSize() < 54) {
+            // view (size 5) rather than a chest. AH GUIs range from 45-54 slots,
+            // so check < 9 (smallest valid chest is 9 slots / 1 row).
+            if (player.getOpenInventory().getTopInventory().getSize() < 9) {
                 cleanupPlayer(uuid);
             }
         }, 1L);
