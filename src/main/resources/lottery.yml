@@ -1,24 +1,43 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Lottery Configuration
+# Players buy tickets and one winner is drawn automatically on a schedule.
+# Manage with: /lottery buy|info|history|admin
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
 
 # Broadcast a reminder before each draw at these intervals (in minutes)
 # e.g. [60, 30, 10, 5, 1] will announce at 1h, 30m, 10m, 5m, and 1m before draw
 draw-reminders: [60, 30, 10, 5, 1]
 
+# Define one or more lottery tiers. Each tier runs independently.
 tiers:
   mini:
+    # Display name shown in chat and GUIs (supports MiniMessage)
     display-name: "<green>Mini Lottery"
+    # Draw schedule — DAILY or WEEKLY
     schedule: "DAILY"
+    # Time of day to run the draw (24-hour HH:mm, server timezone)
     draw-time: "20:00"
+    # Starting pot size before any tickets are sold
     starting-pot: 1000.0
+    # Price of a single ticket
     ticket-price: 100.0
+    # Maximum tickets one player may buy per draw cycle
     max-tickets-per-player: 10
+    # Minimum unique players who must hold tickets for the draw to proceed
     min-players: 3
+    # Announce in chat when someone buys a ticket
     broadcast-buy: false
+    # Announce the winner in chat after the draw
     broadcast-draw: true
+
   grand:
     display-name: "<gold>Grand Lottery"
     schedule: "WEEKLY"
     draw-time: "18:00"
+    # Day of the week for the draw (WEEKLY schedule only)
     draw-day: "SATURDAY"
     starting-pot: 10000.0
     ticket-price: 500.0

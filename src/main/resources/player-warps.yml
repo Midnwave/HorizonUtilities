@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Player Warps Configuration
+# Players set personal warps others can visit and rate.
+# /pwarp set <name>, /pwarp delete <name>, /pwarp list, /pwarp rate <owner> <name> <1-5>
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable or disable the player warp system entirely
+enabled: true
+
+# Money charged when a player creates a new warp (requires Vault)
+creation-cost: 500.0
+
+# Seconds a player must wait between warp teleports
+teleport-cooldown-seconds: 10
+
+# Seconds a player must stand still before the warp teleport fires (0 to skip)
+teleport-warmup-seconds: 3
+
+# Maximum number of warps a player can own.
+# Keys are permission nodes; use "default" for players with no special permission.
+# Set a value to -1 for unlimited warps.
+max-warps:
+  default: 3
+  horizonutilities.warps.5: 5
+  horizonutilities.warps.10: 10
+  horizonutilities.warps.unlimited: -1

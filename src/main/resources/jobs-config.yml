@@ -1,45 +1,104 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Jobs System Configuration
+# Per-job rewards are defined in the individual files inside /jobs/
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
+
+# Maximum number of jobs a single player can be enrolled in at once
 max-concurrent-jobs: 3
+
+# Highest level achievable in any job (applies globally unless overridden per job)
 max-level: 200
+
+# How many times a player can prestige (reset to level 1 for a permanent bonus)
 max-prestige: 10
+
+# Flat income multiplier bonus gained per prestige (0.10 = +10% per prestige)
 prestige-multiplier: 0.10
+
+# Payment timing mode:
+#   "per-action"  — pay each time the player performs a job action
+#   "periodic"    — accumulate rewards and pay every periodic-interval-seconds
 payment-mode: "per-action"
+
+# Seconds between periodic payouts (only used when payment-mode is "periodic")
 periodic-interval-seconds: 300
+
+# XP required to reach level N = base * N^exponent
 xp-formula:
   base: 100
   exponent: 1.5
+
 anti-exploit:
+  # Track which player placed a block and deny break rewards for their own placements
   block-tracking: true
+
+  # Fraction of normal pay when breaking blocks from a spawner (anti-farm)
   spawner-pay-multiplier: 0.25
+
+  # Detect rapid-fire actions in a small area (e.g. auto-miners) and throttle pay
   area-farming:
     enabled: true
+    # Block radius to monitor for repeated actions
     radius: 5
+    # Number of actions in the timeframe that triggers a warning
     action-threshold: 50
+    # Time window (seconds) for counting actions
     timeframe-seconds: 60
+
+  # Per-action cooldowns in milliseconds (0 = no cooldown for that action type)
   cooldowns:
     enabled: true
     break: 100
     kill: 200
     fish: 500
     craft: 0
+
+  # Cap how much a player can earn per hour across all jobs combined
   income-cap:
     enabled: true
+    # Default hourly cap in currency; per-job overrides live in the job files
     default-hourly-cap: 5000
+
+# Explorer job mode:
+#   "chunk-discovery" — reward on first visit to each chunk
+#   "distance"        — reward based on blocks traveled
 explore-mode: "chunk-discovery"
+
+# Money rewarded per newly discovered chunk (chunk-discovery mode)
 explore-chunk-reward: 5.0
+
+# Money rewarded per block walked (distance mode)
 explore-distance-per-block: 0.1
+
 quests:
+  # Number of daily quests randomly assigned to each player
   daily-count: 3
+  # Hour of day (24h, server time) when daily quests reset (0 = midnight)
   reset-hour: 0
+
 boost:
+  # List of scheduled XP/money boosts (empty = no scheduled boosts)
+  # Format: { multiplier: 2.0, start: "2025-01-01T18:00", duration-minutes: 60 }
   scheduled: []
+
 tax:
+  # Charge a portion of job earnings when working inside a GriefPrevention claim
   enabled: true
+  # Fraction of earnings taken as claim tax (0.10 = 10%)
   default-rate: 0.10
+  # Players with this permission node are not taxed
   exempt-permission: "horizonutilities.tax.exempt"
+  # Tell the earning player how much tax was deducted
   notify-player: true
+  # Tell the claim owner how much tax they received
   notify-claim-owner: true
+
 perks:
+  # Bonus income multiplier unlocked at specific job levels (cumulative)
+  # e.g. reaching level 25 grants +5% on top of base earnings
   milestones:
     25: 0.05
     50: 0.05
@@ -47,3 +106,13 @@ perks:
     100: 0.10
     150: 0.10
     200: 0.15
+
+boss-bar:
+  # Show an XP progress boss bar when the player earns job XP
+  enabled: true
+  # How many seconds the boss bar remains visible after the last XP gain
+  duration-seconds: 5
+  # Boss bar colour — valid values: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  color: BLUE
+  # Boss bar style — valid values: PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+  overlay: PROGRESS

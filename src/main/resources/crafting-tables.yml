@@ -1,0 +1,16 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Crafting Table Persistence Configuration
+# Saves the contents of crafting tables per block location so items are
+# restored the next time any player opens that specific table.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable or disable crafting table persistence entirely
+enabled: true
+
+# When true, spawns a floating ItemDisplay above the table showing the
+# crafting result if the current grid matches a valid recipe
+floating-item-display: true
+
+# Remove saved table data for tables that haven't been used in this many days
+# Set to -1 to keep data forever
+cleanup-after-days: 30

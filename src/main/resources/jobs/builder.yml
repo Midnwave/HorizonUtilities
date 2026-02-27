@@ -1,59 +1,72 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Builder
+# Earn money and XP by placing blocks.
+# Anti-exploit block-tracking prevents earning from placing then re-breaking.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Builder"
 icon: BRICKS
 description: "Place blocks to earn rewards"
 max-level: 100
-hourly-income-cap: 1000
+# Builder has a tighter hourly cap to limit abuse via rapid block placing
+hourly-income-cap: 5000
+
 actions:
   PLACE:
     STONE:
-      money: 0.05
-      xp: 0.5
+      money: 1.00
+      xp: 4.0
     COBBLESTONE:
-      money: 0.05
-      xp: 0.5
+      money: 1.00
+      xp: 4.0
     BRICKS:
-      money: 0.10
-      xp: 1.0
+      money: 1.50
+      xp: 6.0
     STONE_BRICKS:
-      money: 0.10
-      xp: 1.0
+      money: 1.50
+      xp: 6.0
     OAK_PLANKS:
-      money: 0.05
-      xp: 0.5
+      money: 1.00
+      xp: 4.0
     SPRUCE_PLANKS:
-      money: 0.05
-      xp: 0.5
+      money: 1.00
+      xp: 4.0
     BIRCH_PLANKS:
-      money: 0.05
-      xp: 0.5
+      money: 1.00
+      xp: 4.0
     GLASS:
-      money: 0.10
-      xp: 1.0
+      money: 1.50
+      xp: 6.0
     QUARTZ_BLOCK:
-      money: 0.20
-      xp: 2.0
+      money: 3.00
+      xp: 12.0
     TERRACOTTA:
-      money: 0.10
-      xp: 1.0
+      money: 1.50
+      xp: 6.0
     CONCRETE:
-      money: 0.15
-      xp: 1.5
+      money: 2.00
+      xp: 8.0
     SMOOTH_STONE:
-      money: 0.10
-      xp: 1.0
+      money: 1.50
+      xp: 6.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: builder_stone
     description: "Place 256 stone blocks"
     action: PLACE
     material: STONE
     amount: 256
-    reward-money: 30.0
-    reward-xp: 60.0
+    reward-money: 175.0
+    reward-xp: 350.0
     weight: 5
     enabled: true
   - id: builder_planks
@@ -61,8 +74,8 @@ quests:
     action: PLACE
     material: OAK_PLANKS
     amount: 128
-    reward-money: 25.0
-    reward-xp: 50.0
+    reward-money: 150.0
+    reward-xp: 300.0
     weight: 5
     enabled: true
   - id: builder_quartz
@@ -70,7 +83,7 @@ quests:
     action: PLACE
     material: QUARTZ_BLOCK
     amount: 64
-    reward-money: 50.0
-    reward-xp: 100.0
+    reward-money: 300.0
+    reward-xp: 600.0
     weight: 3
     enabled: true

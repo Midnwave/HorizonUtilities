@@ -1,5 +1,17 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Black Market Configuration
+# A shop for rare/special items purchased with in-game currency.
+# Open with: /bm
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
+
+# MiniMessage title shown at the top of the Black Market GUI
 gui-title: "<gradient:#7B2FF7:#FF5733>Black Market</gradient>"
+
+# Browse categories displayed at the top of the GUI
+# slot: the inventory slot (0-indexed) where the category button appears
 categories:
   Blocks:
     icon: GRASS_BLOCK
@@ -13,6 +25,11 @@ categories:
   Claim Blocks:
     icon: GOLD_BLOCK
     slot: 4
+
+# Items available for purchase. Each key is a unique identifier.
+# Required fields: material, display-name, category, price, amount
+# Optional fields: custom-model-data, max-uses, is-breaker, breakable-blocks,
+#                  lore, claim-blocks
 items:
   bedrock:
     material: BEDROCK
@@ -20,27 +37,33 @@ items:
     category: "Blocks"
     price: 100000
     amount: 1
+
   enchanted_golden_apple:
     material: ENCHANTED_GOLDEN_APPLE
     display-name: "<gold>Enchanted Golden Apple"
     category: "Special"
     price: 50000
     amount: 1
+
   reinforced_deepslate:
     material: REINFORCED_DEEPSLATE
     display-name: "<dark_gray>Reinforced Deepslate"
     category: "Blocks"
     price: 150000
     amount: 1
+
   bedrock_breaker:
     material: NETHERITE_PICKAXE
     display-name: "<red><bold>Bedrock Breaker</bold></red>"
     category: "Tools"
     price: 500000
     amount: 1
+    # Custom model data for resource-pack texture override
     custom-model-data: 1
+    # Limited-use breaker item — tracks uses via PDC lore tag
     max-uses: 5
     is-breaker: true
+    # Materials this breaker tool is allowed to break
     breakable-blocks:
       - BEDROCK
     lore:
@@ -48,6 +71,7 @@ items:
       - "<gray>breaking bedrock itself."
       - ""
       - "<yellow>Uses remaining: <white><uses>/5"
+
   reinforced_deepslate_breaker:
     material: NETHERITE_PICKAXE
     display-name: "<blue><bold>Reinforced Deepslate Breaker</bold></blue>"
@@ -63,10 +87,12 @@ items:
       - "<gray>Shatters reinforced deepslate."
       - ""
       - "<yellow>Uses remaining: <white><uses>/5"
+
   claim_blocks_100:
     material: GOLD_BLOCK
     display-name: "<gold>100 Claim Blocks"
     category: "Claim Blocks"
     price: 10000
     amount: 1
+    # Number of GriefPrevention claim blocks to grant on purchase
     claim-blocks: 100

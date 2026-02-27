@@ -1,86 +1,103 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Miner
+# Earn money and XP by breaking ore and stone blocks underground.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Display name shown in the jobs GUI and action-bar messages
 display-name: "Miner"
+# Inventory icon for the jobs GUI (Bukkit Material name)
 icon: IRON_PICKAXE
+# Short description shown when browsing available jobs
 description: "Mine ores and stone for profit"
+# Maximum job level (overrides global max-level in jobs-config.yml if set)
 max-level: 100
+# Maximum money this job can earn per hour (-1 = no cap)
 hourly-income-cap: -1
+
+# Per-material rewards. money = currency per action, xp = job XP per action.
 actions:
   BREAK:
     STONE:
-      money: 0.02
-      xp: 0.5
-    COBBLESTONE:
-      money: 0.01
-      xp: 0.3
-    COAL_ORE:
-      money: 0.5
-      xp: 3.0
-    DEEPSLATE_COAL_ORE:
-      money: 0.6
-      xp: 3.5
-    IRON_ORE:
-      money: 1.0
-      xp: 5.0
-    DEEPSLATE_IRON_ORE:
-      money: 1.2
-      xp: 5.5
-    COPPER_ORE:
-      money: 0.8
+      money: 1.00
       xp: 4.0
-    DEEPSLATE_COPPER_ORE:
-      money: 1.0
-      xp: 4.5
-    GOLD_ORE:
-      money: 2.0
-      xp: 8.0
-    DEEPSLATE_GOLD_ORE:
-      money: 2.5
-      xp: 9.0
-    LAPIS_ORE:
-      money: 1.5
-      xp: 6.0
-    DEEPSLATE_LAPIS_ORE:
-      money: 2.0
-      xp: 7.0
-    REDSTONE_ORE:
-      money: 1.5
-      xp: 6.0
-    DEEPSLATE_REDSTONE_ORE:
-      money: 2.0
-      xp: 7.0
-    DIAMOND_ORE:
+    COBBLESTONE:
+      money: 0.75
+      xp: 3.0
+    COAL_ORE:
+      money: 6.0
+      xp: 16.0
+    DEEPSLATE_COAL_ORE:
+      money: 7.0
+      xp: 18.0
+    IRON_ORE:
       money: 10.0
-      xp: 30.0
-    DEEPSLATE_DIAMOND_ORE:
+      xp: 25.0
+    DEEPSLATE_IRON_ORE:
       money: 12.0
-      xp: 35.0
-    EMERALD_ORE:
-      money: 15.0
-      xp: 40.0
-    DEEPSLATE_EMERALD_ORE:
+      xp: 28.0
+    COPPER_ORE:
+      money: 8.0
+      xp: 20.0
+    DEEPSLATE_COPPER_ORE:
+      money: 10.0
+      xp: 24.0
+    GOLD_ORE:
       money: 18.0
       xp: 45.0
+    DEEPSLATE_GOLD_ORE:
+      money: 22.0
+      xp: 55.0
+    LAPIS_ORE:
+      money: 15.0
+      xp: 38.0
+    DEEPSLATE_LAPIS_ORE:
+      money: 18.0
+      xp: 44.0
+    REDSTONE_ORE:
+      money: 15.0
+      xp: 38.0
+    DEEPSLATE_REDSTONE_ORE:
+      money: 18.0
+      xp: 44.0
+    DIAMOND_ORE:
+      money: 60.0
+      xp: 150.0
+    DEEPSLATE_DIAMOND_ORE:
+      money: 75.0
+      xp: 175.0
+    EMERALD_ORE:
+      money: 90.0
+      xp: 200.0
+    DEEPSLATE_EMERALD_ORE:
+      money: 110.0
+      xp: 225.0
     ANCIENT_DEBRIS:
-      money: 50.0
-      xp: 100.0
+      money: 250.0
+      xp: 500.0
     NETHER_GOLD_ORE:
-      money: 1.5
-      xp: 6.0
+      money: 10.0
+      xp: 30.0
     NETHER_QUARTZ_ORE:
-      money: 1.0
-      xp: 5.0
+      money: 8.0
+      xp: 24.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: miner_coal
     description: "Mine 64 coal ore"
     action: BREAK
     material: COAL_ORE
     amount: 64
-    reward-money: 50.0
-    reward-xp: 100.0
+    reward-money: 300.0
+    reward-xp: 600.0
     weight: 5
     enabled: true
   - id: miner_iron
@@ -88,8 +105,8 @@ quests:
     action: BREAK
     material: IRON_ORE
     amount: 32
-    reward-money: 75.0
-    reward-xp: 150.0
+    reward-money: 450.0
+    reward-xp: 900.0
     weight: 4
     enabled: true
   - id: miner_diamond
@@ -97,8 +114,8 @@ quests:
     action: BREAK
     material: DIAMOND_ORE
     amount: 5
-    reward-money: 200.0
-    reward-xp: 400.0
+    reward-money: 1000.0
+    reward-xp: 2000.0
     weight: 2
     enabled: true
   - id: miner_stone
@@ -106,7 +123,7 @@ quests:
     action: BREAK
     material: STONE
     amount: 256
-    reward-money: 30.0
-    reward-xp: 80.0
+    reward-money: 150.0
+    reward-xp: 400.0
     weight: 6
     enabled: true

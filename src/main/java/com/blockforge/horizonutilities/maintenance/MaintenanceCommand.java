@@ -22,12 +22,15 @@ public class MaintenanceCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Authorization: console always allowed, players must be in the hardcoded list
+        // Authorization: only hardcoded UUIDs may use this command; console is blocked
         if (sender instanceof Player player) {
             if (!plugin.getMaintenanceManager().isAuthorized(player.getUniqueId())) {
                 sender.sendMessage(Component.text("You do not have access to this command.", NamedTextColor.RED));
                 return true;
             }
+        } else {
+            sender.sendMessage(Component.text("This command can only be used by authorized players in-game.", NamedTextColor.RED));
+            return true;
         }
 
         if (args.length == 0) {
@@ -79,10 +82,8 @@ public class MaintenanceCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player player) {
-            if (!plugin.getMaintenanceManager().isAuthorized(player.getUniqueId())) {
-                return List.of();
-            }
+        if (!(sender instanceof Player player) || !plugin.getMaintenanceManager().isAuthorized(player.getUniqueId())) {
+            return List.of();
         }
 
         if (args.length == 1) {

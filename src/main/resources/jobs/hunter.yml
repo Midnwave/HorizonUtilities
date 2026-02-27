@@ -1,87 +1,101 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Hunter
+# Earn money and XP by killing hostile mobs.
+# spawner-allowed: false blocks rewards for mobs killed from a spawner.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Hunter"
 icon: BOW
 description: "Hunt monsters and collect drops"
 max-level: 100
 hourly-income-cap: -1
+
+# spawner-allowed: false = no reward when the mob was spawned by a spawner block
 actions:
   KILL:
     ZOMBIE:
-      money: 0.5
-      xp: 3.0
+      money: 5.0
+      xp: 18.0
       spawner-allowed: false
     SKELETON:
-      money: 0.5
-      xp: 3.0
+      money: 5.0
+      xp: 18.0
       spawner-allowed: false
     CREEPER:
-      money: 1.0
-      xp: 5.0
+      money: 10.0
+      xp: 30.0
       spawner-allowed: false
     SPIDER:
-      money: 0.4
-      xp: 2.5
+      money: 3.5
+      xp: 13.0
       spawner-allowed: false
     ENDERMAN:
-      money: 2.0
-      xp: 8.0
+      money: 20.0
+      xp: 55.0
       spawner-allowed: false
     WITCH:
-      money: 2.5
-      xp: 10.0
+      money: 25.0
+      xp: 70.0
       spawner-allowed: false
     DROWNED:
-      money: 0.6
-      xp: 3.5
+      money: 6.0
+      xp: 22.0
       spawner-allowed: false
     HUSK:
-      money: 0.6
-      xp: 3.5
+      money: 6.0
+      xp: 22.0
       spawner-allowed: false
     STRAY:
-      money: 0.6
-      xp: 3.5
+      money: 6.0
+      xp: 22.0
       spawner-allowed: false
     BLAZE:
-      money: 3.0
-      xp: 12.0
+      money: 30.0
+      xp: 80.0
       spawner-allowed: false
     MAGMA_CUBE:
-      money: 1.0
-      xp: 5.0
+      money: 10.0
+      xp: 28.0
       spawner-allowed: false
     WITHER_SKELETON:
-      money: 5.0
-      xp: 20.0
+      money: 65.0
+      xp: 160.0
       spawner-allowed: false
     GHAST:
-      money: 4.0
-      xp: 15.0
+      money: 50.0
+      xp: 120.0
       spawner-allowed: false
     PILLAGER:
-      money: 2.0
-      xp: 8.0
+      money: 20.0
+      xp: 50.0
       spawner-allowed: false
     VINDICATOR:
-      money: 3.0
-      xp: 12.0
+      money: 30.0
+      xp: 80.0
       spawner-allowed: false
+    # Mini-boss tier
     RAVAGER:
-      money: 20.0
-      xp: 60.0
+      money: 200.0
+      xp: 450.0
       spawner-allowed: false
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: hunter_zombie
     description: "Kill 25 zombies"
     action: KILL
     material: ZOMBIE
     amount: 25
-    reward-money: 40.0
-    reward-xp: 80.0
+    reward-money: 300.0
+    reward-xp: 600.0
     weight: 5
     enabled: true
   - id: hunter_creeper
@@ -89,8 +103,8 @@ quests:
     action: KILL
     material: CREEPER
     amount: 10
-    reward-money: 50.0
-    reward-xp: 100.0
+    reward-money: 375.0
+    reward-xp: 750.0
     weight: 4
     enabled: true
   - id: hunter_blaze
@@ -98,7 +112,7 @@ quests:
     action: KILL
     material: BLAZE
     amount: 15
-    reward-money: 120.0
-    reward-xp: 240.0
+    reward-money: 875.0
+    reward-xp: 1750.0
     weight: 2
     enabled: true

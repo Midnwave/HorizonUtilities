@@ -1,78 +1,91 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Crafter
+# Earn money and XP by crafting items at a crafting table or smelting in a furnace.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Crafter"
 icon: CRAFTING_TABLE
 description: "Craft items and smelt materials"
 max-level: 100
 hourly-income-cap: -1
+
 actions:
+  # CRAFT — fires when the player takes a crafted result from a crafting table
   CRAFT:
     IRON_INGOT:
-      money: 0.5
-      xp: 2.0
+      money: 4.0
+      xp: 12.0
     GOLD_INGOT:
-      money: 1.0
-      xp: 4.0
+      money: 8.0
+      xp: 24.0
     DIAMOND:
-      money: 3.0
-      xp: 10.0
+      money: 25.0
+      xp: 60.0
     IRON_SWORD:
-      money: 1.0
-      xp: 4.0
+      money: 8.0
+      xp: 24.0
     IRON_PICKAXE:
-      money: 1.5
-      xp: 5.0
+      money: 10.0
+      xp: 30.0
     IRON_AXE:
-      money: 1.5
-      xp: 5.0
+      money: 10.0
+      xp: 30.0
     STONE_SWORD:
-      money: 0.5
-      xp: 2.0
+      money: 4.0
+      xp: 12.0
     BOW:
-      money: 1.0
-      xp: 4.0
+      money: 8.0
+      xp: 24.0
     ARROW:
-      money: 0.05
-      xp: 0.2
+      money: 0.50
+      xp: 2.0
     BREAD:
-      money: 0.20
-      xp: 1.0
+      money: 2.0
+      xp: 6.0
     BOOKSHELF:
-      money: 1.5
-      xp: 5.0
+      money: 12.0
+      xp: 36.0
+  # SMELT — fires when the player collects a smelted item from a furnace
   SMELT:
     IRON_INGOT:
-      money: 0.4
-      xp: 2.0
+      money: 3.0
+      xp: 12.0
     GOLD_INGOT:
-      money: 0.8
-      xp: 3.5
+      money: 6.0
+      xp: 20.0
     COOKED_BEEF:
-      money: 0.3
-      xp: 1.5
+      money: 2.5
+      xp: 8.0
     COOKED_CHICKEN:
-      money: 0.3
-      xp: 1.5
+      money: 2.5
+      xp: 8.0
     COOKED_PORKCHOP:
-      money: 0.3
-      xp: 1.5
+      money: 2.5
+      xp: 8.0
     BRICK:
-      money: 0.2
-      xp: 1.0
+      money: 2.0
+      xp: 6.0
     GLASS:
-      money: 0.15
-      xp: 0.8
+      money: 1.50
+      xp: 5.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: crafter_iron
     description: "Smelt 32 iron ingots"
     action: SMELT
     material: IRON_INGOT
     amount: 32
-    reward-money: 40.0
-    reward-xp: 80.0
+    reward-money: 300.0
+    reward-xp: 600.0
     weight: 5
     enabled: true
   - id: crafter_bread
@@ -80,8 +93,8 @@ quests:
     action: CRAFT
     material: BREAD
     amount: 32
-    reward-money: 25.0
-    reward-xp: 50.0
+    reward-money: 200.0
+    reward-xp: 400.0
     weight: 5
     enabled: true
   - id: crafter_gold
@@ -89,7 +102,7 @@ quests:
     action: SMELT
     material: GOLD_INGOT
     amount: 16
-    reward-money: 60.0
-    reward-xp: 120.0
+    reward-money: 450.0
+    reward-xp: 900.0
     weight: 3
     enabled: true

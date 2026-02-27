@@ -8,11 +8,13 @@ import com.blockforge.horizonutilities.jobs.boost.BoostManager;
 import com.blockforge.horizonutilities.jobs.config.JobConfigLoader;
 import com.blockforge.horizonutilities.jobs.config.JobsConfig;
 import com.blockforge.horizonutilities.jobs.leaderboard.JobLeaderboard;
+import com.blockforge.horizonutilities.jobs.ui.JobBossBarManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,6 +50,12 @@ public class JobManager {
     private final BoostManager boostManager;
     private final JobLeaderboard leaderboard;
     private final EconomyAuditLog auditLog;
+    private final JobBossBarManager bossBarManager;
+
+    // Action bar accumulation: [totalMoney, totalXp], resets 3s after last action
+    private final Map<UUID, double[]> actionBarAccum = new ConcurrentHashMap<>();
+    private final Map<UUID, BukkitTask> actionBarResetTasks = new ConcurrentHashMap<>();
+    private static final long ACTION_BAR_RESET_TICKS = 60L; // 3 seconds
 
     public JobManager(HorizonUtilitiesPlugin plugin) {
         this.plugin = plugin;
@@ -78,6 +86,9 @@ public class JobManager {
 
         // Audit log
         auditLog = new EconomyAuditLog(plugin);
+
+        // Boss bar
+        bossBarManager = new JobBossBarManager(plugin);
 
         // Load job YAML definitions
         loadJobDefinitions();
@@ -112,6 +123,14 @@ public class JobManager {
         for (JobPlayer jp : jobs) {
             storage.savePlayerJob(jp);
         }
+        // Clean up action bar accumulator and boss bar
+        actionBarAccum.remove(uuid);
+        BukkitTask task = actionBarResetTasks.remove(uuid);
+        if (task != null) task.cancel();
+        plugin.getServer().getOnlinePlayers().stream()
+                .filter(p -> p.getUniqueId().equals(uuid))
+                .findFirst()
+                .ifPresent(bossBarManager::cleanup);
     }
 
     /** Saves without removing from cache (for periodic flush). */
@@ -239,6 +258,11 @@ public class JobManager {
             return;
         }
 
+        double sessionMoney = 0;
+        double sessionXp    = 0;
+        Job    lastJob      = null;
+        JobPlayer lastJp    = null;
+
         for (JobPlayer jp : jobs) {
             Job job = jobDefinitions.get(jp.getJobId());
             if (job == null) continue;
@@ -291,11 +315,7 @@ public class JobManager {
                 plugin.getVaultHook().deposit(player, moneyEarned);
                 incomeCapManager.trackEarning(player.getUniqueId(), jp.getJobId(), moneyEarned);
                 jp.addEarned(moneyEarned);
-
-                // Action bar notification
-                player.sendActionBar(Component.text(
-                        "+" + plugin.getVaultHook().format(moneyEarned) + " ", NamedTextColor.GREEN)
-                        .append(Component.text(job.getDisplayName(), NamedTextColor.GOLD)));
+                sessionMoney += moneyEarned;
 
                 // Audit log
                 auditLog.log(player.getUniqueId(), player.getName(),
@@ -319,6 +339,7 @@ public class JobManager {
             // Grant XP and handle level-up
             if (xpEarned > 0) {
                 jp.addXp(xpEarned);
+                sessionXp += xpEarned;
                 checkLevelUp(jp, player, job);
                 // Sync to AuraSkills
                 if (plugin.getAuraSkillsManager() != null) {
@@ -326,8 +347,27 @@ public class JobManager {
                 }
             }
 
+            lastJob = job;
+            lastJp  = jp;
             jp.touch();
 
+        }
+
+        // Update accumulated action bar display and boss bar
+        if ((sessionMoney > 0 || sessionXp > 0) && lastJob != null) {
+            double[] accum = actionBarAccum.computeIfAbsent(player.getUniqueId(), k -> new double[2]);
+            accum[0] += sessionMoney;
+            accum[1] += sessionXp;
+            final double displayMoney = accum[0];
+            final double displayXp    = accum[1];
+            final Job displayJob      = lastJob;
+            final JobPlayer displayJp = lastJp;
+            player.sendActionBar(buildJobActionBar(displayMoney, displayXp, displayJob, displayJp));
+            scheduleActionBarReset(player.getUniqueId());
+            // Update XP progress boss bar
+            if (sessionXp > 0) {
+                bossBarManager.showProgress(player, displayJp, displayJob);
+            }
         }
 
         // Record for area farming detector
@@ -438,6 +478,28 @@ public class JobManager {
     }
 
     // -------------------------------------------------------------------------
+    // Action bar accumulation helpers
+    // -------------------------------------------------------------------------
+
+    private Component buildJobActionBar(double totalMoney, double totalXp, Job job, JobPlayer jp) {
+        return Component.text(job.getDisplayName() + " ", NamedTextColor.GOLD)
+                .append(Component.text("Lv." + jp.getLevel() + " ", NamedTextColor.AQUA))
+                .append(Component.text("+" + plugin.getVaultHook().format(totalMoney), NamedTextColor.GREEN))
+                .append(Component.text(" | ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("+" + String.format("%.0f", totalXp) + "xp", NamedTextColor.YELLOW));
+    }
+
+    private void scheduleActionBarReset(UUID uuid) {
+        BukkitTask old = actionBarResetTasks.remove(uuid);
+        if (old != null) old.cancel();
+        BukkitTask task = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            actionBarAccum.remove(uuid);
+            actionBarResetTasks.remove(uuid);
+        }, ACTION_BAR_RESET_TICKS);
+        actionBarResetTasks.put(uuid, task);
+    }
+
+    // -------------------------------------------------------------------------
     // Queries
     // -------------------------------------------------------------------------
 
@@ -459,6 +521,7 @@ public class JobManager {
 
     public JobsConfig getConfig()                   { return config; }
     public JobStorageManager getStorage()           { return storage; }
+    public JobBossBarManager getBossBarManager()    { return bossBarManager; }
     public BlockTracker getBlockTracker()           { return blockTracker; }
     public SpawnerTracker getSpawnerTracker()       { return spawnerTracker; }
     public AreaFarmingDetector getAreaFarmingDetector() { return areaFarmingDetector; }

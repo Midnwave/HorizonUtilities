@@ -1,34 +1,67 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Chat Games Configuration
+# Random chat mini-games that reward the first player to answer correctly.
+# Manage with: /chatgames start|stop|top|stats|reload
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
 
 scheduling:
+  # Seconds between automatic game triggers (base interval)
   interval-seconds: 300
+  # Random extra seconds added to the interval to vary timing (0 to disable)
   variance-seconds: 60
+  # Seconds before an unanswered game is cancelled
   timeout-seconds: 30
 
 games:
+  # ── Unscramble ─────────────────────────────────────────────────────────────
+  # Players see a scrambled word and must type it correctly.
   unscramble:
     enabled: true
+    # Money given to the first correct answer
     reward-money: 100.0
+    # Optional list of commands run as console for the winner (e.g. give items)
     reward-commands: []
+    # Word difficulty tier: EASY, MEDIUM, HARD
     difficulty: MEDIUM
+
+  # ── Retype ─────────────────────────────────────────────────────────────────
+  # Players must type the displayed word exactly as shown.
   retype:
     enabled: true
     reward-money: 75.0
     reward-commands: []
+    # Minimum length of the word to retype
     min-length: 5
+    # Maximum length of the word to retype
     max-length: 12
+    # Include Minecraft item/entity names as possible words
     use-minecraft-names: true
+    # Include randomly generated letter strings as possible words
     use-random-letters: true
+
+  # ── Math ────────────────────────────────────────────────────────────────────
+  # Players solve an arithmetic expression displayed in chat.
   math:
     enabled: true
     reward-money: 80.0
     reward-commands: []
+    # Largest number that can appear in the question
     max-number: 100
+    # Arithmetic operations to include: ADD, SUBTRACT, MULTIPLY, DIVIDE
     operations: [ADD, SUBTRACT, MULTIPLY]
+
+  # ── Unreverse ───────────────────────────────────────────────────────────────
+  # Players see text written backwards and must type it correctly.
   unreverse:
     enabled: true
     reward-money: 90.0
     reward-commands: []
+
+  # ── Recipe Guess ────────────────────────────────────────────────────────────
+  # Players are shown a crafting recipe and must name the result item.
   recipe-guess:
     enabled: true
     reward-money: 150.0

@@ -1,57 +1,71 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Farmer
+# Earn money and XP by harvesting fully-grown crops.
+# Uses FARM action (crop broken at full growth) and BREAK for berry bushes.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Farmer"
 icon: GOLDEN_HOE
 description: "Grow and harvest crops"
 max-level: 100
 hourly-income-cap: -1
+
 actions:
+  # FARM fires when a crop block is broken at full maturity
   FARM:
     WHEAT:
-      money: 0.15
-      xp: 1.5
+      money: 3.0
+      xp: 10.0
     CARROTS:
-      money: 0.15
-      xp: 1.5
+      money: 3.0
+      xp: 10.0
     POTATOES:
-      money: 0.15
-      xp: 1.5
+      money: 3.0
+      xp: 10.0
     BEETROOTS:
-      money: 0.20
-      xp: 2.0
+      money: 4.0
+      xp: 12.0
     MELON_SLICE:
-      money: 0.10
-      xp: 1.0
+      money: 2.0
+      xp: 6.0
     PUMPKIN:
-      money: 0.25
-      xp: 2.5
+      money: 5.0
+      xp: 16.0
     SUGAR_CANE:
-      money: 0.10
-      xp: 1.0
+      money: 2.0
+      xp: 6.0
     COCOA_BEANS:
-      money: 0.20
-      xp: 2.0
+      money: 4.0
+      xp: 12.0
     NETHER_WART:
-      money: 0.30
-      xp: 3.0
+      money: 6.0
+      xp: 20.0
+  # BREAK fires for berry bushes (no maturity check)
   BREAK:
     SWEET_BERRY_BUSH:
-      money: 0.20
-      xp: 2.0
+      money: 4.0
+      xp: 12.0
     GLOW_BERRIES:
-      money: 0.25
-      xp: 2.5
+      money: 5.0
+      xp: 16.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: farmer_wheat
     description: "Harvest 128 wheat"
     action: FARM
     material: WHEAT
     amount: 128
-    reward-money: 40.0
-    reward-xp: 80.0
+    reward-money: 360.0
+    reward-xp: 720.0
     weight: 5
     enabled: true
   - id: farmer_carrot
@@ -59,8 +73,8 @@ quests:
     action: FARM
     material: CARROTS
     amount: 64
-    reward-money: 35.0
-    reward-xp: 70.0
+    reward-money: 300.0
+    reward-xp: 600.0
     weight: 5
     enabled: true
   - id: farmer_pumpkin
@@ -68,7 +82,7 @@ quests:
     action: FARM
     material: PUMPKIN
     amount: 16
-    reward-money: 60.0
-    reward-xp: 120.0
+    reward-money: 540.0
+    reward-xp: 1080.0
     weight: 3
     enabled: true

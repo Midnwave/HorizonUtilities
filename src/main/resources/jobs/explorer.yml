@@ -1,25 +1,40 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Explorer
+# Earn money and XP by discovering new chunks for the first time.
+# Each chunk can only be rewarded once per player.
+# The hourly-income-cap prevents fast-travel exploit abuse.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Explorer"
 icon: COMPASS
 description: "Explore new lands and discover chunks"
 max-level: 100
-hourly-income-cap: 500
+# Cap is tighter for Explorer to discourage teleport-based farming
+hourly-income-cap: 3000
+
+# EXPLORE CHUNK fires the first time a player enters a previously unvisited chunk
 actions:
   EXPLORE:
     CHUNK:
-      money: 5.0
-      xp: 20.0
+      money: 30.0
+      xp: 120.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: explorer_chunks
     description: "Discover 10 new chunks"
     action: EXPLORE
     material: CHUNK
     amount: 10
-    reward-money: 100.0
-    reward-xp: 200.0
+    reward-money: 750.0
+    reward-xp: 1500.0
     weight: 4
     enabled: true

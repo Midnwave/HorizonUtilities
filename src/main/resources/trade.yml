@@ -1,7 +1,21 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Trade System Configuration
+# Initiate a trade with: /trade <player>
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
+
+# Seconds the target player has to accept or deny a trade request before it expires
 request-timeout-seconds: 60
+
+# Only allow trades between players in the same world
 same-world-only: true
+
+# MiniMessage title shown at the top of the trade GUI
 gui-title: "<gradient:#7B2FF7:#FF5733>Trade</gradient>"
+
+# Items that cannot be offered in a trade (Bukkit Material names)
 blacklisted-materials:
   - BEDROCK
   - COMMAND_BLOCK
@@ -10,4 +24,6 @@ blacklisted-materials:
   - STRUCTURE_VOID
   - JIGSAW
   - DEBUG_STICK
+
+# Log all completed trades to the database for audit purposes
 log-trades: true

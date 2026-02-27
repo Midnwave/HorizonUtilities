@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Custom Items Configuration
+# Give items with: /customitem give <id> [player] [amount]
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable or disable the custom items framework entirely
+enabled: true
+
+items:
+  # ── Grappling Hook ──────────────────────────────────────────────────────────
+  # Right-click to latch onto a block and pull yourself toward it.
+  # Base item: Fishing Rod
+  grappling_hook:
+    # Enable or disable this item
+    enabled: true
+    # Maximum block distance the hook can reach
+    max-range: 30
+    # Number of uses before the item breaks
+    durability: 50
+    # Seconds before the player can use it again
+    cooldown-seconds: 3
+    # Seconds after landing during which fall damage is cancelled
+    cancel-fall-damage-seconds: 4
+
+  # ── Ice Bomb ─────────────────────────────────────────────────────────────────
+  # Throw like a snowball — freezes water and nearby entities in a radius.
+  # Base item: Snowball
+  ice_bomb:
+    # Enable or disable this item
+    enabled: true
+    # Radius (in blocks) around impact point that gets frozen
+    freeze-radius: 5
+    # How long water stays frozen and entities are slowed (seconds)
+    freeze-duration-seconds: 10
+    # Seconds before the player can throw another
+    cooldown-seconds: 10
+
+  # ── Wolf Whistle ─────────────────────────────────────────────────────────────
+  # Right-click to summon all your tamed wolves from anywhere nearby.
+  # Base item: Bone
+  wolf_whistle:
+    # Enable or disable this item
+    enabled: true
+    # Block radius to search for owned wolves to teleport
+    summon-radius: 200
+    # Seconds before the player can whistle again
+    cooldown-seconds: 30

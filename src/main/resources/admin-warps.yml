@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Admin Warps & Spawn Configuration
+# Manage warps with: /setwarp <name>, /delwarp <name>, /warp <name>, /warps
+# Manage spawn with: /setspawn, /spawn
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Seconds the player must stand still before being teleported (0 to disable)
+teleport-warmup-seconds: 3
+
+# Seconds a player must wait between warp uses (per player)
+teleport-cooldown-seconds: 5
+
+# Spawn point used by /spawn. Updated automatically by /setspawn.
+spawn:
+  world: world
+  x: 0.0
+  y: 64.0
+  z: 0.0
+  yaw: 0.0
+  pitch: 0.0
+
+# Warp locations are stored here automatically — do not edit manually
+warps: {}

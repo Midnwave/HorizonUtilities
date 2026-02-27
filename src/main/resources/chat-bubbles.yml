@@ -1,0 +1,20 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Chat Bubbles Configuration
+# Players see floating text above heads when others chat nearby.
+# Toggle individually with: /chatbubbles toggle
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable or disable the chat bubbles feature entirely
+enabled: true
+
+# How many seconds a bubble stays visible before fading out
+duration-seconds: 5
+
+# Vertical distance above the player's eye level to spawn the bubble (in blocks)
+height-offset: 0.5
+
+# Messages longer than this will be truncated to avoid giant bubbles
+max-message-length: 50
+
+# Bubble background opacity (0 = fully transparent, 255 = fully opaque)
+background-opacity: 180

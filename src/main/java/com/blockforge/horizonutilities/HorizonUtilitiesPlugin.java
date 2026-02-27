@@ -45,6 +45,37 @@ import com.blockforge.horizonutilities.games.commands.ChatGamesTabCompleter;
 import com.blockforge.horizonutilities.games.listeners.GameAnswerListener;
 import com.blockforge.horizonutilities.auraskills.AuraSkillsManager;
 import com.blockforge.horizonutilities.hooks.GPFRHook;
+import com.blockforge.horizonutilities.hooks.LuckPermsHook;
+import com.blockforge.horizonutilities.hooks.PlaceholderAPIExpansion;
+import com.blockforge.horizonutilities.chatbubbles.ChatBubbleConfig;
+import com.blockforge.horizonutilities.chatbubbles.ChatBubbleManager;
+import com.blockforge.horizonutilities.chatbubbles.ChatBubbleListener;
+import com.blockforge.horizonutilities.chatbubbles.commands.ChatBubbleCommand;
+import com.blockforge.horizonutilities.warps.admin.AdminWarpManager;
+import com.blockforge.horizonutilities.warps.admin.commands.AdminWarpCommand;
+import com.blockforge.horizonutilities.warps.admin.commands.SpawnCommand;
+import com.blockforge.horizonutilities.warps.player.PlayerWarpManager;
+import com.blockforge.horizonutilities.warps.player.commands.PlayerWarpCommand;
+import com.blockforge.horizonutilities.warps.player.gui.PlayerWarpGUIListener;
+import com.blockforge.horizonutilities.combat.CombatConfig;
+import com.blockforge.horizonutilities.combat.CombatManager;
+import com.blockforge.horizonutilities.combat.CombatListener;
+import com.blockforge.horizonutilities.combat.commands.CombatCommand;
+import com.blockforge.horizonutilities.customitems.CustomItemRegistry;
+import com.blockforge.horizonutilities.customitems.commands.CustomItemCommand;
+import com.blockforge.horizonutilities.customitems.items.GrapplingHookItem;
+import com.blockforge.horizonutilities.customitems.items.IceBombItem;
+import com.blockforge.horizonutilities.customitems.items.WolfWhistleItem;
+import com.blockforge.horizonutilities.customitems.listeners.GrapplingHookListener;
+import com.blockforge.horizonutilities.customitems.listeners.IceBombListener;
+import com.blockforge.horizonutilities.customitems.listeners.WolfWhistleListener;
+import com.blockforge.horizonutilities.tournaments.TournamentManager;
+import com.blockforge.horizonutilities.tournaments.TournamentListener;
+import com.blockforge.horizonutilities.tournaments.commands.TournamentCommand;
+import com.blockforge.horizonutilities.config.dialog.HorizonConfigCommand;
+import com.blockforge.horizonutilities.crafting.CraftingTableConfig;
+import com.blockforge.horizonutilities.crafting.CraftingTableManager;
+import com.blockforge.horizonutilities.crafting.CraftingTableListener;
 import com.blockforge.horizonutilities.jobs.JobManager;
 import com.blockforge.horizonutilities.jobs.quests.QuestsIntegration;
 import com.blockforge.horizonutilities.maintenance.MaintenanceCommand;
@@ -79,6 +110,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private BlackMarketManager blackMarketManager;
     private LotteryManager lotteryManager;
     private GPFRHook gpfrHook;
+    private LuckPermsHook luckPermsHook;
     private AuraSkillsManager auraSkillsManager;
     private JobManager jobManager;
     private QuestsIntegration questsIntegration;
@@ -88,6 +120,17 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private BountyConfig bountyConfig;
     private BountyManager bountyManager;
     private MaintenanceManager maintenanceManager;
+    private ChatBubbleConfig chatBubbleConfig;
+    private ChatBubbleManager chatBubbleManager;
+    private AdminWarpManager adminWarpManager;
+    private PlayerWarpManager playerWarpManager;
+    private PlayerWarpGUIListener playerWarpGUIListener;
+    private CombatConfig combatConfig;
+    private CombatManager combatManager;
+    private CustomItemRegistry customItemRegistry;
+    private TournamentManager tournamentManager;
+    private CraftingTableConfig craftingTableConfig;
+    private CraftingTableManager craftingTableManager;
 
     @Override
     public void onEnable() {
@@ -141,6 +184,18 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             }
         }
 
+        luckPermsHook = new LuckPermsHook();
+        if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+            if (luckPermsHook.setup()) {
+                getLogger().info("LuckPerms hooked.");
+            }
+        }
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderAPIExpansion(this).register();
+            getLogger().info("PlaceholderAPI expansion registered.");
+        }
+
         auraSkillsManager = new AuraSkillsManager(this);
 
         taxManager = new TaxManager(this);
@@ -159,8 +214,40 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         maintenanceManager = new MaintenanceManager(this);
         maintenanceManager.load();
 
+        chatBubbleConfig = new ChatBubbleConfig(this);
+        chatBubbleConfig.load();
+        chatBubbleManager = new ChatBubbleManager(this, chatBubbleConfig);
+
+        adminWarpManager = new AdminWarpManager(this);
+
+        playerWarpManager = new PlayerWarpManager(this);
+        playerWarpGUIListener = new PlayerWarpGUIListener(this, playerWarpManager);
+
+        combatConfig = new CombatConfig(this);
+        combatConfig.load();
+        combatManager = new CombatManager(this, combatConfig);
+
+        customItemRegistry = new CustomItemRegistry(this);
+        customItemRegistry.register(new GrapplingHookItem(this));
+        customItemRegistry.register(new IceBombItem(this));
+        customItemRegistry.register(new WolfWhistleItem(this));
+
+        tournamentManager = new TournamentManager(this);
+
+        craftingTableConfig = new CraftingTableConfig(this);
+        craftingTableConfig.load();
+        craftingTableManager = new CraftingTableManager(this, craftingTableConfig);
+
         var pm = getServer().getPluginManager();
         pm.registerEvents(new MaintenanceListener(maintenanceManager), this);
+        pm.registerEvents(new ChatBubbleListener(this, chatBubbleManager), this);
+        pm.registerEvents(playerWarpGUIListener, this);
+        pm.registerEvents(new CombatListener(this, combatManager), this);
+        pm.registerEvents(new GrapplingHookListener(this), this);
+        pm.registerEvents(new IceBombListener(this), this);
+        pm.registerEvents(new WolfWhistleListener(this), this);
+        pm.registerEvents(new TournamentListener(this, tournamentManager), this);
+        pm.registerEvents(new CraftingTableListener(this, craftingTableManager), this);
         pm.registerEvents(new AuctionGUIListener(this), this);
         pm.registerEvents(new AuctionPlayerListener(this), this);
         pm.registerEvents(new ChatListener(this), this);
@@ -232,6 +319,57 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             jobsCmd.setTabCompleter(new JobsTabCompleter(this));
         }
 
+        var tournamentBukkitCmd = getCommand("tournament");
+        if (tournamentBukkitCmd != null) {
+            var tournCmd = new TournamentCommand(this, tournamentManager);
+            tournamentBukkitCmd.setExecutor(tournCmd);
+            tournamentBukkitCmd.setTabCompleter(tournCmd);
+        }
+
+        var customItemBukkitCmd = getCommand("customitem");
+        if (customItemBukkitCmd != null) {
+            var ciCmd = new CustomItemCommand(this);
+            customItemBukkitCmd.setExecutor(ciCmd);
+            customItemBukkitCmd.setTabCompleter(ciCmd);
+        }
+
+        var combatBukkitCmd = getCommand("combat");
+        if (combatBukkitCmd != null) {
+            var combatCmd = new CombatCommand(this, combatManager);
+            combatBukkitCmd.setExecutor(combatCmd);
+            combatBukkitCmd.setTabCompleter(combatCmd);
+        }
+
+        var pwarpCmd = getCommand("pwarp");
+        if (pwarpCmd != null) {
+            var pwarpExec = new PlayerWarpCommand(this, playerWarpManager, playerWarpGUIListener);
+            pwarpCmd.setExecutor(pwarpExec);
+            pwarpCmd.setTabCompleter(pwarpExec);
+        }
+
+        var adminWarpCmd = new AdminWarpCommand(this, adminWarpManager);
+        var warpCmd = getCommand("warp");
+        if (warpCmd != null) { warpCmd.setExecutor(adminWarpCmd); warpCmd.setTabCompleter(adminWarpCmd); }
+        var setWarpCmd = getCommand("setwarp");
+        if (setWarpCmd != null) { setWarpCmd.setExecutor(adminWarpCmd); setWarpCmd.setTabCompleter(adminWarpCmd); }
+        var delWarpCmd = getCommand("delwarp");
+        if (delWarpCmd != null) { delWarpCmd.setExecutor(adminWarpCmd); delWarpCmd.setTabCompleter(adminWarpCmd); }
+        var warpsCmd = getCommand("warps");
+        if (warpsCmd != null) { warpsCmd.setExecutor(adminWarpCmd); warpsCmd.setTabCompleter(adminWarpCmd); }
+
+        var spawnCmd = new SpawnCommand(this, adminWarpManager);
+        var spawnBukkitCmd = getCommand("spawn");
+        if (spawnBukkitCmd != null) { spawnBukkitCmd.setExecutor(spawnCmd); spawnBukkitCmd.setTabCompleter(spawnCmd); }
+        var setSpawnCmd = getCommand("setspawn");
+        if (setSpawnCmd != null) { setSpawnCmd.setExecutor(spawnCmd); setSpawnCmd.setTabCompleter(spawnCmd); }
+
+        var bubblesCmd = getCommand("chatbubbles");
+        if (bubblesCmd != null) {
+            var bubbleCmd = new ChatBubbleCommand(this, chatBubbleManager);
+            bubblesCmd.setExecutor(bubbleCmd);
+            bubblesCmd.setTabCompleter(bubbleCmd);
+        }
+
         var maintCmd = getCommand("maintenance");
         if (maintCmd != null) {
             var maintenanceCommand = new MaintenanceCommand(this);
@@ -239,9 +377,20 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             maintCmd.setTabCompleter(maintenanceCommand);
         }
 
+        var horizonConfigCmd = getCommand("horizonconfig");
+        if (horizonConfigCmd != null) {
+            var hcCmd = new HorizonConfigCommand(this);
+            horizonConfigCmd.setExecutor(hcCmd);
+            horizonConfigCmd.setTabCompleter(hcCmd);
+        }
+
         new AuctionExpireTask(this).start();
         chatGameManager.startScheduler();
         new LotteryDrawTask(this, lotteryManager).start();
+
+        // Expire bounties every 5 minutes
+        getServer().getScheduler().runTaskTimerAsynchronously(this,
+                () -> bountyManager.expireOldBounties(), 6000L, 6000L);
 
         if (configManager.isMetricsEnabled()) {
             new Metrics(this, 00000);
@@ -265,6 +414,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         chatPlaceholdersConfig.load();
         if (tradeConfig != null) tradeConfig.load();
         if (bountyConfig != null) bountyConfig.load();
+        if (chatBubbleConfig != null) chatBubbleConfig.load();
     }
 
     public static HorizonUtilitiesPlugin getInstance() { return instance; }
@@ -284,6 +434,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public BlackMarketManager getBlackMarketManager() { return blackMarketManager; }
     public LotteryManager getLotteryManager() { return lotteryManager; }
     public GPFRHook getGpfrHook() { return gpfrHook; }
+    public LuckPermsHook getLuckPermsHook() { return luckPermsHook; }
     public AuraSkillsManager getAuraSkillsManager() { return auraSkillsManager; }
     public JobManager getJobManager() { return jobManager; }
     public QuestsIntegration getQuestsIntegration() { return questsIntegration; }
@@ -293,4 +444,14 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public BountyConfig getBountyConfig() { return bountyConfig; }
     public BountyManager getBountyManager() { return bountyManager; }
     public MaintenanceManager getMaintenanceManager() { return maintenanceManager; }
+    public ChatBubbleConfig getChatBubbleConfig()     { return chatBubbleConfig; }
+    public ChatBubbleManager getChatBubbleManager()   { return chatBubbleManager; }
+    public AdminWarpManager getAdminWarpManager()     { return adminWarpManager; }
+    public PlayerWarpManager getPlayerWarpManager()   { return playerWarpManager; }
+    public CombatConfig getCombatConfig()             { return combatConfig; }
+    public CombatManager getCombatManager()           { return combatManager; }
+    public CustomItemRegistry getCustomItemRegistry() { return customItemRegistry; }
+    public TournamentManager getTournamentManager()       { return tournamentManager; }
+    public CraftingTableConfig getCraftingTableConfig()   { return craftingTableConfig; }
+    public CraftingTableManager getCraftingTableManager() { return craftingTableManager; }
 }

@@ -1,0 +1,40 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Combat System Configuration
+# Tags players on PvP hit and enforces restrictions until the timer expires.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable or disable the combat tagging system entirely
+enabled: true
+
+# Seconds a player remains "in combat" after the last PvP hit
+combat-timer-seconds: 15
+
+restrictions:
+  # Block plugin/command teleports (e.g. /tpa, enderpearl via plugin) while tagged
+  block-teleport: true
+
+  # Prevent opening the ender chest while in combat
+  block-enderchest: true
+
+  # Prevent activating creative flight while in combat
+  block-fly: true
+
+  # Commands that are blocked while a player is tagged (add leading slash)
+  block-commands:
+    - /home
+    - /spawn
+    - /warp
+    - /tpa
+    - /tpahere
+    - /back
+    - /rtp
+
+combat-log:
+  # Kill the player if they disconnect while tagged (combat-logging)
+  kill-on-logout: true
+
+  # Drop the combat-logger's inventory at their logout location
+  drop-items: true
+
+  # Drop XP on combat-log kill (in addition to item drops)
+  drop-xp: false

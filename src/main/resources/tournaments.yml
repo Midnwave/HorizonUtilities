@@ -1,0 +1,20 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Tournaments Configuration
+# Admins create custom competitive events with objectives and prize money.
+# /tournament create <name> <OBJECTIVE> [material] [targetScore] [durationMin] [reward$]
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Enable or disable the tournament system entirely
+enabled: true
+
+# Maximum number of tournaments that can be in ACTIVE state at the same time
+max-active-tournaments: 3
+
+# Default tournament duration if none is specified at creation (minutes)
+default-duration-minutes: 60
+
+# Broadcast a server-wide message when a tournament starts
+announce-start: true
+
+# Broadcast a server-wide message and winner when a tournament ends
+announce-end: true

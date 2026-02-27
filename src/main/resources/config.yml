@@ -1,5 +1,16 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Main Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
+
+# MiniMessage prefix prepended to every plugin message in chat
 prefix: "<dark_gray>[<gradient:#7B2FF7:#FF5733>Horizon</gradient><dark_gray>]"
+
 database:
+  # SQLite database file name (relative to the plugin data folder)
   file: "data.db"
+
+# Whether to send anonymous usage statistics via bStats
 metrics: true

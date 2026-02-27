@@ -1,24 +1,55 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Chat Placeholders & Format Configuration
+# Type special tokens in chat to display live game info to other players.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
 
+# Enable or disable the chat placeholder substitution system
 enabled: true
 
+# Set to true to format chat messages with LuckPerms prefix/suffix.
+# Set to false to leave chat formatting to another plugin (e.g. EssentialsChat).
+# Requires LuckPerms to be installed.
+format-chat: false
+
+# Chat format template used when format-chat is true. Supports MiniMessage tags.
+# Available placeholders: <prefix>, <suffix>, <displayname>, <message>
+chat-format: "<prefix><displayname><gray>: </gray><message>"
+
+# Each placeholder below is replaced in chat messages when its token is typed.
 placeholders:
   item:
+    # Whether the <item> placeholder is active
     enabled: true
+    # The text players type to trigger the replacement (shows held item as a component)
     token: "<item>"
+
   pos:
     enabled: true
+    # Token players type to share their coordinates
     token: "<pos>"
+    # MiniMessage format; <x>, <y>, <z> are substituted with block coordinates
     format: "<gold><x>, <y>, <z></gold>"
+
   health:
     enabled: true
+    # Token players type to share their current health
     token: "<health>"
+    # MiniMessage format; <current> and <max> are substituted with HP values
     format: "<red>❤ <current>/<max></red>"
+
   balance:
     enabled: true
+    # Token players type to share their wallet balance
     token: "<balance>"
+    # MiniMessage format; <amount> is substituted with the formatted balance
     format: "<green><amount></green>"
+
   ping:
     enabled: true
+    # Token players type to share their connection latency
     token: "<ping>"
+    # MiniMessage format; <ms> is substituted with the ping in milliseconds
     format: "<yellow><ms>ms</yellow>"

@@ -16,6 +16,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.codemc.io/repository/maven-public/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven { url = uri("file://${rootDir}/../GriefPrevetionFlagsReborn/build/libs") }
 }
 
@@ -26,6 +27,8 @@ dependencies {
     compileOnly("com.github.TechFortress:GriefPrevention:16.18.4")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
     compileOnly(files("libs/Quests-5.2.8.jar"))
+    compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("net.luckperms:api:5.4")
     implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 

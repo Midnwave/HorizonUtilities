@@ -1,53 +1,66 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Fisherman
+# Earn money and XP from every fishing catch, including junk and treasure.
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Fisherman"
 icon: FISHING_ROD
 description: "Fish for profit and rare catches"
 max-level: 100
 hourly-income-cap: -1
+
 actions:
   FISH:
     COD:
-      money: 0.5
-      xp: 3.0
+      money: 4.0
+      xp: 15.0
     SALMON:
-      money: 0.8
-      xp: 4.0
+      money: 6.0
+      xp: 20.0
     TROPICAL_FISH:
-      money: 1.5
-      xp: 6.0
+      money: 12.0
+      xp: 35.0
     PUFFERFISH:
-      money: 2.0
-      xp: 8.0
+      money: 18.0
+      xp: 45.0
+    # Junk catches — low reward
     LEATHER:
-      money: 0.3
-      xp: 2.0
+      money: 3.0
+      xp: 10.0
     STICK:
-      money: 0.1
-      xp: 0.5
+      money: 1.00
+      xp: 4.0
     STRING:
-      money: 0.2
-      xp: 1.0
+      money: 2.0
+      xp: 6.0
     LILY_PAD:
-      money: 0.3
-      xp: 1.5
+      money: 3.0
+      xp: 8.0
+    # Treasure catches — high reward
     SADDLE:
-      money: 10.0
-      xp: 30.0
+      money: 80.0
+      xp: 160.0
     NAME_TAG:
-      money: 15.0
-      xp: 40.0
+      money: 120.0
+      xp: 200.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: fisherman_cod
     description: "Catch 20 cod"
     action: FISH
     material: COD
     amount: 20
-    reward-money: 30.0
-    reward-xp: 60.0
+    reward-money: 180.0
+    reward-xp: 360.0
     weight: 5
     enabled: true
   - id: fisherman_salmon
@@ -55,8 +68,8 @@ quests:
     action: FISH
     material: SALMON
     amount: 10
-    reward-money: 40.0
-    reward-xp: 80.0
+    reward-money: 240.0
+    reward-xp: 480.0
     weight: 4
     enabled: true
   - id: fisherman_tropical
@@ -64,7 +77,7 @@ quests:
     action: FISH
     material: TROPICAL_FISH
     amount: 5
-    reward-money: 60.0
-    reward-xp: 120.0
+    reward-money: 360.0
+    reward-xp: 720.0
     weight: 3
     enabled: true

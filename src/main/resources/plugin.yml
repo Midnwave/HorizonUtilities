@@ -4,7 +4,7 @@ version: "${version}"
 api-version: "1.21"
 authors: [BlockForge]
 depend: [GriefPreventionFlagsReborn]
-softdepend: [Vault, AuraSkills, Quests]
+softdepend: [Vault, AuraSkills, Quests, LuckPerms, PlaceholderAPI]
 commands:
   ah:
     description: Auction House
@@ -42,6 +42,54 @@ commands:
     description: Toggle server maintenance mode
     usage: /<command> <on|off|status>
     aliases: [maint]
+  chatbubbles:
+    description: Toggle chat bubbles above your head
+    usage: /<command> toggle
+    permission: horizonutilities.chatbubbles.use
+  warp:
+    description: Teleport to an admin warp
+    usage: /<command> <name>
+    permission: horizonutilities.warp.use
+  setwarp:
+    description: Set an admin warp at your location
+    usage: /<command> <name>
+    permission: horizonutilities.warp.admin
+  delwarp:
+    description: Delete an admin warp
+    usage: /<command> <name>
+    permission: horizonutilities.warp.admin
+  warps:
+    description: List all admin warps
+    usage: /<command>
+    permission: horizonutilities.warp.use
+  spawn:
+    description: Teleport to spawn
+    usage: /<command>
+    permission: horizonutilities.spawn.use
+  setspawn:
+    description: Set the server spawn point
+    usage: /<command>
+    permission: horizonutilities.spawn.admin
+  pwarp:
+    description: Player warp system
+    usage: /<command> [set|delete|list|rate|<name>]
+    permission: horizonutilities.pwarp.use
+  combat:
+    description: View your combat status
+    usage: /<command> [status|reload]
+    permission: horizonutilities.combat.use
+  customitem:
+    description: Give custom items to players
+    usage: /<command> give <id> [player] [amount]
+    permission: horizonutilities.customitem.admin
+  tournament:
+    description: Custom tournament/event system
+    usage: /<command> [create|start|stop|join|leave|status|list|reload]
+    permission: horizonutilities.tournament.use
+  horizonconfig:
+    description: Edit plugin configuration via dialog
+    usage: /<command> [section]
+    permission: horizonutilities.config.admin
 permissions:
   horizonutilities.ah.use:
     default: true
@@ -185,4 +233,64 @@ permissions:
     default: op
   horizonutilities.eco.admin:
     description: Economy audit and admin commands
+    default: op
+  horizonutilities.chatbubbles.use:
+    description: Toggle personal chat bubbles
+    default: true
+  horizonutilities.warp.use:
+    description: Teleport to admin warps
+    default: true
+  horizonutilities.warp.admin:
+    description: Create and delete admin warps
+    default: op
+  horizonutilities.spawn.use:
+    description: Teleport to spawn
+    default: true
+  horizonutilities.spawn.admin:
+    description: Set the spawn point
+    default: op
+  horizonutilities.pwarp.use:
+    description: Use the player warp system
+    default: true
+  horizonutilities.pwarp.set:
+    description: Create player warps
+    default: true
+  horizonutilities.pwarp.delete:
+    description: Delete own player warps
+    default: true
+  horizonutilities.pwarp.rate:
+    description: Rate player warps
+    default: true
+  horizonutilities.pwarp.admin:
+    description: Player warp admin commands
+    default: op
+  horizonutilities.warps.5:
+    description: Allow up to 5 player warps
+    default: false
+  horizonutilities.warps.10:
+    description: Allow up to 10 player warps
+    default: false
+  horizonutilities.warps.unlimited:
+    description: Unlimited player warps
+    default: false
+  horizonutilities.combat.use:
+    description: View combat status
+    default: true
+  horizonutilities.combat.admin:
+    description: Combat admin commands
+    default: op
+  horizonutilities.combat.bypass:
+    description: Bypass combat restrictions
+    default: false
+  horizonutilities.customitem.admin:
+    description: Give custom items to players
+    default: op
+  horizonutilities.tournament.use:
+    description: Participate in tournaments
+    default: true
+  horizonutilities.tournament.admin:
+    description: Create and manage tournaments
+    default: op
+  horizonutilities.config.admin:
+    description: Edit plugin configuration via dialog
     default: op

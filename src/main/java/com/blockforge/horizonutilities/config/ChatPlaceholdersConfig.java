@@ -15,14 +15,21 @@ public class ChatPlaceholdersConfig {
         this.plugin = plugin;
     }
 
+    private boolean formatChat;
+    private String chatFormat;
+
     public void load() {
         File file = new File(plugin.getDataFolder(), "chat-placeholders.yml");
         if (!file.exists()) plugin.saveResource("chat-placeholders.yml", false);
         config = YamlConfiguration.loadConfiguration(file);
         enabled = config.getBoolean("enabled", true);
+        formatChat = config.getBoolean("format-chat", false);
+        chatFormat = config.getString("chat-format", "<prefix><displayname><gray>: </gray><message>");
     }
 
     public boolean isEnabled() { return enabled; }
+    public boolean isFormatChat() { return formatChat; }
+    public String getChatFormat() { return chatFormat; }
 
     public boolean isPlaceholderEnabled(String name) {
         return config.getBoolean("placeholders." + name + ".enabled", true);

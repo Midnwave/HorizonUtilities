@@ -1,11 +1,38 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Bounty System Configuration
+# Place bounties on players with: /bounty set <player> <amount>
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
+
+# Enable or disable the bounty system entirely
 enabled: true
+
+# Minimum money a player can place as a bounty
 min-amount: 100.0
+
+# Maximum money a player can place as a single bounty
 max-amount: 1000000.0
+
+# Maximum number of separate bounties that can stack on one target
 max-bounties-per-target: 5
+
+# Days before an unclaimed bounty expires and the money is refunded
 expiration-days: 7
+
+# Extra cost multiplier when placing an anonymous bounty
+# e.g. 1.5 means a $1000 anonymous bounty costs $1500
 anonymous-cost-multiplier: 1.5
+
+# Allow multiple bounties on the same target to combine into one display total
 stacking: true
+
+# Block radius within which a player with an active bounty gets proximity alerts
 proximity-alert-range: 50
+
+# Announce server-wide when a new bounty is placed
 broadcast-new-bounty: true
+
+# Announce server-wide when a bounty is claimed (kill reward collected)
 broadcast-claim: true

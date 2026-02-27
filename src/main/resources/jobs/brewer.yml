@@ -1,65 +1,83 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities Job — Brewer
+# Earn money and XP by brewing potions at a brewing stand.
+# The material key is the potion effect type name (not a Bukkit Material).
+# Global job settings live in jobs-config.yml.
+# ─────────────────────────────────────────────────────────────────────────────
+
 display-name: "Brewer"
 icon: BREWING_STAND
 description: "Brew potions for profit"
 max-level: 100
 hourly-income-cap: -1
+
+# BREW fires when a potion batch completes in the brewing stand.
+# Material keys map to PotionEffectType names (or "AWKWARD", "THICK", "MUNDANE").
 actions:
   BREW:
+    # Base potions — low reward
     AWKWARD:
-      money: 1.0
-      xp: 3.0
+      money: 6.0
+      xp: 16.0
     THICK:
-      money: 0.5
-      xp: 1.5
+      money: 3.0
+      xp: 8.0
     MUNDANE:
-      money: 0.5
-      xp: 1.5
+      money: 3.0
+      xp: 8.0
+    # Utility potions — mid reward
     SPEED:
-      money: 2.0
-      xp: 6.0
+      money: 12.0
+      xp: 36.0
     STRENGTH:
-      money: 3.0
-      xp: 8.0
+      money: 18.0
+      xp: 48.0
     HEALING:
-      money: 3.0
-      xp: 8.0
+      money: 18.0
+      xp: 48.0
     FIRE_RESISTANCE:
-      money: 4.0
-      xp: 10.0
+      money: 25.0
+      xp: 60.0
     WATER_BREATHING:
-      money: 3.0
-      xp: 8.0
+      money: 18.0
+      xp: 48.0
     NIGHT_VISION:
-      money: 2.5
-      xp: 7.0
+      money: 14.0
+      xp: 40.0
+    # Premium potions — high reward
     INVISIBILITY:
-      money: 3.5
-      xp: 9.0
+      money: 22.0
+      xp: 55.0
     REGENERATION:
-      money: 4.0
-      xp: 10.0
+      money: 25.0
+      xp: 60.0
+    # Negative potions — lower reward
     POISON:
-      money: 2.0
-      xp: 6.0
+      money: 12.0
+      xp: 36.0
     WEAKNESS:
-      money: 1.5
-      xp: 4.0
+      money: 8.0
+      xp: 24.0
     SLOWNESS:
-      money: 1.5
-      xp: 4.0
+      money: 8.0
+      xp: 24.0
+
+# Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
   25: 0.05
   50: 0.10
   75: 0.10
   100: 0.15
+
+# Daily quest pool. weight = relative draw chance (higher = more common).
 quests:
   - id: brewer_speed
     description: "Brew 5 speed potions"
     action: BREW
     material: SPEED
     amount: 5
-    reward-money: 60.0
-    reward-xp: 120.0
+    reward-money: 450.0
+    reward-xp: 900.0
     weight: 4
     enabled: true
   - id: brewer_healing
@@ -67,8 +85,8 @@ quests:
     action: BREW
     material: HEALING
     amount: 5
-    reward-money: 70.0
-    reward-xp: 140.0
+    reward-money: 525.0
+    reward-xp: 1050.0
     weight: 4
     enabled: true
   - id: brewer_fire
@@ -76,7 +94,7 @@ quests:
     action: BREW
     material: FIRE_RESISTANCE
     amount: 3
-    reward-money: 80.0
-    reward-xp: 160.0
+    reward-money: 600.0
+    reward-xp: 1200.0
     weight: 3
     enabled: true

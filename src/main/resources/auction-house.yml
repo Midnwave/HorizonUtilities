@@ -1,25 +1,52 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Auction House Configuration
+# Access with: /ah
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Internal config version — do not change manually
 config-version: 1
 
+# Available listing durations players can choose from (in hours)
 durations: [1, 6, 12, 24, 48, 72]
+
+# Default duration (hours) pre-selected when opening the sell GUI
 default-duration: 24
 
+# Percentage of the listing price charged as an upfront listing fee (non-refundable)
 listing-fee-percent: 2.0
+
+# Percentage of the final sale price taken as a tax on successful sales
 sales-tax-percent: 5.0
+
+# Seconds a player must wait between creating new listings
 listing-cooldown-seconds: 10
+
+# Maximum active listings a player can have simultaneously (base, no permission)
 max-listings-default: 5
 
 anti-snipe:
+  # Automatically extend auctions that receive a bid close to expiry
   enabled: true
+  # Seconds before expiry that trigger an extension when a bid is placed
   trigger-seconds: 30
+  # How many seconds are added to the auction timer per anti-snipe event
   extension-seconds: 30
+  # Maximum number of extensions allowed per auction (prevents indefinite loops)
   max-extensions: 3
 
+# Hold funds from the buyer in escrow when a bid is placed (prevents overbidding)
 escrow: true
 
+# Minimum allowed listing/starting-bid price
 min-price: 1.0
+
+# Maximum allowed listing/starting-bid price
 max-price: 1000000.0
+
+# Minimum bid increment as a percentage of the current highest bid
 min-bid-increment-percent: 5.0
 
+# Items that cannot be listed on the auction house (Bukkit Material names)
 blacklisted-materials:
   - BEDROCK
   - COMMAND_BLOCK
@@ -33,6 +60,8 @@ blacklisted-materials:
   - DEBUG_STICK
   - KNOWLEDGE_BOOK
 
+# Browse categories shown in the auction GUI
+# auto-detect: true means items are categorised automatically by material type
 categories:
   Equipment:
     icon: SHIELD
@@ -51,5 +80,7 @@ categories:
     auto-detect: true
 
 notifications:
+  # Sound played when a player receives an auction notification
   sound: ENTITY_EXPERIENCE_ORB_PICKUP
+  # Queue notifications for offline players and deliver them on next login
   queue-offline: true

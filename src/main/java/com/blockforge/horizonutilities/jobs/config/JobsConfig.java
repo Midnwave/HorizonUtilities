@@ -1,6 +1,7 @@
 package com.blockforge.horizonutilities.jobs.config;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
+import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -56,6 +57,12 @@ public class JobsConfig {
 
     // Perk milestones
     private Map<Integer, Double> perkMilestones;
+
+    // Boss bar
+    private boolean bossBarEnabled;
+    private int bossBarDurationSeconds;
+    private BossBar.Color bossBarColor;
+    private BossBar.Overlay bossBarOverlay;
 
     public enum PaymentMode { PER_ACTION, PERIODIC }
     public enum ExploreMode { CHUNK_DISCOVERY, DISTANCE }
@@ -115,6 +122,13 @@ public class JobsConfig {
                 } catch (NumberFormatException ignored) {}
             }
         }
+
+        bossBarEnabled         = cfg.getBoolean("boss-bar.enabled", true);
+        bossBarDurationSeconds = cfg.getInt("boss-bar.duration-seconds", 5);
+        String colorStr        = cfg.getString("boss-bar.color", "BLUE").toUpperCase(Locale.ROOT);
+        String overlayStr      = cfg.getString("boss-bar.overlay", "PROGRESS").toUpperCase(Locale.ROOT);
+        bossBarColor   = safeEnum(BossBar.Color.class, colorStr, BossBar.Color.BLUE);
+        bossBarOverlay = safeEnum(BossBar.Overlay.class, overlayStr, BossBar.Overlay.PROGRESS);
     }
 
     // -------------------------------------------------------------------------
@@ -156,4 +170,8 @@ public class JobsConfig {
     public boolean isTaxNotifyPlayer()        { return taxNotifyPlayer; }
     public boolean isTaxNotifyOwner()         { return taxNotifyOwner; }
     public Map<Integer, Double> getPerkMilestones() { return Collections.unmodifiableMap(perkMilestones); }
+    public boolean isBossBarEnabled()             { return bossBarEnabled; }
+    public int getBossBarDurationSeconds()        { return bossBarDurationSeconds; }
+    public BossBar.Color getBossBarColor()        { return bossBarColor; }
+    public BossBar.Overlay getBossBarOverlay()    { return bossBarOverlay; }
 }
