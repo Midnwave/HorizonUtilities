@@ -86,6 +86,10 @@ commands:
     description: Custom tournament/event system
     usage: /<command> [create|start|stop|join|leave|status|list|reload]
     permission: horizonutilities.tournament.use
+  gems:
+    description: Gems secondary currency system
+    usage: /<command> [balance|pay|exchange|top|admin]
+    permission: horizonutilities.gems.use
   horizonconfig:
     description: Edit plugin configuration via dialog
     usage: /<command> [section]
@@ -290,6 +294,18 @@ permissions:
     default: true
   horizonutilities.tournament.admin:
     description: Create and manage tournaments
+    default: op
+  horizonutilities.gems.use:
+    description: Use the gems system
+    default: true
+  horizonutilities.gems.pay:
+    description: Send gems to other players
+    default: true
+  horizonutilities.gems.exchange:
+    description: Exchange money for gems
+    default: true
+  horizonutilities.gems.admin:
+    description: Gems admin commands
     default: op
   horizonutilities.config.admin:
     description: Edit plugin configuration via dialog

@@ -32,6 +32,8 @@ import com.blockforge.horizonutilities.auction.listeners.AuctionGUIListener;
 import com.blockforge.horizonutilities.auction.listeners.AuctionPlayerListener;
 import com.blockforge.horizonutilities.chat.PlaceholderManager;
 import com.blockforge.horizonutilities.chat.listeners.ChatListener;
+import com.blockforge.horizonutilities.chat.mentions.MentionListener;
+import com.blockforge.horizonutilities.chat.mentions.MentionManager;
 import com.blockforge.horizonutilities.config.AuctionHouseConfig;
 import com.blockforge.horizonutilities.config.ChatGamesConfig;
 import com.blockforge.horizonutilities.config.ChatPlaceholdersConfig;
@@ -78,6 +80,11 @@ import com.blockforge.horizonutilities.crafting.CraftingTableManager;
 import com.blockforge.horizonutilities.crafting.CraftingTableListener;
 import com.blockforge.horizonutilities.jobs.JobManager;
 import com.blockforge.horizonutilities.jobs.quests.QuestsIntegration;
+import com.blockforge.horizonutilities.gems.GemsListener;
+import com.blockforge.horizonutilities.gems.GemsManager;
+import com.blockforge.horizonutilities.gems.commands.GemsCommand;
+import com.blockforge.horizonutilities.jobs.quests.daily.DailyQuestListener;
+import com.blockforge.horizonutilities.jobs.quests.daily.DailyQuestManager;
 import com.blockforge.horizonutilities.maintenance.MaintenanceCommand;
 import com.blockforge.horizonutilities.maintenance.MaintenanceListener;
 import com.blockforge.horizonutilities.maintenance.MaintenanceManager;
@@ -131,6 +138,9 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private TournamentManager tournamentManager;
     private CraftingTableConfig craftingTableConfig;
     private CraftingTableManager craftingTableManager;
+    private MentionManager mentionManager;
+    private DailyQuestManager dailyQuestManager;
+    private GemsManager gemsManager;
 
     @Override
     public void onEnable() {
@@ -238,6 +248,13 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         craftingTableConfig.load();
         craftingTableManager = new CraftingTableManager(this, craftingTableConfig);
 
+        mentionManager = new MentionManager(this);
+
+        dailyQuestManager = new DailyQuestManager(this);
+
+        gemsManager = new GemsManager(this);
+        gemsManager.getConfig().load();
+
         var pm = getServer().getPluginManager();
         pm.registerEvents(new MaintenanceListener(maintenanceManager), this);
         pm.registerEvents(new ChatBubbleListener(this, chatBubbleManager), this);
@@ -251,6 +268,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         pm.registerEvents(new AuctionGUIListener(this), this);
         pm.registerEvents(new AuctionPlayerListener(this), this);
         pm.registerEvents(new ChatListener(this), this);
+        pm.registerEvents(new MentionListener(this, mentionManager), this);
         pm.registerEvents(new GameAnswerListener(this), this);
         pm.registerEvents(new BlackMarketGUIListener(this), this);
         pm.registerEvents(new BreakerUseListener(this), this);
@@ -271,6 +289,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         pm.registerEvents(new JobExploreListener(this), this);
         pm.registerEvents(new JobMiscListener(this), this);
         pm.registerEvents(new JobsGUIListener(this), this);
+        pm.registerEvents(new DailyQuestListener(this, dailyQuestManager), this);
+        pm.registerEvents(new GemsListener(this, gemsManager), this);
 
         var ahCmd = getCommand("ah");
         if (ahCmd != null) {
@@ -377,6 +397,13 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             maintCmd.setTabCompleter(maintenanceCommand);
         }
 
+        var gemsCmd = getCommand("gems");
+        if (gemsCmd != null) {
+            var gemsCmdExec = new GemsCommand(this, gemsManager);
+            gemsCmd.setExecutor(gemsCmdExec);
+            gemsCmd.setTabCompleter(gemsCmdExec);
+        }
+
         var horizonConfigCmd = getCommand("horizonconfig");
         if (horizonConfigCmd != null) {
             var hcCmd = new HorizonConfigCommand(this);
@@ -420,6 +447,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         if (blackMarketManager != null) blackMarketManager.reload();
         if (lotteryManager != null) lotteryManager.reload();
         if (jobManager != null) jobManager.getConfig().load();
+        if (dailyQuestManager != null) dailyQuestManager.reload();
+        if (gemsManager != null) gemsManager.getConfig().load();
     }
 
     public static HorizonUtilitiesPlugin getInstance() { return instance; }
@@ -459,4 +488,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public TournamentManager getTournamentManager()       { return tournamentManager; }
     public CraftingTableConfig getCraftingTableConfig()   { return craftingTableConfig; }
     public CraftingTableManager getCraftingTableManager() { return craftingTableManager; }
+    public MentionManager getMentionManager()             { return mentionManager; }
+    public DailyQuestManager getDailyQuestManager()      { return dailyQuestManager; }
+    public GemsManager getGemsManager()                   { return gemsManager; }
 }

@@ -1,0 +1,52 @@
+config-version: 1
+
+# Whether the gems system is enabled
+enabled: true
+
+# Starting gem balance for new players
+starting-balance: 0
+
+# Maximum gem balance a player can have (0 = unlimited)
+max-balance: 0
+
+# Whether to broadcast large gem transactions to all online players
+broadcast-large-transactions: true
+# Threshold for "large" transactions
+broadcast-threshold: 100
+
+# Money-to-gems exchange settings
+exchange:
+  enabled: true
+  # How many gems you get per dollar spent
+  rate: 0.1
+  # Minimum money amount to exchange
+  min-amount: 100.0
+  # Maximum money amount to exchange in a single transaction
+  max-amount: 1000000.0
+  # Tax percentage on exchanges (0 = no tax)
+  tax-percent: 5.0
+
+# Gem earning from quest completion
+quest-rewards:
+  enabled: true
+  # Chance (0-100) to earn gems when completing a daily quest
+  chance: 25
+  # Min/max gems earned per quest completion
+  min: 1
+  max: 5
+
+# Gem earning from job level milestones
+job-milestones:
+  enabled: true
+  # Gems earned when reaching these job levels
+  levels:
+    10: 5
+    25: 15
+    50: 50
+    75: 100
+    100: 250
+
+# Admin gem grant/take settings
+admin:
+  # Whether to log all admin gem operations
+  log-operations: true

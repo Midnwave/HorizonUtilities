@@ -299,6 +299,26 @@ public class DatabaseManager {
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_bounty_target ON bounties(target_uuid, status)");
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_bounty_status ON bounties(status)");
 
+            // Gems
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS gems (" +
+                "player_uuid TEXT PRIMARY KEY," +
+                "player_name TEXT NOT NULL," +
+                "balance REAL NOT NULL DEFAULT 0," +
+                "total_earned REAL NOT NULL DEFAULT 0," +
+                "total_spent REAL NOT NULL DEFAULT 0," +
+                "last_modified INTEGER NOT NULL)");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS gems_transactions (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "player_uuid TEXT NOT NULL," +
+                "transaction_type TEXT NOT NULL," +
+                "amount REAL NOT NULL," +
+                "balance_after REAL NOT NULL," +
+                "reason TEXT," +
+                "timestamp INTEGER NOT NULL)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_gems_tx_player ON gems_transactions(player_uuid)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_gems_tx_time ON gems_transactions(timestamp)");
+
             // Economy audit
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS economy_audit_log (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +

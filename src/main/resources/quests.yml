@@ -1,0 +1,373 @@
+# =============================================================================
+# Daily Quests Configuration
+# =============================================================================
+# Quests are assigned daily to players based on their active jobs.
+# Difficulty and rewards scale dynamically with job level and prestige.
+#
+# Quest amounts and rewards are BASE values — they scale up automatically:
+#   Scaled Amount  = base * (1 + level * level-scaling-factor) * (1 + prestige * prestige-scaling-factor)
+#   Scaled Reward  = base * (1 + level * level-scaling-factor * 1.5) * (1 + prestige * prestige-scaling-factor * 1.5)
+# =============================================================================
+
+settings:
+  # Enable or disable the daily quest system
+  enabled: true
+
+  # Number of quests assigned per day per player
+  quests-per-day: 3
+
+  # Time of day quests reset (server timezone, 24h format)
+  reset-time: "00:00"
+
+  # How much each job level increases difficulty/rewards (0.02 = +2% per level)
+  level-scaling-factor: 0.02
+
+  # How much each prestige increases difficulty/rewards (0.15 = +15% per prestige)
+  prestige-scaling-factor: 0.15
+
+  # Notify player when quests are assigned on login
+  notify-on-assign: true
+
+  # Notify player with title + chat when quest is completed
+  notify-on-complete: true
+
+  # Automatically grant rewards on completion (if false, player must claim)
+  auto-claim-rewards: true
+
+# =============================================================================
+# Quest Definitions
+# =============================================================================
+# Each quest has a unique ID and the following properties:
+#   job:          Which job this quest belongs to (matches job ID from jobs/)
+#   description:  Human-readable description shown to the player
+#   action:       Job action type (BREAK, PLACE, KILL, FISH, CRAFT, SMELT, etc.)
+#   material:     Specific material target (optional — omit for "any")
+#   amount:       Base target amount before scaling
+#   reward-money: Base money reward before scaling
+#   reward-xp:    Base job XP reward before scaling
+#   weight:       Selection weight (higher = more likely to be picked)
+#   enabled:      Whether this quest can be assigned
+# =============================================================================
+quests:
+
+  # ---- Miner Quests ----
+  miner_stone:
+    job: miner
+    description: "Mine stone blocks"
+    action: BREAK
+    material: STONE
+    amount: 64
+    reward-money: 50.00
+    reward-xp: 40.0
+    weight: 3
+    enabled: true
+
+  miner_coal:
+    job: miner
+    description: "Mine coal ore"
+    action: BREAK
+    material: COAL_ORE
+    amount: 24
+    reward-money: 75.00
+    reward-xp: 60.0
+    weight: 2
+    enabled: true
+
+  miner_iron:
+    job: miner
+    description: "Mine iron ore"
+    action: BREAK
+    material: IRON_ORE
+    amount: 16
+    reward-money: 120.00
+    reward-xp: 80.0
+    weight: 2
+    enabled: true
+
+  miner_gold:
+    job: miner
+    description: "Mine gold ore"
+    action: BREAK
+    material: GOLD_ORE
+    amount: 8
+    reward-money: 150.00
+    reward-xp: 100.0
+    weight: 1
+    enabled: true
+
+  miner_diamond:
+    job: miner
+    description: "Mine diamond ore"
+    action: BREAK
+    material: DIAMOND_ORE
+    amount: 4
+    reward-money: 250.00
+    reward-xp: 150.0
+    weight: 1
+    enabled: true
+
+  miner_deepslate:
+    job: miner
+    description: "Mine deepslate blocks"
+    action: BREAK
+    material: DEEPSLATE
+    amount: 48
+    reward-money: 60.00
+    reward-xp: 45.0
+    weight: 2
+    enabled: true
+
+  # ---- Woodcutter Quests ----
+  woodcutter_oak:
+    job: woodcutter
+    description: "Chop oak logs"
+    action: BREAK
+    material: OAK_LOG
+    amount: 48
+    reward-money: 45.00
+    reward-xp: 35.0
+    weight: 3
+    enabled: true
+
+  woodcutter_birch:
+    job: woodcutter
+    description: "Chop birch logs"
+    action: BREAK
+    material: BIRCH_LOG
+    amount: 48
+    reward-money: 45.00
+    reward-xp: 35.0
+    weight: 2
+    enabled: true
+
+  woodcutter_spruce:
+    job: woodcutter
+    description: "Chop spruce logs"
+    action: BREAK
+    material: SPRUCE_LOG
+    amount: 48
+    reward-money: 45.00
+    reward-xp: 35.0
+    weight: 2
+    enabled: true
+
+  woodcutter_any:
+    job: woodcutter
+    description: "Chop any logs"
+    action: BREAK
+    amount: 96
+    reward-money: 80.00
+    reward-xp: 60.0
+    weight: 2
+    enabled: true
+
+  # ---- Farmer Quests ----
+  farmer_wheat:
+    job: farmer
+    description: "Harvest wheat"
+    action: FARM
+    material: WHEAT
+    amount: 64
+    reward-money: 40.00
+    reward-xp: 30.0
+    weight: 3
+    enabled: true
+
+  farmer_carrots:
+    job: farmer
+    description: "Harvest carrots"
+    action: FARM
+    material: CARROTS
+    amount: 48
+    reward-money: 50.00
+    reward-xp: 35.0
+    weight: 2
+    enabled: true
+
+  farmer_potatoes:
+    job: farmer
+    description: "Harvest potatoes"
+    action: FARM
+    material: POTATOES
+    amount: 48
+    reward-money: 50.00
+    reward-xp: 35.0
+    weight: 2
+    enabled: true
+
+  farmer_nether_wart:
+    job: farmer
+    description: "Harvest nether wart"
+    action: FARM
+    material: NETHER_WART
+    amount: 32
+    reward-money: 80.00
+    reward-xp: 55.0
+    weight: 1
+    enabled: true
+
+  # ---- Hunter Quests ----
+  hunter_zombies:
+    job: hunter
+    description: "Slay zombies"
+    action: KILL
+    material: ZOMBIE
+    amount: 20
+    reward-money: 80.00
+    reward-xp: 60.0
+    weight: 3
+    enabled: true
+
+  hunter_skeletons:
+    job: hunter
+    description: "Slay skeletons"
+    action: KILL
+    material: SKELETON
+    amount: 20
+    reward-money: 80.00
+    reward-xp: 60.0
+    weight: 3
+    enabled: true
+
+  hunter_spiders:
+    job: hunter
+    description: "Slay spiders"
+    action: KILL
+    material: SPIDER
+    amount: 15
+    reward-money: 90.00
+    reward-xp: 65.0
+    weight: 2
+    enabled: true
+
+  hunter_creepers:
+    job: hunter
+    description: "Slay creepers"
+    action: KILL
+    material: CREEPER
+    amount: 10
+    reward-money: 120.00
+    reward-xp: 80.0
+    weight: 1
+    enabled: true
+
+  hunter_endermen:
+    job: hunter
+    description: "Slay endermen"
+    action: KILL
+    material: ENDERMAN
+    amount: 5
+    reward-money: 200.00
+    reward-xp: 120.0
+    weight: 1
+    enabled: true
+
+  # ---- Fisherman Quests ----
+  fisherman_any:
+    job: fisherman
+    description: "Catch fish"
+    action: FISH
+    amount: 20
+    reward-money: 100.00
+    reward-xp: 70.0
+    weight: 3
+    enabled: true
+
+  fisherman_cod:
+    job: fisherman
+    description: "Catch cod"
+    action: FISH
+    material: COD
+    amount: 15
+    reward-money: 80.00
+    reward-xp: 55.0
+    weight: 2
+    enabled: true
+
+  fisherman_salmon:
+    job: fisherman
+    description: "Catch salmon"
+    action: FISH
+    material: SALMON
+    amount: 12
+    reward-money: 90.00
+    reward-xp: 65.0
+    weight: 2
+    enabled: true
+
+  # ---- Builder Quests ----
+  builder_place:
+    job: builder
+    description: "Place blocks"
+    action: PLACE
+    amount: 128
+    reward-money: 60.00
+    reward-xp: 50.0
+    weight: 3
+    enabled: true
+
+  builder_stone:
+    job: builder
+    description: "Place stone blocks"
+    action: PLACE
+    material: STONE
+    amount: 64
+    reward-money: 50.00
+    reward-xp: 40.0
+    weight: 2
+    enabled: true
+
+  # ---- Crafter Quests ----
+  crafter_any:
+    job: crafter
+    description: "Craft items"
+    action: CRAFT
+    amount: 32
+    reward-money: 70.00
+    reward-xp: 50.0
+    weight: 3
+    enabled: true
+
+  # ---- Enchanter Quests ----
+  enchanter_any:
+    job: enchanter
+    description: "Enchant items"
+    action: ENCHANT
+    amount: 5
+    reward-money: 150.00
+    reward-xp: 100.0
+    weight: 2
+    enabled: true
+
+  # ---- Brewer Quests ----
+  brewer_any:
+    job: brewer
+    description: "Brew potions"
+    action: BREW
+    amount: 10
+    reward-money: 120.00
+    reward-xp: 80.0
+    weight: 2
+    enabled: true
+
+  # ---- Smelter Quests ----
+  smelter_any:
+    job: smelter
+    description: "Smelt items"
+    action: SMELT
+    amount: 32
+    reward-money: 60.00
+    reward-xp: 45.0
+    weight: 3
+    enabled: true
+
+  # ---- Explorer Quests ----
+  explorer_chunks:
+    job: explorer
+    description: "Discover new chunks"
+    action: EXPLORE_CHUNK
+    amount: 25
+    reward-money: 100.00
+    reward-xp: 75.0
+    weight: 2
+    enabled: true

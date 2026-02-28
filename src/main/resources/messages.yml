@@ -147,3 +147,9 @@ lottery-broadcast-cancel: "<lottery-prefix> <red><tier></red> was cancelled — 
 lottery-broadcast-admin-cancel: "<lottery-prefix> <red><tier></red> has been cancelled by an admin. All tickets have been refunded."
 lottery-winner-direct: "<lottery-prefix> <green>You won the <gold><tier></gold> lottery! <yellow><amount></yellow> has been deposited into your account!"
 lottery-draw-reminder: "<lottery-prefix> <gold><tier></gold> draws in <yellow><time></yellow>! Current pot: <yellow><pot></yellow>. Buy tickets with <gold>/lottery buy <tier_id></gold>!"
+
+# Mentions
+mention-subtitle: "<gold><player></gold> <gray>mentioned you in chat"
+
+# Gems
+gems-disabled: "<prefix> <red>Gems system is disabled."

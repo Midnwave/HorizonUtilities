@@ -351,6 +351,10 @@ public class JobManager {
             lastJp  = jp;
             jp.touch();
 
+            // Track daily quest progress
+            if (plugin.getDailyQuestManager() != null) {
+                plugin.getDailyQuestManager().trackAction(player, action, material, jp.getJobId());
+            }
         }
 
         // Update accumulated action bar display and boss bar
@@ -403,6 +407,11 @@ public class JobManager {
         // AuraSkills milestone rewards
         if (plugin.getAuraSkillsManager() != null) {
             plugin.getAuraSkillsManager().checkMilestone(player, jp.getLevel());
+        }
+
+        // Gems milestone rewards
+        if (plugin.getGemsManager() != null) {
+            plugin.getGemsManager().onJobLevelUp(player, jp.getLevel());
         }
 
         int maxLevel = getMaxLevelForJob(jp.getJobId());

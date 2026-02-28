@@ -6,8 +6,11 @@ import com.blockforge.horizonutilities.jobs.JobPlayer;
 import com.blockforge.horizonutilities.jobs.boost.BoostEvent;
 import com.blockforge.horizonutilities.jobs.gui.*;
 import com.blockforge.horizonutilities.jobs.leaderboard.JobLeaderboardGUI;
+import com.blockforge.horizonutilities.jobs.quests.daily.ActiveQuest;
+import com.blockforge.horizonutilities.jobs.quests.daily.DailyQuestManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -158,13 +161,60 @@ public class JobsCommand implements CommandExecutor {
 
     private void cmdQuests(CommandSender sender) {
         if (!(sender instanceof Player player)) { noConsole(sender); return; }
-        player.sendMessage(Component.text("[Jobs] Quest system is powered by ", NamedTextColor.YELLOW)
-                .append(Component.text("PikaMug/Quests", NamedTextColor.GOLD))
-                .append(Component.text(".", NamedTextColor.YELLOW)));
-        player.sendMessage(Component.text("[Jobs] Use ", NamedTextColor.GRAY)
-                .append(Component.text("/quests", NamedTextColor.AQUA))
-                .append(Component.text(" to view and take quests.", NamedTextColor.GRAY)));
-        player.sendMessage(Component.text("[Jobs] Look for quests with Job objectives matching your work!", NamedTextColor.DARK_GRAY));
+
+        DailyQuestManager qm = plugin.getDailyQuestManager();
+        if (qm == null || !qm.getConfig().isEnabled()) {
+            player.sendMessage(Component.text("[Jobs] Daily quests are currently disabled.", NamedTextColor.GRAY));
+            return;
+        }
+
+        java.util.List<ActiveQuest> quests = qm.getPlayerQuests(player.getUniqueId());
+        if (quests.isEmpty()) {
+            player.sendMessage(Component.text("[Jobs] You have no daily quests. Join a job first!", NamedTextColor.YELLOW));
+            return;
+        }
+
+        player.sendMessage(Component.empty());
+        player.sendMessage(Component.text("      Daily Quests", NamedTextColor.GOLD, TextDecoration.BOLD));
+        player.sendMessage(Component.text("  ─────────────────────", NamedTextColor.DARK_GRAY));
+
+        for (ActiveQuest q : quests) {
+            NamedTextColor statusColor = q.isCompleted() ? NamedTextColor.GREEN : NamedTextColor.YELLOW;
+            String statusIcon = q.isCompleted() ? "✔" : "○";
+            String progress = q.getCurrentProgress() + "/" + q.getTargetAmount();
+            int pct = (int) (q.getProgressPercent() * 100);
+
+            // Build progress bar
+            int barLen = 15;
+            int filled = (int) (q.getProgressPercent() * barLen);
+            StringBuilder bar = new StringBuilder();
+            for (int i = 0; i < barLen; i++) bar.append(i < filled ? "█" : "░");
+
+            String moneyStr = plugin.getVaultHook().isAvailable()
+                    ? plugin.getVaultHook().format(q.getRewardMoney())
+                    : String.format("$%.2f", q.getRewardMoney());
+
+            player.sendMessage(Component.text("  " + statusIcon + " ", statusColor)
+                    .append(Component.text(q.getDescription(), NamedTextColor.WHITE))
+                    .append(Component.text(" [" + q.getJobId() + "]", NamedTextColor.DARK_GRAY)));
+
+            player.sendMessage(Component.text("    ", NamedTextColor.GRAY)
+                    .append(Component.text(bar.toString(), statusColor))
+                    .append(Component.text(" " + progress + " (" + pct + "%)", NamedTextColor.GRAY)));
+
+            if (!q.isCompleted()) {
+                player.sendMessage(Component.text("    Rewards: ", NamedTextColor.DARK_GRAY)
+                        .append(Component.text(moneyStr, NamedTextColor.GREEN))
+                        .append(Component.text(" + ", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(String.format("%.0f XP", q.getRewardXp()), NamedTextColor.AQUA)));
+            }
+        }
+
+        long completed = quests.stream().filter(ActiveQuest::isCompleted).count();
+        player.sendMessage(Component.text("  ─────────────────────", NamedTextColor.DARK_GRAY));
+        player.sendMessage(Component.text("  Completed: ", NamedTextColor.GRAY)
+                .append(Component.text(completed + "/" + quests.size(), NamedTextColor.GREEN)));
+        player.sendMessage(Component.empty());
     }
 
     private void cmdPrestige(CommandSender sender, String[] args) {
