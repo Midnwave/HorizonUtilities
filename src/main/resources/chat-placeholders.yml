@@ -53,3 +53,12 @@ placeholders:
     token: "<ping>"
     # MiniMessage format; <ms> is substituted with the ping in milliseconds
     format: "<yellow><ms>ms</yellow>"
+
+# ─── Chat Mentions ──────────────────────────────────────────────────────────────
+# Type @playername in chat to mention someone. They hear a sound and see a subtitle.
+mentions:
+  enabled: true
+  # Sound played to the mentioned player (Bukkit Sound enum name)
+  sound: ENTITY_EXPERIENCE_ORB_PICKUP
+  # MiniMessage color name used to highlight the @mention in chat
+  highlight-color: gold

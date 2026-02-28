@@ -25,11 +25,21 @@ public class ChatPlaceholdersConfig {
         enabled = config.getBoolean("enabled", true);
         formatChat = config.getBoolean("format-chat", false);
         chatFormat = config.getString("chat-format", "<prefix><displayname><gray>: </gray><message>");
+        mentionsEnabled = config.getBoolean("mentions.enabled", true);
+        mentionSound = config.getString("mentions.sound", "ENTITY_EXPERIENCE_ORB_PICKUP");
+        mentionHighlightColor = config.getString("mentions.highlight-color", "gold");
     }
+
+    private boolean mentionsEnabled;
+    private String mentionSound;
+    private String mentionHighlightColor;
 
     public boolean isEnabled() { return enabled; }
     public boolean isFormatChat() { return formatChat; }
     public String getChatFormat() { return chatFormat; }
+    public boolean isMentionsEnabled() { return mentionsEnabled; }
+    public String getMentionSound() { return mentionSound; }
+    public String getMentionHighlightColor() { return mentionHighlightColor; }
 
     public boolean isPlaceholderEnabled(String name) {
         return config.getBoolean("placeholders." + name + ".enabled", true);
