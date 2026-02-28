@@ -415,6 +415,11 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         if (tradeConfig != null) tradeConfig.load();
         if (bountyConfig != null) bountyConfig.load();
         if (chatBubbleConfig != null) chatBubbleConfig.load();
+        if (combatConfig != null) combatConfig.load();
+        if (craftingTableConfig != null) craftingTableConfig.load();
+        if (blackMarketManager != null) blackMarketManager.reload();
+        if (lotteryManager != null) lotteryManager.reload();
+        if (jobManager != null) jobManager.getConfig().load();
     }
 
     public static HorizonUtilitiesPlugin getInstance() { return instance; }

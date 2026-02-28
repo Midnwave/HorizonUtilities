@@ -62,7 +62,22 @@ public class WordList {
     public static String randomWord() {
         List<List<String>> all = List.of(MOBS, ITEMS, BLOCKS, ENCHANTMENTS, BIOMES);
         List<String> chosen = all.get(ThreadLocalRandom.current().nextInt(all.size()));
-        return chosen.get(ThreadLocalRandom.current().nextInt(chosen.size()));
+        String word = chosen.get(ThreadLocalRandom.current().nextInt(chosen.size()));
+        return capitalizeWords(word);
+    }
+
+    /** Capitalizes the first letter of each word (e.g. "diamond sword" -> "Diamond Sword"). */
+    private static String capitalizeWords(String input) {
+        String[] words = input.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < words.length; i++) {
+            if (i > 0) sb.append(" ");
+            if (!words[i].isEmpty()) {
+                sb.append(Character.toUpperCase(words[i].charAt(0)));
+                if (words[i].length() > 1) sb.append(words[i].substring(1));
+            }
+        }
+        return sb.toString();
     }
 
     public static String randomFrom(List<String> list) {

@@ -1,7 +1,6 @@
 package com.blockforge.horizonutilities.config.dialog;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
-import com.blockforge.horizonutilities.dialog.DialogUtil;
 import io.papermc.paper.dialog.Dialog;
 import io.papermc.paper.registry.data.dialog.ActionButton;
 import io.papermc.paper.registry.data.dialog.DialogBase;
@@ -46,20 +45,19 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
     static {
         SECTIONS.put("jobs",          "jobs-config.yml");
         SECTIONS.put("auction",       "auction-house.yml");
-        SECTIONS.put("chatgames",     "chatgames.yml");
+        SECTIONS.put("chatgames",     "chat-games.yml");
         SECTIONS.put("chat",          "chat-placeholders.yml");
         SECTIONS.put("chatbubbles",   "chat-bubbles.yml");
         SECTIONS.put("bounty",        "bounty.yml");
         SECTIONS.put("lottery",       "lottery.yml");
         SECTIONS.put("trade",         "trade.yml");
-        SECTIONS.put("blackmarket",   "blackmarket.yml");
+        SECTIONS.put("blackmarket",   "black-market.yml");
         SECTIONS.put("warps",         "admin-warps.yml");
         SECTIONS.put("playerwarps",   "player-warps.yml");
         SECTIONS.put("combat",        "combat.yml");
         SECTIONS.put("customitems",   "custom-items.yml");
         SECTIONS.put("tournaments",   "tournaments.yml");
         SECTIONS.put("crafting",      "crafting-tables.yml");
-        SECTIONS.put("maintenance",   "maintenance.yml");
     }
 
     /** Human-readable description for each config section */
@@ -80,11 +78,26 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
         SECTION_DESCRIPTIONS.put("customitems", "Custom items \u2014 recipes & attributes");
         SECTION_DESCRIPTIONS.put("tournaments", "Tournaments \u2014 schedules & rewards");
         SECTION_DESCRIPTIONS.put("crafting",    "Crafting tables \u2014 custom crafting stations");
-        SECTION_DESCRIPTIONS.put("maintenance", "Maintenance mode \u2014 MOTD & kick settings");
+        // maintenance uses JSON state, not a configurable YAML file
     }
+
+    private final ConfigChestGUI chestGUI;
 
     public HorizonConfigCommand(HorizonUtilitiesPlugin plugin) {
         this.plugin = plugin;
+        this.chestGUI = new ConfigChestGUI(plugin);
+        // Register chest GUI as event listener for click/drag/close handling
+        plugin.getServer().getPluginManager().registerEvents(chestGUI, plugin);
+    }
+
+    /** Returns the section name -> file name mapping. */
+    public static Map<String, String> getSections() {
+        return Collections.unmodifiableMap(SECTIONS);
+    }
+
+    /** Returns the section name -> description mapping. */
+    public static Map<String, String> getSectionDescriptions() {
+        return Collections.unmodifiableMap(SECTION_DESCRIPTIONS);
     }
 
     @Override
@@ -165,8 +178,8 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
             );
             player.showDialog(dialog);
         } catch (Exception e) {
-            // Dialog API not available — fall back to chat
-            showMenuChat(player);
+            // Dialog API not available — fall back to chest GUI
+            chestGUI.openMenu(player);
         }
     }
 
@@ -178,9 +191,9 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        File file = new File(plugin.getDataFolder(), fileName);
+        File file = getConfigFile(fileName);
         if (!file.exists()) {
-            player.sendMessage(Component.text("Config file not found: " + fileName, NamedTextColor.RED));
+            player.sendMessage(prefix().append(Component.text("Config file not found: " + fileName, NamedTextColor.RED)));
             return;
         }
 
@@ -246,7 +259,8 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
             );
             player.showDialog(dialog);
         } catch (Exception e) {
-            showSectionChat(player, section);
+            // Dialog API not available — fall back to chest GUI
+            chestGUI.openSection(player, section);
         }
     }
 
@@ -257,20 +271,20 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
     private void handleEdit(Player player, String section, String key) {
         String fileName = SECTIONS.get(section);
         if (fileName == null) {
-            player.sendMessage(Component.text("Unknown section: " + section, NamedTextColor.RED));
+            player.sendMessage(prefix().append(Component.text("Unknown section: " + section, NamedTextColor.RED)));
             return;
         }
 
-        File file = new File(plugin.getDataFolder(), fileName);
+        File file = getConfigFile(fileName);
         if (!file.exists()) {
-            player.sendMessage(Component.text("Config file not found: " + fileName, NamedTextColor.RED));
+            player.sendMessage(prefix().append(Component.text("Config file not found: " + fileName, NamedTextColor.RED)));
             return;
         }
 
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         Object current = cfg.get(key);
         if (current == null || current instanceof org.bukkit.configuration.ConfigurationSection) {
-            player.sendMessage(Component.text("Key not found: " + key, NamedTextColor.RED));
+            player.sendMessage(prefix().append(Component.text("Key not found: " + key, NamedTextColor.RED)));
             return;
         }
 
@@ -281,55 +295,99 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
         String desc = lookupComment(comments, key);
         String descLine = desc != null ? desc + "\n\n" : "";
 
-        // For boolean values, use a simple confirmation toggle instead of text input
-        if (current instanceof Boolean boolVal) {
-            boolean newVal = !boolVal;
-            DialogUtil.showConfirmation(player,
-                    Component.text("Edit: " + key),
-                    Component.text(descLine + "Current: " + currentVal + "\nSet to: " + newVal + "?"),
-                    Component.text("Set to " + newVal),
-                    Component.text("Cancel"),
-                    () -> {
-                        applyConfigValue(player, section, fileName, key, current, String.valueOf(newVal));
-                        // Re-open section dialog so they can keep editing
-                        showSectionDialog(player, section);
-                    }
-            );
-            return;
-        }
-
-        // For other types, use text input dialog
+        // Build dialogs directly so both Confirm and Cancel navigate back to the section
         try {
-            DialogInput valueInput = DialogInput.text("config_value", Component.text(key))
-                    .width(300)
-                    .initial(currentVal)
-                    .maxLength(200)
-                    .build();
+            if (current instanceof Boolean boolVal) {
+                boolean newVal = !boolVal;
+                Dialog dialog = Dialog.create(builder -> builder.empty()
+                    .base(DialogBase.builder(Component.text("Edit: " + key))
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.CLOSE)
+                        .body(List.of(DialogBody.plainMessage(
+                            Component.text(descLine + "Current: " + currentVal + "\nSet to: " + newVal + "?"))))
+                        .build())
+                    .type(DialogType.confirmation(
+                        ActionButton.builder(Component.text("Set to " + newVal, NamedTextColor.GREEN))
+                            .width(150)
+                            .action(DialogAction.customClick(
+                                (response, audience) -> {
+                                    if (audience instanceof Player p) {
+                                        plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                            applyConfigValue(p, section, fileName, key, current, String.valueOf(newVal));
+                                            showSectionDialog(p, section);
+                                        });
+                                    }
+                                },
+                                ClickCallback.Options.builder().uses(1).build()
+                            )).build(),
+                        ActionButton.builder(Component.text("Back", NamedTextColor.GRAY))
+                            .width(150)
+                            .action(DialogAction.customClick(
+                                (response, audience) -> {
+                                    if (audience instanceof Player p) {
+                                        plugin.getServer().getScheduler().runTask(plugin, () -> showSectionDialog(p, section));
+                                    }
+                                },
+                                ClickCallback.Options.builder().uses(1).build()
+                            )).build()
+                    ))
+                );
+                player.showDialog(dialog);
+            } else {
+                DialogInput valueInput = DialogInput.text("config_value", Component.text(key))
+                        .width(300)
+                        .initial(currentVal)
+                        .maxLength(200)
+                        .build();
 
-            DialogUtil.showConfirmationWithInput(player,
-                    Component.text("Edit: " + section + "." + key),
-                    Component.text(descLine + "Current: " + currentVal +
-                            "\nType: " + current.getClass().getSimpleName()),
-                    List.of(valueInput),
-                    Component.text("Save"),
-                    Component.text("Cancel"),
-                    (response) -> {
-                        String newVal = response.getText("config_value");
-                        if (newVal != null && !newVal.trim().isEmpty()) {
-                            applyConfigValue(player, section, fileName, key, current, newVal.trim());
-                        }
-                        // Re-open section dialog so they can keep editing
-                        showSectionDialog(player, section);
-                    }
-            );
+                Dialog dialog = Dialog.create(builder -> builder.empty()
+                    .base(DialogBase.builder(Component.text("Edit: " + section + "." + key))
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.CLOSE)
+                        .body(List.of(DialogBody.plainMessage(
+                            Component.text(descLine + "Current: " + currentVal +
+                                "\nType: " + current.getClass().getSimpleName()))))
+                        .inputs(List.of(valueInput))
+                        .build())
+                    .type(DialogType.confirmation(
+                        ActionButton.builder(Component.text("Save", NamedTextColor.GREEN))
+                            .width(150)
+                            .action(DialogAction.customClick(
+                                (response, audience) -> {
+                                    if (audience instanceof Player p) {
+                                        plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                            String newVal = response.getText("config_value");
+                                            if (newVal != null && !newVal.trim().isEmpty()) {
+                                                applyConfigValue(p, section, fileName, key, current, newVal.trim());
+                                            }
+                                            showSectionDialog(p, section);
+                                        });
+                                    }
+                                },
+                                ClickCallback.Options.builder().uses(1).build()
+                            )).build(),
+                        ActionButton.builder(Component.text("Back", NamedTextColor.GRAY))
+                            .width(150)
+                            .action(DialogAction.customClick(
+                                (response, audience) -> {
+                                    if (audience instanceof Player p) {
+                                        plugin.getServer().getScheduler().runTask(plugin, () -> showSectionDialog(p, section));
+                                    }
+                                },
+                                ClickCallback.Options.builder().uses(1).build()
+                            )).build()
+                    ))
+                );
+                player.showDialog(dialog);
+            }
         } catch (Exception e) {
-            // Dialog API not available (Bedrock client / old version) — fall back to chat suggestion
+            // Dialog API not available — fall back to chat suggestion
             String suggestCmd = "/horizonconfig set " + section + " " + key + " " + currentVal;
-            player.sendMessage(Component.text("Edit ", NamedTextColor.GOLD)
+            player.sendMessage(prefix().append(Component.text("Edit ", NamedTextColor.GOLD))
                     .append(Component.text(key, NamedTextColor.YELLOW))
                     .append(Component.text(" \u2014 click to edit in chat:", NamedTextColor.GRAY)));
             if (desc != null) {
-                player.sendMessage(Component.text(desc, NamedTextColor.DARK_GRAY));
+                player.sendMessage(Component.text("  " + desc, NamedTextColor.DARK_GRAY));
             }
             player.sendMessage(Component.text(suggestCmd, NamedTextColor.WHITE)
                     .clickEvent(ClickEvent.suggestCommand(suggestCmd))
@@ -339,20 +397,21 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
 
     private void applyConfigValue(Player player, String section, String fileName,
                                    String key, Object current, String rawValue) {
-        File file = new File(plugin.getDataFolder(), fileName);
+        File file = getConfigFile(fileName);
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         Object parsed = parseValue(current, rawValue);
         cfg.set(key, parsed);
         try {
             cfg.save(file);
             plugin.reloadAllConfigs();
-            player.sendMessage(Component.text("Set ", NamedTextColor.GREEN)
+            player.sendMessage(prefix()
+                    .append(Component.text("Set ", NamedTextColor.GREEN))
                     .append(Component.text(section + "." + key, NamedTextColor.YELLOW))
                     .append(Component.text(" = ", NamedTextColor.GRAY))
                     .append(Component.text(parsed.toString(), NamedTextColor.WHITE))
                     .append(Component.text(" (saved + reloaded)", NamedTextColor.DARK_GRAY)));
         } catch (IOException e) {
-            player.sendMessage(Component.text("Failed to save: " + e.getMessage(), NamedTextColor.RED));
+            player.sendMessage(prefix().append(Component.text("Failed to save: " + e.getMessage(), NamedTextColor.RED)));
         }
     }
 
@@ -486,6 +545,19 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
     // Utility
     // -------------------------------------------------------------------------
 
+    /** Gets the config file, saving it from resources if it doesn't exist yet. */
+    private File getConfigFile(String fileName) {
+        File file = new File(plugin.getDataFolder(), fileName);
+        if (!file.exists()) {
+            try { plugin.saveResource(fileName, false); } catch (Exception ignored) {}
+        }
+        return file;
+    }
+
+    private Component prefix() {
+        return plugin.getMessagesManager().format("prefix").append(Component.text(" "));
+    }
+
     private List<String> getAllLeafKeys(FileConfiguration cfg, String prefix) {
         List<String> keys = new ArrayList<>();
         var section = prefix.isEmpty() ? cfg : cfg.getConfigurationSection(prefix);
@@ -522,16 +594,16 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        File file = new File(plugin.getDataFolder(), fileName);
+        File file = getConfigFile(fileName);
         if (!file.exists()) {
-            sender.sendMessage(Component.text("Config file not found: " + fileName, NamedTextColor.RED));
+            sender.sendMessage(prefix().append(Component.text("Config file not found: " + fileName, NamedTextColor.RED)));
             return;
         }
 
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         Object current = cfg.get(key);
         if (current == null) {
-            sender.sendMessage(Component.text("Key not found: " + key, NamedTextColor.RED));
+            sender.sendMessage(prefix().append(Component.text("Key not found: " + key, NamedTextColor.RED)));
             return;
         }
 
@@ -542,13 +614,14 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
         try {
             cfg.save(file);
             plugin.reloadAllConfigs();
-            sender.sendMessage(Component.text("Set ", NamedTextColor.GREEN)
+            sender.sendMessage(prefix()
+                    .append(Component.text("Set ", NamedTextColor.GREEN))
                     .append(Component.text(section + "." + key, NamedTextColor.YELLOW))
                     .append(Component.text(" = ", NamedTextColor.GRAY))
                     .append(Component.text(parsed.toString(), NamedTextColor.WHITE))
                     .append(Component.text(" (saved + reloaded)", NamedTextColor.DARK_GRAY)));
         } catch (IOException e) {
-            sender.sendMessage(Component.text("Failed to save: " + e.getMessage(), NamedTextColor.RED));
+            sender.sendMessage(prefix().append(Component.text("Failed to save: " + e.getMessage(), NamedTextColor.RED)));
         }
     }
 

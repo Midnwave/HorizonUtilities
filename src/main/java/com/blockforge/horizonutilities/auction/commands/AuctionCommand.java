@@ -3,11 +3,13 @@ package com.blockforge.horizonutilities.auction.commands;
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
 import com.blockforge.horizonutilities.auction.AuctionListing;
 import com.blockforge.horizonutilities.auction.dialogs.CreateListingDialog;
+import com.blockforge.horizonutilities.auction.dialogs.SellInputDialog;
 import com.blockforge.horizonutilities.auction.gui.AuctionCollectionGUI;
 import com.blockforge.horizonutilities.auction.gui.AuctionHistoryGUI;
 import com.blockforge.horizonutilities.auction.gui.AuctionMainGUI;
 import com.blockforge.horizonutilities.auction.gui.PriceHistoryGUI;
 import com.blockforge.horizonutilities.auction.listeners.AuctionGUIListener;
+import com.blockforge.horizonutilities.util.BedrockUtil;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -86,12 +88,6 @@ public class AuctionCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length < 2) {
-            player.sendMessage(plugin.getMessagesManager().format("prefix")
-                    .append(net.kyori.adventure.text.Component.text(" Usage: /ah sell <price> [buyout] [duration]")));
-            return true;
-        }
-
         ItemStack held = player.getInventory().getItemInMainHand();
         if (held.getType().isAir()) {
             msg.send(player, "ah-nothing-in-hand");
@@ -122,6 +118,13 @@ public class AuctionCommand implements CommandExecutor {
                     return true;
                 }
             }
+        }
+
+        // No price specified — open dialog with input fields
+        if (args.length < 2) {
+            lastListingTime.put(player.getUniqueId(), System.currentTimeMillis());
+            SellInputDialog.show(player, held);
+            return true;
         }
 
         double startPrice;
