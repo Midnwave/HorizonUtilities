@@ -15,39 +15,39 @@ actions:
   # FARM fires when a crop block is broken at full maturity
   FARM:
     WHEAT:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     CARROTS:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     POTATOES:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     BEETROOTS:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     MELON_SLICE:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     PUMPKIN:
-      money: 5.0
+      money: 3.18
       xp: 16.0
     SUGAR_CANE:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     COCOA_BEANS:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     NETHER_WART:
-      money: 6.0
+      money: 3.82
       xp: 20.0
   # BREAK fires for berry bushes (no maturity check)
   BREAK:
     SWEET_BERRY_BUSH:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     GLOW_BERRIES:
-      money: 5.0
+      money: 3.18
       xp: 16.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -64,7 +64,7 @@ quests:
     action: FARM
     material: WHEAT
     amount: 128
-    reward-money: 360.0
+    reward-money: 229.50
     reward-xp: 720.0
     weight: 5
     enabled: true
@@ -73,7 +73,7 @@ quests:
     action: FARM
     material: CARROTS
     amount: 64
-    reward-money: 300.0
+    reward-money: 191.25
     reward-xp: 600.0
     weight: 5
     enabled: true
@@ -82,7 +82,7 @@ quests:
     action: FARM
     material: PUMPKIN
     amount: 16
-    reward-money: 540.0
+    reward-money: 344.25
     reward-xp: 1080.0
     weight: 3
     enabled: true

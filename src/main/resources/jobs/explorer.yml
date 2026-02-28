@@ -17,7 +17,7 @@ hourly-income-cap: 3000
 actions:
   EXPLORE:
     CHUNK:
-      money: 30.0
+      money: 19.15
       xp: 120.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -34,7 +34,7 @@ quests:
     action: EXPLORE
     material: CHUNK
     amount: 10
-    reward-money: 750.0
+    reward-money: 478.50
     reward-xp: 1500.0
     weight: 4
     enabled: true

@@ -116,7 +116,6 @@ public class ConfigChestGUI implements Listener {
 
         int size = Math.min(54, ((leafKeys.size() + 1) / 9 + 1) * 9); // round up to next row
         size = Math.max(9, size);
-        String sectionDesc = SECTION_DESCRIPTIONS.getOrDefault(section, fileName);
         Inventory inv = Bukkit.createInventory(null, size,
                 Component.text(capitalize(section) + " Config", NamedTextColor.GOLD));
 
@@ -142,10 +141,8 @@ public class ConfigChestGUI implements Listener {
             List<Component> lore = new ArrayList<>();
             lore.add(Component.text("Value: " + valStr, NamedTextColor.WHITE)
                     .decoration(TextDecoration.ITALIC, false));
-            if (desc != null) {
-                lore.add(Component.text(desc, NamedTextColor.GRAY)
-                        .decoration(TextDecoration.ITALIC, false));
-            }
+            lore.add(Component.text(desc != null ? desc : describeKey(key), NamedTextColor.GRAY)
+                    .decoration(TextDecoration.ITALIC, false));
             lore.add(Component.empty());
             if (val instanceof Boolean) {
                 lore.add(Component.text("Click to toggle", NamedTextColor.GREEN)
@@ -348,5 +345,32 @@ public class ConfigChestGUI implements Listener {
 
     private static String capitalize(String s) {
         return s.isEmpty() ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    private static String describeKey(String keyPath) {
+        String[] parts = keyPath.split("\\.");
+        if (parts.length == 0) return keyPath;
+        String leaf = prettify(parts[parts.length - 1]);
+        if (parts.length == 1) return leaf;
+        StringBuilder context = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            String part = parts[i].toLowerCase(java.util.Locale.ROOT);
+            if (part.equals("items") || part.equals("settings") || part.equals("config")
+                    || part.equals("options") || part.equals("actions")) continue;
+            if (context.length() > 0) context.append(" ");
+            context.append(prettify(part));
+        }
+        if (context.length() == 0) return leaf;
+        return leaf + " for " + context;
+    }
+
+    private static String prettify(String raw) {
+        String[] words = raw.replace('-', ' ').replace('_', ' ').split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String w : words) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(capitalize(w));
+        }
+        return sb.toString();
     }
 }

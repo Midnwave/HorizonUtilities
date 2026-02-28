@@ -15,55 +15,55 @@ actions:
   # CRAFT — fires when the player takes a crafted result from a crafting table
   CRAFT:
     IRON_SWORD:
-      money: 12.0
+      money: 7.68
       xp: 35.0
     IRON_AXE:
-      money: 12.0
+      money: 7.68
       xp: 35.0
     IRON_HELMET:
-      money: 14.0
+      money: 8.95
       xp: 42.0
     IRON_CHESTPLATE:
-      money: 20.0
+      money: 12.78
       xp: 55.0
     IRON_LEGGINGS:
-      money: 18.0
+      money: 11.48
       xp: 50.0
     IRON_BOOTS:
-      money: 14.0
+      money: 8.95
       xp: 42.0
     # Diamond tier — premium reward
     DIAMOND_SWORD:
-      money: 100.0
+      money: 63.85
       xp: 280.0
     DIAMOND_AXE:
-      money: 100.0
+      money: 63.85
       xp: 280.0
     DIAMOND_HELMET:
-      money: 80.0
+      money: 51.15
       xp: 240.0
     DIAMOND_CHESTPLATE:
-      money: 135.0
+      money: 86.25
       xp: 350.0
     DIAMOND_LEGGINGS:
-      money: 120.0
+      money: 76.65
       xp: 300.0
     DIAMOND_BOOTS:
-      money: 80.0
+      money: 51.15
       xp: 240.0
   # REPAIR — fires when the player repairs an item on an anvil
   REPAIR:
     IRON_SWORD:
-      money: 6.0
+      money: 3.82
       xp: 20.0
     IRON_PICKAXE:
-      money: 6.0
+      money: 3.82
       xp: 20.0
     DIAMOND_SWORD:
-      money: 38.0
+      money: 24.28
       xp: 100.0
     DIAMOND_PICKAXE:
-      money: 38.0
+      money: 24.28
       xp: 100.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -80,7 +80,7 @@ quests:
     action: CRAFT
     material: IRON_SWORD
     amount: 5
-    reward-money: 375.0
+    reward-money: 239.25
     reward-xp: 750.0
     weight: 5
     enabled: true
@@ -89,7 +89,7 @@ quests:
     action: CRAFT
     material: IRON_CHESTPLATE
     amount: 3
-    reward-money: 450.0
+    reward-money: 287.25
     reward-xp: 900.0
     weight: 4
     enabled: true
@@ -98,7 +98,7 @@ quests:
     action: CRAFT
     material: DIAMOND_SWORD
     amount: 1
-    reward-money: 750.0
+    reward-money: 478.50
     reward-xp: 1500.0
     weight: 2
     enabled: true

@@ -15,40 +15,40 @@ hourly-income-cap: 5000
 actions:
   PLACE:
     STONE:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     COBBLESTONE:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     BRICKS:
-      money: 1.50
+      money: 0.95
       xp: 6.0
     STONE_BRICKS:
-      money: 1.50
+      money: 0.95
       xp: 6.0
     OAK_PLANKS:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     SPRUCE_PLANKS:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     BIRCH_PLANKS:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     GLASS:
-      money: 1.50
+      money: 0.95
       xp: 6.0
     QUARTZ_BLOCK:
-      money: 3.00
+      money: 1.92
       xp: 12.0
     TERRACOTTA:
-      money: 1.50
+      money: 0.95
       xp: 6.0
     CONCRETE:
-      money: 2.00
+      money: 1.28
       xp: 8.0
     SMOOTH_STONE:
-      money: 1.50
+      money: 0.95
       xp: 6.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -65,7 +65,7 @@ quests:
     action: PLACE
     material: STONE
     amount: 256
-    reward-money: 175.0
+    reward-money: 111.75
     reward-xp: 350.0
     weight: 5
     enabled: true
@@ -74,7 +74,7 @@ quests:
     action: PLACE
     material: OAK_PLANKS
     amount: 128
-    reward-money: 150.0
+    reward-money: 96.25
     reward-xp: 300.0
     weight: 5
     enabled: true
@@ -83,7 +83,7 @@ quests:
     action: PLACE
     material: QUARTZ_BLOCK
     amount: 64
-    reward-money: 300.0
+    reward-money: 191.25
     reward-xp: 600.0
     weight: 3
     enabled: true

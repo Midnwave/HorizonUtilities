@@ -13,35 +13,35 @@ hourly-income-cap: -1
 actions:
   BREAK:
     OAK_LOG:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     SPRUCE_LOG:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     BIRCH_LOG:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     JUNGLE_LOG:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     ACACIA_LOG:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     DARK_OAK_LOG:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     CHERRY_LOG:
-      money: 5.0
+      money: 3.18
       xp: 16.0
     MANGROVE_LOG:
-      money: 5.0
+      money: 3.18
       xp: 16.0
     # Nether wood — higher reward
     CRIMSON_STEM:
-      money: 6.0
+      money: 3.82
       xp: 20.0
     WARPED_STEM:
-      money: 6.0
+      money: 3.82
       xp: 20.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -58,7 +58,7 @@ quests:
     action: BREAK
     material: OAK_LOG
     amount: 64
-    reward-money: 250.0
+    reward-money: 159.50
     reward-xp: 500.0
     weight: 5
     enabled: true
@@ -67,7 +67,7 @@ quests:
     action: BREAK
     material: JUNGLE_LOG
     amount: 32
-    reward-money: 300.0
+    reward-money: 191.25
     reward-xp: 600.0
     weight: 4
     enabled: true
@@ -76,7 +76,7 @@ quests:
     action: BREAK
     material: CRIMSON_STEM
     amount: 32
-    reward-money: 380.0
+    reward-money: 242.25
     reward-xp: 750.0
     weight: 3
     enabled: true

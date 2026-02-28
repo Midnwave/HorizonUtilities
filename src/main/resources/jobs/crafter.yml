@@ -14,60 +14,60 @@ actions:
   # CRAFT — fires when the player takes a crafted result from a crafting table
   CRAFT:
     IRON_INGOT:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     GOLD_INGOT:
-      money: 8.0
+      money: 5.12
       xp: 24.0
     DIAMOND:
-      money: 25.0
+      money: 15.95
       xp: 60.0
     IRON_SWORD:
-      money: 8.0
+      money: 5.12
       xp: 24.0
     IRON_PICKAXE:
-      money: 10.0
+      money: 6.38
       xp: 30.0
     IRON_AXE:
-      money: 10.0
+      money: 6.38
       xp: 30.0
     STONE_SWORD:
-      money: 4.0
+      money: 2.55
       xp: 12.0
     BOW:
-      money: 8.0
+      money: 5.12
       xp: 24.0
     ARROW:
-      money: 0.50
+      money: 0.32
       xp: 2.0
     BREAD:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     BOOKSHELF:
-      money: 12.0
+      money: 7.68
       xp: 36.0
   # SMELT — fires when the player collects a smelted item from a furnace
   SMELT:
     IRON_INGOT:
-      money: 3.0
+      money: 1.92
       xp: 12.0
     GOLD_INGOT:
-      money: 6.0
+      money: 3.82
       xp: 20.0
     COOKED_BEEF:
-      money: 2.5
+      money: 1.58
       xp: 8.0
     COOKED_CHICKEN:
-      money: 2.5
+      money: 1.58
       xp: 8.0
     COOKED_PORKCHOP:
-      money: 2.5
+      money: 1.58
       xp: 8.0
     BRICK:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     GLASS:
-      money: 1.50
+      money: 0.95
       xp: 5.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -84,7 +84,7 @@ quests:
     action: SMELT
     material: IRON_INGOT
     amount: 32
-    reward-money: 300.0
+    reward-money: 191.25
     reward-xp: 600.0
     weight: 5
     enabled: true
@@ -93,7 +93,7 @@ quests:
     action: CRAFT
     material: BREAD
     amount: 32
-    reward-money: 200.0
+    reward-money: 127.75
     reward-xp: 400.0
     weight: 5
     enabled: true
@@ -102,7 +102,7 @@ quests:
     action: SMELT
     material: GOLD_INGOT
     amount: 16
-    reward-money: 450.0
+    reward-money: 287.25
     reward-xp: 900.0
     weight: 3
     enabled: true

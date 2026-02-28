@@ -17,49 +17,49 @@ actions:
   BREW:
     # Base potions — low reward
     AWKWARD:
-      money: 6.0
+      money: 3.82
       xp: 16.0
     THICK:
-      money: 3.0
+      money: 1.92
       xp: 8.0
     MUNDANE:
-      money: 3.0
+      money: 1.92
       xp: 8.0
     # Utility potions — mid reward
     SPEED:
-      money: 12.0
+      money: 7.68
       xp: 36.0
     STRENGTH:
-      money: 18.0
+      money: 11.48
       xp: 48.0
     HEALING:
-      money: 18.0
+      money: 11.48
       xp: 48.0
     FIRE_RESISTANCE:
-      money: 25.0
+      money: 15.95
       xp: 60.0
     WATER_BREATHING:
-      money: 18.0
+      money: 11.48
       xp: 48.0
     NIGHT_VISION:
-      money: 14.0
+      money: 8.95
       xp: 40.0
     # Premium potions — high reward
     INVISIBILITY:
-      money: 22.0
+      money: 14.05
       xp: 55.0
     REGENERATION:
-      money: 25.0
+      money: 15.95
       xp: 60.0
     # Negative potions — lower reward
     POISON:
-      money: 12.0
+      money: 7.68
       xp: 36.0
     WEAKNESS:
-      money: 8.0
+      money: 5.12
       xp: 24.0
     SLOWNESS:
-      money: 8.0
+      money: 5.12
       xp: 24.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -76,7 +76,7 @@ quests:
     action: BREW
     material: SPEED
     amount: 5
-    reward-money: 450.0
+    reward-money: 287.25
     reward-xp: 900.0
     weight: 4
     enabled: true
@@ -85,7 +85,7 @@ quests:
     action: BREW
     material: HEALING
     amount: 5
-    reward-money: 525.0
+    reward-money: 335.25
     reward-xp: 1050.0
     weight: 4
     enabled: true
@@ -94,7 +94,7 @@ quests:
     action: BREW
     material: FIRE_RESISTANCE
     amount: 3
-    reward-money: 600.0
+    reward-money: 382.50
     reward-xp: 1200.0
     weight: 3
     enabled: true

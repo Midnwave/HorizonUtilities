@@ -15,68 +15,68 @@ hourly-income-cap: -1
 actions:
   KILL:
     ZOMBIE:
-      money: 5.0
+      money: 3.18
       xp: 18.0
       spawner-allowed: false
     SKELETON:
-      money: 5.0
+      money: 3.18
       xp: 18.0
       spawner-allowed: false
     CREEPER:
-      money: 10.0
+      money: 6.45
       xp: 30.0
       spawner-allowed: false
     SPIDER:
-      money: 3.5
+      money: 2.25
       xp: 13.0
       spawner-allowed: false
     ENDERMAN:
-      money: 20.0
+      money: 12.85
       xp: 55.0
       spawner-allowed: false
     WITCH:
-      money: 25.0
+      money: 15.95
       xp: 70.0
       spawner-allowed: false
     DROWNED:
-      money: 6.0
+      money: 3.82
       xp: 22.0
       spawner-allowed: false
     HUSK:
-      money: 6.0
+      money: 3.82
       xp: 22.0
       spawner-allowed: false
     STRAY:
-      money: 6.0
+      money: 3.82
       xp: 22.0
       spawner-allowed: false
     BLAZE:
-      money: 30.0
+      money: 19.15
       xp: 80.0
       spawner-allowed: false
     MAGMA_CUBE:
-      money: 10.0
+      money: 6.45
       xp: 28.0
       spawner-allowed: false
     WITHER_SKELETON:
-      money: 65.0
+      money: 41.55
       xp: 160.0
       spawner-allowed: false
     GHAST:
-      money: 50.0
+      money: 31.95
       xp: 120.0
       spawner-allowed: false
     PILLAGER:
-      money: 20.0
+      money: 12.85
       xp: 50.0
       spawner-allowed: false
     VINDICATOR:
-      money: 30.0
+      money: 19.15
       xp: 80.0
       spawner-allowed: false
     # Mini-boss tier
     RAVAGER:
-      money: 200.0
+      money: 127.85
       xp: 450.0
       spawner-allowed: false
 
@@ -94,7 +94,7 @@ quests:
     action: KILL
     material: ZOMBIE
     amount: 25
-    reward-money: 300.0
+    reward-money: 191.25
     reward-xp: 600.0
     weight: 5
     enabled: true
@@ -103,7 +103,7 @@ quests:
     action: KILL
     material: CREEPER
     amount: 10
-    reward-money: 375.0
+    reward-money: 238.75
     reward-xp: 750.0
     weight: 4
     enabled: true
@@ -112,7 +112,7 @@ quests:
     action: KILL
     material: BLAZE
     amount: 15
-    reward-money: 875.0
+    reward-money: 558.75
     reward-xp: 1750.0
     weight: 2
     enabled: true

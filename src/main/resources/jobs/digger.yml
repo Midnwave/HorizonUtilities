@@ -13,40 +13,40 @@ hourly-income-cap: -1
 actions:
   BREAK:
     DIRT:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     GRASS_BLOCK:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     SAND:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     RED_SAND:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     GRAVEL:
-      money: 3.0
+      money: 1.92
       xp: 8.0
     CLAY:
-      money: 5.0
+      money: 3.18
       xp: 12.0
     SOUL_SAND:
-      money: 6.0
+      money: 3.82
       xp: 16.0
     SOUL_SOIL:
-      money: 6.0
+      money: 3.82
       xp: 16.0
     MYCELIUM:
-      money: 7.0
+      money: 4.48
       xp: 18.0
     PODZOL:
-      money: 4.0
+      money: 2.55
       xp: 10.0
     COARSE_DIRT:
-      money: 1.50
+      money: 0.95
       xp: 5.0
     ROOTED_DIRT:
-      money: 3.0
+      money: 1.92
       xp: 8.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -63,7 +63,7 @@ quests:
     action: BREAK
     material: DIRT
     amount: 256
-    reward-money: 150.0
+    reward-money: 96.25
     reward-xp: 300.0
     weight: 5
     enabled: true
@@ -72,7 +72,7 @@ quests:
     action: BREAK
     material: SAND
     amount: 128
-    reward-money: 200.0
+    reward-money: 127.75
     reward-xp: 400.0
     weight: 4
     enabled: true
@@ -81,7 +81,7 @@ quests:
     action: BREAK
     material: CLAY
     amount: 64
-    reward-money: 300.0
+    reward-money: 191.25
     reward-xp: 600.0
     weight: 3
     enabled: true

@@ -212,9 +212,8 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
 
                 Component label = Component.text(key + ": ", NamedTextColor.YELLOW)
                     .append(Component.text(valStr, NamedTextColor.WHITE));
-                Component tooltip = desc != null
-                    ? Component.text(desc, NamedTextColor.GRAY)
-                    : Component.text("Click to edit", NamedTextColor.GRAY);
+                Component tooltip = Component.text(
+                    desc != null ? desc : describeKey(key), NamedTextColor.GRAY);
 
                 buttons.add(ActionButton.builder(label)
                     .tooltip(tooltip)
@@ -470,11 +469,9 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
             ClickEvent click = isPlayer
                     ? ClickEvent.runCommand("/horizonconfig edit " + section + " " + key)
                     : ClickEvent.suggestCommand("/horizonconfig set " + section + " " + key + " " + valStr);
-            Component hoverText = desc != null
-                    ? Component.text(desc + "\n", NamedTextColor.GRAY)
-                        .append(Component.text("Click to edit", NamedTextColor.YELLOW))
-                    : Component.text("Click to edit\n", NamedTextColor.GRAY)
-                        .append(Component.text(key, NamedTextColor.AQUA));
+            String keyDesc = desc != null ? desc : describeKey(key);
+            Component hoverText = Component.text(keyDesc + "\n", NamedTextColor.GRAY)
+                    .append(Component.text("Click to edit", NamedTextColor.YELLOW));
 
             sender.sendMessage(
                     Component.text("  " + key + ": ", NamedTextColor.YELLOW)
@@ -576,6 +573,46 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
 
     private static String capitalize(String s) {
         return s.isEmpty() ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    }
+
+    /**
+     * Generates a human-readable description from a config key path when no
+     * YAML comment is available. e.g. "items.reinforced_deepslate.price"
+     * becomes "Price for Reinforced Deepslate".
+     */
+    private static String describeKey(String keyPath) {
+        String[] parts = keyPath.split("\\.");
+        if (parts.length == 0) return keyPath;
+
+        // The leaf key is the "what" (e.g. price, material, enabled)
+        String leaf = prettify(parts[parts.length - 1]);
+
+        if (parts.length == 1) return leaf;
+
+        // Build context from middle segments (skip generic parents like "items", "settings")
+        StringBuilder context = new StringBuilder();
+        for (int i = 0; i < parts.length - 1; i++) {
+            String part = parts[i].toLowerCase(Locale.ROOT);
+            // Skip generic container keys
+            if (part.equals("items") || part.equals("settings") || part.equals("config")
+                    || part.equals("options") || part.equals("actions")) continue;
+            if (context.length() > 0) context.append(" ");
+            context.append(prettify(part));
+        }
+
+        if (context.length() == 0) return leaf;
+        return leaf + " for " + context;
+    }
+
+    /** Converts "reinforced_deepslate" or "max-range" to "Reinforced Deepslate" or "Max Range". */
+    private static String prettify(String raw) {
+        String[] words = raw.replace('-', ' ').replace('_', ' ').split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String w : words) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(capitalize(w));
+        }
+        return sb.toString();
     }
 
     // -------------------------------------------------------------------------

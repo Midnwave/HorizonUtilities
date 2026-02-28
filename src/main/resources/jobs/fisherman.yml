@@ -13,36 +13,36 @@ hourly-income-cap: -1
 actions:
   FISH:
     COD:
-      money: 4.0
+      money: 2.55
       xp: 15.0
     SALMON:
-      money: 6.0
+      money: 3.82
       xp: 20.0
     TROPICAL_FISH:
-      money: 12.0
+      money: 7.65
       xp: 35.0
     PUFFERFISH:
-      money: 18.0
+      money: 11.48
       xp: 45.0
     # Junk catches — low reward
     LEATHER:
-      money: 3.0
+      money: 1.92
       xp: 10.0
     STICK:
-      money: 1.00
+      money: 0.62
       xp: 4.0
     STRING:
-      money: 2.0
+      money: 1.28
       xp: 6.0
     LILY_PAD:
-      money: 3.0
+      money: 1.92
       xp: 8.0
     # Treasure catches — high reward
     SADDLE:
-      money: 80.0
+      money: 51.15
       xp: 160.0
     NAME_TAG:
-      money: 120.0
+      money: 76.65
       xp: 200.0
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -59,7 +59,7 @@ quests:
     action: FISH
     material: COD
     amount: 20
-    reward-money: 180.0
+    reward-money: 114.75
     reward-xp: 360.0
     weight: 5
     enabled: true
@@ -68,7 +68,7 @@ quests:
     action: FISH
     material: SALMON
     amount: 10
-    reward-money: 240.0
+    reward-money: 153.25
     reward-xp: 480.0
     weight: 4
     enabled: true
@@ -77,7 +77,7 @@ quests:
     action: FISH
     material: TROPICAL_FISH
     amount: 5
-    reward-money: 360.0
+    reward-money: 229.50
     reward-xp: 720.0
     weight: 3
     enabled: true
