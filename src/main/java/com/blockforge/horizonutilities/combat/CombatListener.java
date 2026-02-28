@@ -12,7 +12,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.view.AnvilView;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -25,6 +27,15 @@ public class CombatListener implements Listener {
     public CombatListener(HorizonUtilitiesPlugin plugin, CombatManager manager) {
         this.plugin  = plugin;
         this.manager = manager;
+    }
+
+    @EventHandler
+    public void onPrepareAnvil(PrepareAnvilEvent event) {
+        CombatConfig cfg = manager.getConfig();
+        if (!cfg.isAnvilCapEnabled()) return;
+        if (event.getView() instanceof AnvilView anvilView) {
+            anvilView.setMaximumRepairCost(cfg.getAnvilMaxRepairCost());
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

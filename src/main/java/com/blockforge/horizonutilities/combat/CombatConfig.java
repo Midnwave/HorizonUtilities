@@ -21,6 +21,8 @@ public class CombatConfig {
     private boolean killOnLogout;
     private boolean dropItems;
     private boolean dropXp;
+    private boolean anvilCapEnabled;
+    private int anvilMaxRepairCost;
 
     public CombatConfig(HorizonUtilitiesPlugin plugin) {
         this.plugin = plugin;
@@ -41,6 +43,8 @@ public class CombatConfig {
         killOnLogout        = cfg.getBoolean("combat-log.kill-on-logout", true);
         dropItems           = cfg.getBoolean("combat-log.drop-items", true);
         dropXp              = cfg.getBoolean("combat-log.drop-xp", false);
+        anvilCapEnabled     = cfg.getBoolean("anvil.enabled", true);
+        anvilMaxRepairCost  = cfg.getInt("anvil.max-repair-cost", 200);
     }
 
     public boolean isEnabled()              { return enabled; }
@@ -52,4 +56,6 @@ public class CombatConfig {
     public boolean isKillOnLogout()         { return killOnLogout; }
     public boolean isDropItems()            { return dropItems; }
     public boolean isDropXp()               { return dropXp; }
+    public boolean isAnvilCapEnabled()      { return anvilCapEnabled; }
+    public int getAnvilMaxRepairCost()      { return anvilMaxRepairCost; }
 }

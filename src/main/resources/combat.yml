@@ -29,6 +29,13 @@ restrictions:
     - /back
     - /rtp
 
+anvil:
+  # Remove or raise the "Too Expensive" cap on anvils
+  enabled: true
+  # Maximum repair cost in levels before "Too Expensive" appears.
+  # Vanilla default is 40. Set to a high value (e.g. 200) to effectively remove the cap.
+  max-repair-cost: 200
+
 combat-log:
   # Kill the player if they disconnect while tagged (combat-logging)
   kill-on-logout: true
