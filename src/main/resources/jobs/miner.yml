@@ -19,68 +19,68 @@ hourly-income-cap: -1
 actions:
   BREAK:
     STONE:
-      money: 0.62
-      xp: 4.0
+      money: 0.58
+      xp: 3.7
     COBBLESTONE:
-      money: 0.47
-      xp: 3.0
+      money: 0.44
+      xp: 2.8
     COAL_ORE:
-      money: 3.85
-      xp: 16.0
+      money: 3.58
+      xp: 14.9
     DEEPSLATE_COAL_ORE:
-      money: 4.52
-      xp: 18.0
+      money: 4.20
+      xp: 16.7
     IRON_ORE:
-      money: 6.35
-      xp: 25.0
+      money: 5.91
+      xp: 23.3
     DEEPSLATE_IRON_ORE:
-      money: 7.68
-      xp: 28.0
+      money: 7.14
+      xp: 26.0
     COPPER_ORE:
-      money: 5.15
-      xp: 20.0
+      money: 4.79
+      xp: 18.6
     DEEPSLATE_COPPER_ORE:
-      money: 6.35
-      xp: 24.0
+      money: 5.91
+      xp: 22.3
     GOLD_ORE:
-      money: 11.45
-      xp: 45.0
+      money: 10.65
+      xp: 41.9
     DEEPSLATE_GOLD_ORE:
-      money: 14.12
-      xp: 55.0
+      money: 13.13
+      xp: 51.2
     LAPIS_ORE:
-      money: 9.55
-      xp: 38.0
+      money: 8.88
+      xp: 35.3
     DEEPSLATE_LAPIS_ORE:
-      money: 11.45
-      xp: 44.0
+      money: 10.65
+      xp: 40.9
     REDSTONE_ORE:
-      money: 9.55
-      xp: 38.0
+      money: 8.88
+      xp: 35.3
     DEEPSLATE_REDSTONE_ORE:
-      money: 11.45
-      xp: 44.0
+      money: 10.65
+      xp: 40.9
     DIAMOND_ORE:
-      money: 38.45
-      xp: 150.0
+      money: 35.76
+      xp: 139.5
     DEEPSLATE_DIAMOND_ORE:
-      money: 47.85
-      xp: 175.0
+      money: 44.50
+      xp: 162.8
     EMERALD_ORE:
-      money: 57.55
-      xp: 200.0
+      money: 53.52
+      xp: 186.0
     DEEPSLATE_EMERALD_ORE:
-      money: 70.25
-      xp: 225.0
+      money: 65.33
+      xp: 209.3
     ANCIENT_DEBRIS:
-      money: 159.75
-      xp: 500.0
+      money: 148.57
+      xp: 465.0
     NETHER_GOLD_ORE:
-      money: 6.35
-      xp: 30.0
+      money: 5.91
+      xp: 27.9
     NETHER_QUARTZ_ORE:
-      money: 5.15
-      xp: 24.0
+      money: 4.79
+      xp: 22.3
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
@@ -96,8 +96,8 @@ quests:
     action: BREAK
     material: COAL_ORE
     amount: 64
-    reward-money: 192.50
-    reward-xp: 600.0
+    reward-money: 179.03
+    reward-xp: 558.0
     weight: 5
     enabled: true
   - id: miner_iron
@@ -105,8 +105,8 @@ quests:
     action: BREAK
     material: IRON_ORE
     amount: 32
-    reward-money: 288.75
-    reward-xp: 900.0
+    reward-money: 268.54
+    reward-xp: 837.0
     weight: 4
     enabled: true
   - id: miner_diamond
@@ -114,8 +114,8 @@ quests:
     action: BREAK
     material: DIAMOND_ORE
     amount: 5
-    reward-money: 637.50
-    reward-xp: 2000.0
+    reward-money: 592.88
+    reward-xp: 1860.0
     weight: 2
     enabled: true
   - id: miner_stone
@@ -123,7 +123,7 @@ quests:
     action: BREAK
     material: STONE
     amount: 256
-    reward-money: 96.25
-    reward-xp: 400.0
+    reward-money: 89.51
+    reward-xp: 372.0
     weight: 6
     enabled: true

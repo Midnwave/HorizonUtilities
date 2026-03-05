@@ -15,35 +15,35 @@ hourly-income-cap: -1
 actions:
   ENCHANT:
     SWORD:
-      money: 15.95
-      xp: 80.0
+      money: 14.83
+      xp: 74.4
     PICKAXE:
-      money: 15.95
-      xp: 80.0
+      money: 14.83
+      xp: 74.4
     AXE:
-      money: 15.95
-      xp: 80.0
+      money: 14.83
+      xp: 74.4
     SHOVEL:
-      money: 10.22
-      xp: 50.0
+      money: 9.50
+      xp: 46.5
     BOW:
-      money: 15.95
-      xp: 80.0
+      money: 14.83
+      xp: 74.4
     HELMET:
-      money: 12.78
-      xp: 60.0
+      money: 11.89
+      xp: 55.8
     CHESTPLATE:
-      money: 19.15
-      xp: 90.0
+      money: 17.81
+      xp: 83.7
     LEGGINGS:
-      money: 15.95
-      xp: 80.0
+      money: 14.83
+      xp: 74.4
     BOOTS:
-      money: 12.78
-      xp: 60.0
+      money: 11.89
+      xp: 55.8
     FISHING_ROD:
-      money: 10.22
-      xp: 50.0
+      money: 9.50
+      xp: 46.5
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
@@ -59,8 +59,8 @@ quests:
     action: ENCHANT
     material: SWORD
     amount: 5
-    reward-money: 382.50
-    reward-xp: 1200.0
+    reward-money: 355.73
+    reward-xp: 1116.0
     weight: 4
     enabled: true
   - id: enchanter_pickaxe
@@ -68,8 +68,8 @@ quests:
     action: ENCHANT
     material: PICKAXE
     amount: 5
-    reward-money: 382.50
-    reward-xp: 1200.0
+    reward-money: 355.73
+    reward-xp: 1116.0
     weight: 4
     enabled: true
   - id: enchanter_armor
@@ -77,7 +77,7 @@ quests:
     action: ENCHANT
     material: CHESTPLATE
     amount: 3
-    reward-money: 478.50
-    reward-xp: 1500.0
+    reward-money: 445.01
+    reward-xp: 1395.0
     weight: 3
     enabled: true

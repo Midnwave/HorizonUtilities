@@ -13,41 +13,41 @@ hourly-income-cap: -1
 actions:
   BREAK:
     DIRT:
-      money: 0.62
-      xp: 4.0
+      money: 0.58
+      xp: 3.7
     GRASS_BLOCK:
-      money: 0.62
-      xp: 4.0
+      money: 0.58
+      xp: 3.7
     SAND:
-      money: 1.28
-      xp: 6.0
+      money: 1.19
+      xp: 5.6
     RED_SAND:
-      money: 1.28
-      xp: 6.0
+      money: 1.19
+      xp: 5.6
     GRAVEL:
-      money: 1.92
-      xp: 8.0
+      money: 1.79
+      xp: 7.4
     CLAY:
-      money: 3.18
-      xp: 12.0
+      money: 2.96
+      xp: 11.2
     SOUL_SAND:
-      money: 3.82
-      xp: 16.0
+      money: 3.55
+      xp: 14.9
     SOUL_SOIL:
-      money: 3.82
-      xp: 16.0
+      money: 3.55
+      xp: 14.9
     MYCELIUM:
-      money: 4.48
-      xp: 18.0
+      money: 4.17
+      xp: 16.7
     PODZOL:
-      money: 2.55
-      xp: 10.0
+      money: 2.37
+      xp: 9.3
     COARSE_DIRT:
-      money: 0.95
-      xp: 5.0
+      money: 0.88
+      xp: 4.7
     ROOTED_DIRT:
-      money: 1.92
-      xp: 8.0
+      money: 1.79
+      xp: 7.4
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
@@ -63,8 +63,8 @@ quests:
     action: BREAK
     material: DIRT
     amount: 256
-    reward-money: 96.25
-    reward-xp: 300.0
+    reward-money: 89.51
+    reward-xp: 279.0
     weight: 5
     enabled: true
   - id: digger_sand
@@ -72,8 +72,8 @@ quests:
     action: BREAK
     material: SAND
     amount: 128
-    reward-money: 127.75
-    reward-xp: 400.0
+    reward-money: 118.81
+    reward-xp: 372.0
     weight: 4
     enabled: true
   - id: digger_clay
@@ -81,7 +81,7 @@ quests:
     action: BREAK
     material: CLAY
     amount: 64
-    reward-money: 191.25
-    reward-xp: 600.0
+    reward-money: 177.86
+    reward-xp: 558.0
     weight: 3
     enabled: true

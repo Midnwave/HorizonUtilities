@@ -15,69 +15,69 @@ hourly-income-cap: -1
 actions:
   KILL:
     ZOMBIE:
-      money: 3.18
-      xp: 18.0
+      money: 2.96
+      xp: 16.7
       spawner-allowed: false
     SKELETON:
-      money: 3.18
-      xp: 18.0
+      money: 2.96
+      xp: 16.7
       spawner-allowed: false
     CREEPER:
-      money: 6.45
-      xp: 30.0
+      money: 6.00
+      xp: 27.9
       spawner-allowed: false
     SPIDER:
-      money: 2.25
-      xp: 13.0
+      money: 2.09
+      xp: 12.1
       spawner-allowed: false
     ENDERMAN:
-      money: 12.85
-      xp: 55.0
+      money: 11.95
+      xp: 51.2
       spawner-allowed: false
     WITCH:
-      money: 15.95
-      xp: 70.0
+      money: 14.83
+      xp: 65.1
       spawner-allowed: false
     DROWNED:
-      money: 3.82
-      xp: 22.0
+      money: 3.55
+      xp: 20.5
       spawner-allowed: false
     HUSK:
-      money: 3.82
-      xp: 22.0
+      money: 3.55
+      xp: 20.5
       spawner-allowed: false
     STRAY:
-      money: 3.82
-      xp: 22.0
+      money: 3.55
+      xp: 20.5
       spawner-allowed: false
     BLAZE:
-      money: 19.15
-      xp: 80.0
+      money: 17.81
+      xp: 74.4
       spawner-allowed: false
     MAGMA_CUBE:
-      money: 6.45
-      xp: 28.0
+      money: 6.00
+      xp: 26.0
       spawner-allowed: false
     WITHER_SKELETON:
-      money: 41.55
-      xp: 160.0
+      money: 38.64
+      xp: 148.8
       spawner-allowed: false
     GHAST:
-      money: 31.95
-      xp: 120.0
+      money: 29.71
+      xp: 111.6
       spawner-allowed: false
     PILLAGER:
-      money: 12.85
-      xp: 50.0
+      money: 11.95
+      xp: 46.5
       spawner-allowed: false
     VINDICATOR:
-      money: 19.15
-      xp: 80.0
+      money: 17.81
+      xp: 74.4
       spawner-allowed: false
     # Mini-boss tier
     RAVAGER:
-      money: 127.85
-      xp: 450.0
+      money: 118.90
+      xp: 418.5
       spawner-allowed: false
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
@@ -94,8 +94,8 @@ quests:
     action: KILL
     material: ZOMBIE
     amount: 25
-    reward-money: 191.25
-    reward-xp: 600.0
+    reward-money: 177.86
+    reward-xp: 558.0
     weight: 5
     enabled: true
   - id: hunter_creeper
@@ -103,8 +103,8 @@ quests:
     action: KILL
     material: CREEPER
     amount: 10
-    reward-money: 238.75
-    reward-xp: 750.0
+    reward-money: 222.04
+    reward-xp: 697.5
     weight: 4
     enabled: true
   - id: hunter_blaze
@@ -112,7 +112,7 @@ quests:
     action: KILL
     material: BLAZE
     amount: 15
-    reward-money: 558.75
-    reward-xp: 1750.0
+    reward-money: 519.64
+    reward-xp: 1627.5
     weight: 2
     enabled: true

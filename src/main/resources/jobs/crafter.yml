@@ -14,61 +14,61 @@ actions:
   # CRAFT — fires when the player takes a crafted result from a crafting table
   CRAFT:
     IRON_INGOT:
-      money: 2.55
-      xp: 12.0
+      money: 2.37
+      xp: 11.2
     GOLD_INGOT:
-      money: 5.12
-      xp: 24.0
+      money: 4.76
+      xp: 22.3
     DIAMOND:
-      money: 15.95
-      xp: 60.0
+      money: 14.83
+      xp: 55.8
     IRON_SWORD:
-      money: 5.12
-      xp: 24.0
+      money: 4.76
+      xp: 22.3
     IRON_PICKAXE:
-      money: 6.38
-      xp: 30.0
+      money: 5.93
+      xp: 27.9
     IRON_AXE:
-      money: 6.38
-      xp: 30.0
+      money: 5.93
+      xp: 27.9
     STONE_SWORD:
-      money: 2.55
-      xp: 12.0
+      money: 2.37
+      xp: 11.2
     BOW:
-      money: 5.12
-      xp: 24.0
+      money: 4.76
+      xp: 22.3
     ARROW:
-      money: 0.32
-      xp: 2.0
+      money: 0.30
+      xp: 1.9
     BREAD:
-      money: 1.28
-      xp: 6.0
+      money: 1.19
+      xp: 5.6
     BOOKSHELF:
-      money: 7.68
-      xp: 36.0
+      money: 7.14
+      xp: 33.5
   # SMELT — fires when the player collects a smelted item from a furnace
   SMELT:
     IRON_INGOT:
-      money: 1.92
-      xp: 12.0
+      money: 1.79
+      xp: 11.2
     GOLD_INGOT:
-      money: 3.82
-      xp: 20.0
+      money: 3.55
+      xp: 18.6
     COOKED_BEEF:
-      money: 1.58
-      xp: 8.0
+      money: 1.47
+      xp: 7.4
     COOKED_CHICKEN:
-      money: 1.58
-      xp: 8.0
+      money: 1.47
+      xp: 7.4
     COOKED_PORKCHOP:
-      money: 1.58
-      xp: 8.0
+      money: 1.47
+      xp: 7.4
     BRICK:
-      money: 1.28
-      xp: 6.0
+      money: 1.19
+      xp: 5.6
     GLASS:
-      money: 0.95
-      xp: 5.0
+      money: 0.88
+      xp: 4.7
 
 # Income multiplier bonus at milestone levels (e.g. 0.05 = +5% earnings)
 perks:
@@ -84,8 +84,8 @@ quests:
     action: SMELT
     material: IRON_INGOT
     amount: 32
-    reward-money: 191.25
-    reward-xp: 600.0
+    reward-money: 177.86
+    reward-xp: 558.0
     weight: 5
     enabled: true
   - id: crafter_bread
@@ -93,8 +93,8 @@ quests:
     action: CRAFT
     material: BREAD
     amount: 32
-    reward-money: 127.75
-    reward-xp: 400.0
+    reward-money: 118.81
+    reward-xp: 372.0
     weight: 5
     enabled: true
   - id: crafter_gold
@@ -102,7 +102,7 @@ quests:
     action: SMELT
     material: GOLD_INGOT
     amount: 16
-    reward-money: 287.25
-    reward-xp: 900.0
+    reward-money: 267.14
+    reward-xp: 837.0
     weight: 3
     enabled: true
