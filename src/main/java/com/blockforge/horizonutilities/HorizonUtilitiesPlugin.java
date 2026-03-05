@@ -1,5 +1,6 @@
 package com.blockforge.horizonutilities;
 
+import com.blockforge.horizonutilities.anvil.AnvilListener;
 import com.blockforge.horizonutilities.auction.AuctionExpireTask;
 import com.blockforge.horizonutilities.auction.AuctionManager;
 import com.blockforge.horizonutilities.blackmarket.BlackMarketManager;
@@ -291,6 +292,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         pm.registerEvents(new JobsGUIListener(this), this);
         pm.registerEvents(new DailyQuestListener(this, dailyQuestManager), this);
         pm.registerEvents(new GemsListener(this, gemsManager), this);
+        pm.registerEvents(new AnvilListener(this), this);
 
         var ahCmd = getCommand("ah");
         if (ahCmd != null) {

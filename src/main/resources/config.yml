@@ -12,5 +12,11 @@ database:
   # SQLite database file name (relative to the plugin data folder)
   file: "data.db"
 
+# Anvil settings
+anvil:
+  # Maximum repair cost before the anvil says "Too Expensive!"
+  # Vanilla default is 40. Set to -1 to remove the limit entirely.
+  max-repair-cost: -1
+
 # Whether to send anonymous usage statistics via bStats
 metrics: true
