@@ -12,6 +12,7 @@ import com.blockforge.horizonutilities.jobs.ui.JobBossBarManager;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -246,8 +247,10 @@ public class JobManager {
         if (jobs.isEmpty()) return;
 
         // Anti-exploit: cooldown check (if configured)
+        // Tick-aware: multi-block breaks from enchants (same tick) bypass cooldown
+        int currentTick = Bukkit.getCurrentTick();
         if (config.getActionCooldownMs() > 0
-                && cooldownManager.isOnCooldown(player.getUniqueId(), action, config.getActionCooldownMs())) {
+                && cooldownManager.isOnCooldown(player.getUniqueId(), action, config.getActionCooldownMs(), currentTick)) {
             return;
         }
 
@@ -377,9 +380,9 @@ public class JobManager {
         // Record for area farming detector
         areaFarmingDetector.recordAction(player.getUniqueId(), loc, action);
 
-        // Record cooldown
+        // Record cooldown (tick-aware for batch detection)
         if (config.getActionCooldownMs() > 0) {
-            cooldownManager.recordAction(player.getUniqueId(), action);
+            cooldownManager.recordAction(player.getUniqueId(), action, currentTick);
         }
     }
 
