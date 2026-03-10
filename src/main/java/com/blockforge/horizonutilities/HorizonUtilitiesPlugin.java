@@ -86,6 +86,19 @@ import com.blockforge.horizonutilities.gems.GemsManager;
 import com.blockforge.horizonutilities.gems.commands.GemsCommand;
 import com.blockforge.horizonutilities.jobs.quests.daily.DailyQuestListener;
 import com.blockforge.horizonutilities.jobs.quests.daily.DailyQuestManager;
+import com.blockforge.horizonutilities.quests.QuestConfig;
+import com.blockforge.horizonutilities.quests.QuestManager;
+import com.blockforge.horizonutilities.quests.QuestStorage;
+import com.blockforge.horizonutilities.quests.commands.QuestCommand;
+import com.blockforge.horizonutilities.quests.commands.QuestTabCompleter;
+import com.blockforge.horizonutilities.quests.commands.ScoreboardCommand;
+import com.blockforge.horizonutilities.quests.scoreboard.ScoreboardConfig;
+import com.blockforge.horizonutilities.quests.scoreboard.ScoreboardManager;
+import com.blockforge.horizonutilities.quests.tracking.QuestEventListener;
+import com.blockforge.horizonutilities.rtp.RtpCommand;
+import com.blockforge.horizonutilities.rtp.RtpConfig;
+import com.blockforge.horizonutilities.rtp.RtpListener;
+import com.blockforge.horizonutilities.rtp.RtpManager;
 import com.blockforge.horizonutilities.maintenance.MaintenanceCommand;
 import com.blockforge.horizonutilities.maintenance.MaintenanceListener;
 import com.blockforge.horizonutilities.maintenance.MaintenanceManager;
@@ -142,6 +155,13 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private MentionManager mentionManager;
     private DailyQuestManager dailyQuestManager;
     private GemsManager gemsManager;
+    private QuestConfig questConfig;
+    private QuestManager questManager;
+    private QuestStorage questStorage;
+    private ScoreboardConfig scoreboardConfig;
+    private ScoreboardManager scoreboardManager;
+    private RtpConfig rtpConfig;
+    private RtpManager rtpManager;
 
     @Override
     public void onEnable() {
@@ -256,6 +276,22 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         gemsManager = new GemsManager(this);
         gemsManager.getConfig().load();
 
+        // Quest system
+        questConfig = new QuestConfig(this);
+        questConfig.load();
+        questStorage = new QuestStorage(databaseManager, getLogger());
+        questManager = new QuestManager(this, questConfig, questStorage);
+
+        // Scoreboard
+        scoreboardConfig = new ScoreboardConfig(this);
+        scoreboardConfig.load();
+        scoreboardManager = new ScoreboardManager(this, questManager, questStorage, scoreboardConfig);
+
+        // RTP
+        rtpConfig = new RtpConfig(this);
+        rtpConfig.load();
+        rtpManager = new RtpManager(this, rtpConfig, questStorage);
+
         var pm = getServer().getPluginManager();
         pm.registerEvents(new MaintenanceListener(maintenanceManager), this);
         pm.registerEvents(new ChatBubbleListener(this, chatBubbleManager), this);
@@ -293,6 +329,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         pm.registerEvents(new DailyQuestListener(this, dailyQuestManager), this);
         pm.registerEvents(new GemsListener(this, gemsManager), this);
         pm.registerEvents(new AnvilListener(this), this);
+        pm.registerEvents(new QuestEventListener(questManager), this);
+        pm.registerEvents(new RtpListener(this, rtpManager), this);
 
         var ahCmd = getCommand("ah");
         if (ahCmd != null) {
@@ -413,6 +451,26 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             horizonConfigCmd.setTabCompleter(hcCmd);
         }
 
+        var questsCmd = getCommand("quests");
+        if (questsCmd != null) {
+            questsCmd.setExecutor(new QuestCommand(this, questManager));
+            questsCmd.setTabCompleter(new QuestTabCompleter());
+        }
+
+        var sbCmd = getCommand("sb");
+        if (sbCmd != null) {
+            var scoreboardCmd = new ScoreboardCommand(this);
+            sbCmd.setExecutor(scoreboardCmd);
+            sbCmd.setTabCompleter(scoreboardCmd);
+        }
+
+        var rtpCmd = getCommand("rtp");
+        if (rtpCmd != null) {
+            var rtpCmdExec = new RtpCommand(this, rtpManager);
+            rtpCmd.setExecutor(rtpCmdExec);
+            rtpCmd.setTabCompleter(rtpCmdExec);
+        }
+
         new AuctionExpireTask(this).start();
         chatGameManager.startScheduler();
         new LotteryDrawTask(this, lotteryManager).start();
@@ -430,6 +488,9 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (questManager != null) questManager.shutdown();
+        if (scoreboardManager != null) scoreboardManager.shutdown();
+        if (rtpManager != null) rtpManager.shutdown();
         if (chatGameManager != null) chatGameManager.shutdown();
         if (databaseManager != null) databaseManager.close();
         getLogger().info("HorizonUtilities disabled.");
@@ -451,6 +512,9 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         if (jobManager != null) jobManager.getConfig().load();
         if (dailyQuestManager != null) dailyQuestManager.reload();
         if (gemsManager != null) gemsManager.getConfig().load();
+        if (questManager != null) questManager.reload();
+        if (scoreboardManager != null) scoreboardManager.reload();
+        if (rtpConfig != null) rtpConfig.load();
     }
 
     public static HorizonUtilitiesPlugin getInstance() { return instance; }
@@ -493,4 +557,11 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public MentionManager getMentionManager()             { return mentionManager; }
     public DailyQuestManager getDailyQuestManager()      { return dailyQuestManager; }
     public GemsManager getGemsManager()                   { return gemsManager; }
+    public QuestConfig getQuestConfig()                   { return questConfig; }
+    public QuestManager getQuestManager()                 { return questManager; }
+    public QuestStorage getQuestStorage()                 { return questStorage; }
+    public ScoreboardConfig getScoreboardConfig()         { return scoreboardConfig; }
+    public ScoreboardManager getScoreboardManager()       { return scoreboardManager; }
+    public RtpConfig getRtpConfig()                       { return rtpConfig; }
+    public RtpManager getRtpManager()                     { return rtpManager; }
 }
