@@ -354,9 +354,17 @@ public class JobManager {
             lastJp  = jp;
             jp.touch();
 
-            // Track daily quest progress
+            // Track daily quest progress (legacy)
             if (plugin.getDailyQuestManager() != null) {
                 plugin.getDailyQuestManager().trackAction(player, action, material, jp.getJobId());
+            }
+
+            // Track new quest system
+            if (plugin.getQuestManager() != null) {
+                var questAction = com.blockforge.horizonutilities.quests.QuestActionType.fromJobAction(action);
+                if (questAction != null) {
+                    plugin.getQuestManager().trackAction(player, questAction, material);
+                }
             }
         }
 
