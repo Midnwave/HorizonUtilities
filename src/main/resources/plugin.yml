@@ -4,7 +4,7 @@ version: "${version}"
 api-version: "1.21"
 authors: [BlockForge]
 depend: [GriefPreventionFlagsReborn]
-softdepend: [Vault, AuraSkills, Quests, LuckPerms, PlaceholderAPI]
+softdepend: [Vault, AuraSkills, Quests, LuckPerms, PlaceholderAPI, AnimatedScoreboard]
 commands:
   ah:
     description: Auction House
@@ -94,6 +94,17 @@ commands:
     description: Edit plugin configuration via dialog
     usage: /<command> [section]
     permission: horizonutilities.config.admin
+  quests:
+    description: View and manage quests
+    aliases: [quest, q]
+    usage: /<command> [daily|jobs|weekly|challenges|history|admin]
+  sb:
+    description: Toggle and switch scoreboard modes
+    usage: /<command> [on|off|quests|normal]
+  rtp:
+    description: Random teleport to a safe location
+    aliases: [randomtp, wild]
+    usage: /<command> [world]
 permissions:
   horizonutilities.ah.use:
     default: true
@@ -310,3 +321,24 @@ permissions:
   horizonutilities.config.admin:
     description: Edit plugin configuration via dialog
     default: op
+  # Quests
+  horizonutilities.quests.use:
+    description: View and track quests
+    default: true
+  horizonutilities.quests.admin:
+    description: Quest admin commands
+    default: op
+  # Scoreboard
+  horizonutilities.scoreboard.use:
+    description: Toggle and switch scoreboard
+    default: true
+  # RTP
+  horizonutilities.rtp.use:
+    description: Use random teleport
+    default: true
+  horizonutilities.rtp.bypass.cooldown:
+    description: Bypass RTP cooldown
+    default: false
+  horizonutilities.rtp.bypass.cost:
+    description: Bypass RTP cost
+    default: false
