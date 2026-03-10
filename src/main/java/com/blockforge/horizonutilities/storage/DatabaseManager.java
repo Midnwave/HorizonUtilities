@@ -333,6 +333,65 @@ public class DatabaseManager {
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_audit_player ON economy_audit_log(player_uuid)");
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_audit_type ON economy_audit_log(action_type)");
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_audit_time ON economy_audit_log(created_at)");
+
+            // Quest system
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_quests (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "player_uuid TEXT NOT NULL," +
+                "template_id TEXT NOT NULL," +
+                "category TEXT NOT NULL," +
+                "period_key TEXT NOT NULL," +
+                "seed BIGINT NOT NULL," +
+                "current_step INTEGER NOT NULL DEFAULT 0," +
+                "total_steps INTEGER NOT NULL DEFAULT 1," +
+                "assigned_at INTEGER NOT NULL," +
+                "completed INTEGER NOT NULL DEFAULT 0," +
+                "completed_at INTEGER," +
+                "rewards_claimed INTEGER NOT NULL DEFAULT 0)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_hq_player ON horizon_quests(player_uuid)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_hq_period ON horizon_quests(player_uuid, category, period_key)");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_quest_steps (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "quest_id INTEGER NOT NULL REFERENCES horizon_quests(id) ON DELETE CASCADE," +
+                "step_index INTEGER NOT NULL," +
+                "action_type TEXT NOT NULL," +
+                "target_material TEXT," +
+                "target_amount INTEGER NOT NULL," +
+                "current_progress INTEGER NOT NULL DEFAULT 0," +
+                "completed INTEGER NOT NULL DEFAULT 0," +
+                "description TEXT NOT NULL)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_hqs_quest ON horizon_quest_steps(quest_id)");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_quest_rewards (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "quest_id INTEGER NOT NULL REFERENCES horizon_quests(id) ON DELETE CASCADE," +
+                "player_uuid TEXT NOT NULL," +
+                "reward_type TEXT NOT NULL," +
+                "amount REAL NOT NULL," +
+                "details TEXT," +
+                "granted_at INTEGER NOT NULL)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_hqr_player ON horizon_quest_rewards(player_uuid)");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_quest_challenge_history (" +
+                "player_uuid TEXT NOT NULL," +
+                "template_id TEXT NOT NULL," +
+                "completed_at INTEGER NOT NULL," +
+                "PRIMARY KEY (player_uuid, template_id, completed_at))");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_scoreboard_prefs (" +
+                "player_uuid TEXT PRIMARY KEY," +
+                "scoreboard_enabled INTEGER NOT NULL DEFAULT 1," +
+                "scoreboard_mode TEXT NOT NULL DEFAULT 'NORMAL')");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_player_stats (" +
+                "player_uuid TEXT PRIMARY KEY," +
+                "cached_tier REAL NOT NULL DEFAULT 0," +
+                "last_updated INTEGER NOT NULL)");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_rtp_cooldowns (" +
+                "player_uuid TEXT PRIMARY KEY," +
+                "last_used INTEGER NOT NULL)");
         }
     }
 
