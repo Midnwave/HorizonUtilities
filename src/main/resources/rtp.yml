@@ -1,0 +1,64 @@
+# ========================================
+# Random Teleport Configuration
+# ========================================
+
+# Default RTP settings
+defaults:
+  warmup-seconds: 5
+  cooldown-seconds: 300
+  cost: 100.0
+  min-range: 500
+  max-range: 10000
+  max-attempts: 50
+  # Particle effects during warmup
+  particles: true
+
+# Biomes to avoid teleporting to
+biome-blacklist:
+  - OCEAN
+  - DEEP_OCEAN
+  - WARM_OCEAN
+  - LUKEWARM_OCEAN
+  - COLD_OCEAN
+  - DEEP_LUKEWARM_OCEAN
+  - DEEP_COLD_OCEAN
+  - DEEP_FROZEN_OCEAN
+  - FROZEN_OCEAN
+  - RIVER
+  - FROZEN_RIVER
+  - MUSHROOM_FIELDS
+
+# Blocks that are unsafe to stand on/in
+unsafe-blocks:
+  - LAVA
+  - FIRE
+  - SOUL_FIRE
+  - CACTUS
+  - SWEET_BERRY_BUSH
+  - MAGMA_BLOCK
+  - CAMPFIRE
+  - SOUL_CAMPFIRE
+  - WITHER_ROSE
+  - POWDER_SNOW
+
+# Per-world overrides
+# Set enabled: false to disable RTP in that world
+worlds:
+  world:
+    enabled: true
+    min-range: 500
+    max-range: 10000
+    cost: 100.0
+  world_nether:
+    enabled: true
+    min-range: 100
+    max-range: 2000
+    cost: 200.0
+  world_the_end:
+    enabled: false
+
+# First-join auto RTP
+first-join:
+  enabled: true
+  world: "world"
+  delay-ticks: 60
