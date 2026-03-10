@@ -56,8 +56,9 @@ public class CraftingTableListener implements Listener {
         }, 1L);
     }
 
-    /** When a player closes a workbench, save the crafting grid. */
-    @EventHandler(priority = EventPriority.MONITOR)
+    /** When a player closes a workbench, save the crafting grid and clear slots
+     *  so vanilla doesn't return items to the player. Items persist in the table. */
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onClose(InventoryCloseEvent event) {
         if (!manager.getConfig().isEnabled()) return;
         if (event.getInventory().getType() != InventoryType.WORKBENCH) return;
@@ -73,10 +74,16 @@ public class CraftingTableListener implements Listener {
             if (grid[i] != null) anyItem = true;
         }
 
+        // Clear the grid so vanilla doesn't return items to the player
+        for (int i = 0; i < 9; i++) {
+            event.getInventory().setItem(i + 1, null);
+        }
+        // Also clear the result slot
+        event.getInventory().setItem(0, null);
+
         if (anyItem) {
             manager.saveGrid(loc, grid);
         } else {
-            // Grid is empty - delete any saved data
             manager.deleteGrid(loc);
         }
     }

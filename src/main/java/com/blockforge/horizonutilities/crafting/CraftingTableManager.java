@@ -3,30 +3,19 @@ package com.blockforge.horizonutilities.crafting;
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
 
 import java.sql.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Persists crafting table contents per block location using SQLite.
- * Also manages floating ItemDisplay entities above tables that have saved grids.
+ * Tables act as containers — items stay in the grid even when closed.
  */
 public class CraftingTableManager {
 
     private final HorizonUtilitiesPlugin plugin;
     private final CraftingTableConfig config;
-
-    /** Location key -> active ItemDisplay entity above that table */
-    private final Map<String, ItemDisplay> floatingDisplays = new ConcurrentHashMap<>();
 
     public CraftingTableManager(HorizonUtilitiesPlugin plugin, CraftingTableConfig config) {
         this.plugin  = plugin;
@@ -104,8 +93,6 @@ public class CraftingTableManager {
                 plugin.getLogger().warning("[CraftingTables] saveGrid failed: " + e.getMessage());
             }
         });
-        // Update floating display on main thread
-        updateFloatingDisplay(loc, grid);
     }
 
     /** Loads the saved crafting grid for a location. Returns null if none saved. */
@@ -133,9 +120,8 @@ public class CraftingTableManager {
         return null;
     }
 
-    /** Deletes the saved grid for a location and removes floating display. */
+    /** Deletes the saved grid for a location. */
     public void deleteGrid(Location loc) {
-        removeFloatingDisplay(loc);
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try (Connection conn = plugin.getDatabaseManager().getConnection();
                  PreparedStatement ps = conn.prepareStatement(
@@ -163,56 +149,6 @@ public class CraftingTableManager {
             }
         }
         deleteGrid(loc);
-    }
-
-    // -------------------------------------------------------------------------
-    // Floating item display
-    // -------------------------------------------------------------------------
-
-    private void updateFloatingDisplay(Location tableLoc, ItemStack[] grid) {
-        if (!config.isFloatingItemDisplay()) return;
-        // Find first non-null item in grid, or check recipe result
-        ItemStack displayItem = getDisplayItem(grid);
-        removeFloatingDisplay(tableLoc);
-        if (displayItem == null) return;
-
-        Location displayLoc = tableLoc.clone().add(0.5, 1.2, 0.5);
-        final ItemStack finalItem = displayItem;
-        plugin.getServer().getScheduler().runTask(plugin, () -> {
-            ItemDisplay display = tableLoc.getWorld().spawn(displayLoc, ItemDisplay.class, d -> {
-                d.setItemStack(finalItem);
-                d.setBillboard(Display.Billboard.VERTICAL);
-                d.setViewRange(0.3f);
-            });
-            floatingDisplays.put(locKey(tableLoc), display);
-        });
-    }
-
-    private ItemStack getDisplayItem(ItemStack[] grid) {
-        if (grid == null) return null;
-        // Try to find recipe result
-        ItemStack[] matrix = Arrays.copyOf(grid, 9);
-        Iterator<Recipe> iter = plugin.getServer().recipeIterator();
-        while (iter.hasNext()) {
-            Recipe recipe = iter.next();
-            if (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe) {
-                // Just return first non-null item for simplicity
-            }
-        }
-        // Return first non-null item from grid
-        for (ItemStack item : grid) {
-            if (item != null && item.getType() != Material.AIR) return item;
-        }
-        return null;
-    }
-
-    private void removeFloatingDisplay(Location loc) {
-        ItemDisplay display = floatingDisplays.remove(locKey(loc));
-        if (display != null && display.isValid()) display.remove();
-    }
-
-    private String locKey(Location loc) {
-        return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ();
     }
 
     public CraftingTableConfig getConfig() { return config; }

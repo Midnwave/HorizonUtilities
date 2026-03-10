@@ -10,7 +10,6 @@ public class CraftingTableConfig {
 
     private final HorizonUtilitiesPlugin plugin;
     private boolean enabled;
-    private boolean floatingItemDisplay;
     private int cleanupAfterDays;
 
     public CraftingTableConfig(HorizonUtilitiesPlugin plugin) {
@@ -21,12 +20,10 @@ public class CraftingTableConfig {
         File file = new File(plugin.getDataFolder(), "crafting-tables.yml");
         if (!file.exists()) plugin.saveResource("crafting-tables.yml", false);
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-        enabled            = cfg.getBoolean("enabled", true);
-        floatingItemDisplay = cfg.getBoolean("floating-item-display", true);
-        cleanupAfterDays   = cfg.getInt("cleanup-after-days", 30);
+        enabled          = cfg.getBoolean("enabled", true);
+        cleanupAfterDays = cfg.getInt("cleanup-after-days", 30);
     }
 
-    public boolean isEnabled()             { return enabled; }
-    public boolean isFloatingItemDisplay() { return floatingItemDisplay; }
-    public int getCleanupAfterDays()       { return cleanupAfterDays; }
+    public boolean isEnabled()       { return enabled; }
+    public int getCleanupAfterDays() { return cleanupAfterDays; }
 }
