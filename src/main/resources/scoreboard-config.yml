@@ -1,0 +1,52 @@
+# ========================================
+# Quest Scoreboard Configuration
+# ========================================
+
+# Title displayed at the top of the scoreboard
+# Supports MiniMessage formatting
+title: "<gradient:gold:yellow><bold>Horizon SMP</bold></gradient>"
+
+# How often the scoreboard updates (in ticks, 20 = 1 second)
+update-interval-ticks: 20
+
+# Auto-switch to quest scoreboard when a new quest is assigned
+auto-switch-on-assign: true
+
+# Scoreboard lines
+# Available expansion markers:
+#   {daily_quests}      - expands to all daily quest lines (job + general)
+#   {weekly_quests}     - expands to all weekly quest lines
+#   {challenge_quests}  - expands to all challenge quest lines
+#   {blank}             - empty line
+#   {tier}              - player tier value
+#   {quests_completed}  - total completed count
+#   {daily_reset}       - time until daily reset
+#   {weekly_reset}      - time until weekly reset
+lines:
+  - ""
+  - "<gold>⛏ <bold>Daily Quests</bold></gold>"
+  - "{daily_quests}"
+  - ""
+  - "<gold>📅 <bold>Weekly</bold></gold>"
+  - "{weekly_quests}"
+  - ""
+  - "<gold>🏆 <bold>Challenges</bold></gold>"
+  - "{challenge_quests}"
+  - ""
+  - "<gray>Tier: <aqua>{tier}</aqua></gray>"
+  - "<gray>Reset: <yellow>{daily_reset}</yellow></gray>"
+
+# How each quest line is formatted
+quest-line-format:
+  incomplete: "<white>{icon} {description}</white> <gray>[{progress}/{total}]</gray>"
+  complete: "<green>{icon} <strikethrough>{description}</strikethrough> ✔</green>"
+
+# Icons per category
+icons:
+  JOB_DAILY: "⛏"
+  GENERAL_DAILY: "⚔"
+  WEEKLY: "📅"
+  CHALLENGE: "🏆"
+
+# Max quests shown per category on scoreboard (to avoid overflow)
+max-quests-per-category: 4
