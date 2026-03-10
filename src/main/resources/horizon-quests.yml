@@ -1,0 +1,1018 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Quest System Configuration
+# Quests are generated per-player using a seed-based system.
+# Every player gets unique quests each day/week based on their activity tier.
+# ─────────────────────────────────────────────────────────────────────────────
+
+settings:
+  enabled: true
+  daily-reset-time: "00:00"       # 24h format, server timezone
+  weekly-reset-day: MONDAY
+  notify-on-assign: true
+  notify-on-complete: true
+  notify-on-step-complete: true
+  auto-claim-rewards: true
+  daily-money-cap: 5000.0         # Max money earnable from quests per day
+  daily-item-reward-cap: 10       # Max item rewards per day
+  challenge-repeat-block-days: 30 # Same challenge won't repeat for N days
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Player Tier Formula
+# tier = weighted combination of per-hour activity metrics + progression
+# AFK players score low because per-hour metrics normalize idle time.
+# All weights are tunable. Final tier clamped to [0, max-tier].
+# ─────────────────────────────────────────────────────────────────────────────
+tier:
+  max-tier: 10.0
+
+  # Raw playtime (low weight — prevents AFK inflation)
+  play-hours-weight: 0.005
+
+  # Blocks mined per hour
+  mining-weight: 0.008
+  mining-per-hour-cap: 200
+
+  # Mobs killed per hour
+  combat-weight: 0.015
+  kills-per-hour-cap: 50
+
+  # Walking + sprinting distance (km), NOT vehicles
+  distance-weight: 0.002
+  distance-cap-km: 500
+
+  # Crafting table interactions per hour
+  crafting-weight: 0.01
+  crafting-per-hour-cap: 30
+
+  # Survival skill: 1 - (deaths / kills), capped at 0
+  survival-weight: 0.3
+
+  # Average job level across all joined jobs
+  job-level-weight: 0.04
+
+  # Total prestige across all jobs
+  prestige-weight: 0.2
+
+  # Unique chunks explored
+  exploration-weight: 0.5
+  exploration-divisor: 500
+
+  # Diversity bonus: fraction of activity categories that are non-trivial
+  diversity-weight: 0.3
+  diversity-blocks-threshold: 1000
+  diversity-kills-threshold: 100
+  diversity-distance-threshold: 50
+  diversity-crafting-threshold: 200
+  diversity-fishing-threshold: 50
+  diversity-breeding-threshold: 20
+  diversity-job-level-threshold: 10
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Quest Counts — how many quests per category, scaled by tier
+# count = floor(base + tier * per-tier), clamped to max
+# ─────────────────────────────────────────────────────────────────────────────
+quest-counts:
+  job-daily:
+    base: 1
+    per-tier: 0.3
+    max: 4
+    min-tier: 0
+  general-daily:
+    base: 1
+    per-tier: 0.2
+    max: 3
+    min-tier: 0
+  weekly:
+    base: 1
+    per-tier: 0.15
+    max: 3
+    min-tier: 0
+  challenge:
+    base: 0
+    per-tier: 0.15
+    max: 2
+    min-tier: 3.0
+
+# Amount multiplier per tier unit: scaled_amount = base * (1 + tier * scale)
+difficulty-scale: 0.12
+# Reward multiplier per tier unit: scaled_reward = base * (1 + tier * scale)
+reward-scale: 0.15
+
+# ─────────────────────────────────────────────────────────────────────────────
+# TEMPLATES
+# Each template defines a quest type that can be generated.
+# Generator picks templates via weighted random using player's seed.
+# ─────────────────────────────────────────────────────────────────────────────
+templates:
+
+  # =========================================================================
+  # JOB DAILY — MINER
+  # =========================================================================
+  mine_ore:
+    category: JOB_DAILY
+    job: miner
+    weight: 3
+    steps:
+      - action: BREAK
+        targets: [COAL_ORE, DEEPSLATE_COAL_ORE, IRON_ORE, DEEPSLATE_IRON_ORE, COPPER_ORE, DEEPSLATE_COPPER_ORE, GOLD_ORE, DEEPSLATE_GOLD_ORE, LAPIS_ORE, DEEPSLATE_LAPIS_ORE, REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE]
+        description: "Mine {amount} {target}"
+        base-amount: 32
+        amount-range: [16, 128]
+    rewards:
+      money: 80.0
+      job-xp: 60.0
+
+  mine_precious:
+    category: JOB_DAILY
+    job: miner
+    weight: 2
+    steps:
+      - action: BREAK
+        targets: [DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE, EMERALD_ORE, DEEPSLATE_EMERALD_ORE]
+        description: "Mine {amount} {target}"
+        base-amount: 8
+        amount-range: [4, 32]
+    rewards:
+      money: 150.0
+      job-xp: 100.0
+      xp-levels: 3
+
+  mine_stone:
+    category: JOB_DAILY
+    job: miner
+    weight: 3
+    steps:
+      - action: BREAK
+        targets: [STONE, DEEPSLATE, GRANITE, DIORITE, ANDESITE, TUFF, CALCITE]
+        description: "Mine {amount} {target}"
+        base-amount: 64
+        amount-range: [32, 256]
+    rewards:
+      money: 50.0
+      job-xp: 40.0
+
+  mine_and_smelt:
+    category: JOB_DAILY
+    job: miner
+    weight: 1
+    steps:
+      - action: BREAK
+        targets: [IRON_ORE, DEEPSLATE_IRON_ORE, GOLD_ORE, DEEPSLATE_GOLD_ORE, COPPER_ORE, DEEPSLATE_COPPER_ORE]
+        description: "Mine {amount} {target}"
+        base-amount: 16
+        amount-range: [8, 64]
+      - action: SMELT
+        targets: [IRON_INGOT, GOLD_INGOT, COPPER_INGOT]
+        description: "Smelt {amount} ingots"
+        base-amount: 16
+        amount-range: [8, 64]
+    rewards:
+      money: 150.0
+      job-xp: 100.0
+
+  # =========================================================================
+  # JOB DAILY — WOODCUTTER
+  # =========================================================================
+  chop_logs:
+    category: JOB_DAILY
+    job: woodcutter
+    weight: 3
+    steps:
+      - action: BREAK
+        targets: [OAK_LOG, BIRCH_LOG, SPRUCE_LOG, DARK_OAK_LOG, JUNGLE_LOG, ACACIA_LOG, CHERRY_LOG, MANGROVE_LOG]
+        description: "Chop {amount} {target}"
+        base-amount: 48
+        amount-range: [24, 192]
+    rewards:
+      money: 55.0
+      job-xp: 40.0
+
+  chop_and_craft:
+    category: JOB_DAILY
+    job: woodcutter
+    weight: 2
+    steps:
+      - action: BREAK
+        targets: [OAK_LOG, BIRCH_LOG, SPRUCE_LOG, DARK_OAK_LOG]
+        description: "Chop {amount} {target}"
+        base-amount: 32
+        amount-range: [16, 128]
+      - action: CRAFT
+        targets: [OAK_PLANKS, BIRCH_PLANKS, SPRUCE_PLANKS, DARK_OAK_PLANKS]
+        description: "Craft {amount} planks"
+        base-amount: 64
+        amount-range: [32, 256]
+    rewards:
+      money: 100.0
+      job-xp: 80.0
+
+  strip_logs:
+    category: JOB_DAILY
+    job: woodcutter
+    weight: 1
+    steps:
+      - action: BREAK
+        targets: [STRIPPED_OAK_LOG, STRIPPED_BIRCH_LOG, STRIPPED_SPRUCE_LOG, STRIPPED_DARK_OAK_LOG, STRIPPED_JUNGLE_LOG, STRIPPED_ACACIA_LOG]
+        description: "Strip {amount} logs"
+        base-amount: 24
+        amount-range: [12, 96]
+    rewards:
+      money: 70.0
+      job-xp: 50.0
+
+  # =========================================================================
+  # JOB DAILY — HUNTER
+  # =========================================================================
+  slay_undead:
+    category: JOB_DAILY
+    job: hunter
+    weight: 3
+    steps:
+      - action: KILL
+        targets: [ZOMBIE, SKELETON, DROWNED, HUSK, STRAY, ZOMBIE_VILLAGER]
+        description: "Slay {amount} {target}"
+        base-amount: 15
+        amount-range: [5, 60]
+    rewards:
+      money: 90.0
+      job-xp: 60.0
+
+  slay_spiders:
+    category: JOB_DAILY
+    job: hunter
+    weight: 2
+    steps:
+      - action: KILL
+        targets: [SPIDER, CAVE_SPIDER]
+        description: "Kill {amount} {target}"
+        base-amount: 12
+        amount-range: [5, 48]
+    rewards:
+      money: 85.0
+      job-xp: 55.0
+
+  slay_creepers:
+    category: JOB_DAILY
+    job: hunter
+    weight: 2
+    steps:
+      - action: KILL
+        targets: [CREEPER]
+        description: "Eliminate {amount} creepers"
+        base-amount: 10
+        amount-range: [4, 40]
+    rewards:
+      money: 100.0
+      job-xp: 70.0
+
+  slay_nether:
+    category: JOB_DAILY
+    job: hunter
+    weight: 1
+    min-tier: 2.0
+    steps:
+      - action: KILL
+        targets: [BLAZE, WITHER_SKELETON, PIGLIN_BRUTE, GHAST]
+        description: "Defeat {amount} {target}"
+        base-amount: 8
+        amount-range: [3, 32]
+    rewards:
+      money: 160.0
+      job-xp: 110.0
+      xp-levels: 3
+
+  # =========================================================================
+  # JOB DAILY — FARMER
+  # =========================================================================
+  harvest_crops:
+    category: JOB_DAILY
+    job: farmer
+    weight: 3
+    steps:
+      - action: FARM
+        targets: [WHEAT, CARROTS, POTATOES, BEETROOTS]
+        description: "Harvest {amount} {target}"
+        base-amount: 32
+        amount-range: [16, 128]
+    rewards:
+      money: 60.0
+      job-xp: 45.0
+
+  harvest_special:
+    category: JOB_DAILY
+    job: farmer
+    weight: 2
+    steps:
+      - action: FARM
+        targets: [MELON, PUMPKIN, SWEET_BERRIES, SUGAR_CANE, BAMBOO, CACTUS]
+        description: "Harvest {amount} {target}"
+        base-amount: 24
+        amount-range: [12, 96]
+    rewards:
+      money: 70.0
+      job-xp: 50.0
+
+  breed_animals:
+    category: JOB_DAILY
+    job: farmer
+    weight: 2
+    steps:
+      - action: BREED
+        targets: [COW, PIG, SHEEP, CHICKEN, RABBIT]
+        description: "Breed {amount} {target}"
+        base-amount: 8
+        amount-range: [4, 32]
+    rewards:
+      money: 80.0
+      job-xp: 55.0
+
+  # =========================================================================
+  # JOB DAILY — FISHERMAN
+  # =========================================================================
+  catch_fish:
+    category: JOB_DAILY
+    job: fisherman
+    weight: 3
+    steps:
+      - action: FISH
+        targets: [COD, SALMON]
+        description: "Catch {amount} {target}"
+        base-amount: 12
+        amount-range: [6, 48]
+    rewards:
+      money: 65.0
+      job-xp: 45.0
+
+  catch_rare:
+    category: JOB_DAILY
+    job: fisherman
+    weight: 1
+    steps:
+      - action: FISH
+        targets: [TROPICAL_FISH, PUFFERFISH]
+        description: "Catch {amount} {target}"
+        base-amount: 6
+        amount-range: [3, 24]
+    rewards:
+      money: 120.0
+      job-xp: 80.0
+      xp-levels: 2
+
+  # =========================================================================
+  # JOB DAILY — DIGGER
+  # =========================================================================
+  dig_dirt:
+    category: JOB_DAILY
+    job: digger
+    weight: 3
+    steps:
+      - action: BREAK
+        targets: [DIRT, GRASS_BLOCK, COARSE_DIRT, ROOTED_DIRT, MUD, CLAY]
+        description: "Dig {amount} {target}"
+        base-amount: 64
+        amount-range: [32, 256]
+    rewards:
+      money: 45.0
+      job-xp: 35.0
+
+  dig_sand:
+    category: JOB_DAILY
+    job: digger
+    weight: 2
+    steps:
+      - action: BREAK
+        targets: [SAND, RED_SAND, GRAVEL, SOUL_SAND, SOUL_SOIL]
+        description: "Dig {amount} {target}"
+        base-amount: 48
+        amount-range: [24, 192]
+    rewards:
+      money: 50.0
+      job-xp: 38.0
+
+  # =========================================================================
+  # JOB DAILY — CRAFTER
+  # =========================================================================
+  craft_tools:
+    category: JOB_DAILY
+    job: crafter
+    weight: 2
+    steps:
+      - action: CRAFT
+        targets: [IRON_PICKAXE, IRON_AXE, IRON_SHOVEL, IRON_SWORD, IRON_HOE]
+        description: "Craft {amount} {target}"
+        base-amount: 4
+        amount-range: [2, 16]
+    rewards:
+      money: 75.0
+      job-xp: 55.0
+
+  craft_armor:
+    category: JOB_DAILY
+    job: crafter
+    weight: 2
+    steps:
+      - action: CRAFT
+        targets: [IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS]
+        description: "Craft {amount} {target}"
+        base-amount: 3
+        amount-range: [1, 12]
+    rewards:
+      money: 90.0
+      job-xp: 65.0
+
+  craft_building:
+    category: JOB_DAILY
+    job: crafter
+    weight: 2
+    steps:
+      - action: CRAFT
+        targets: [GLASS, GLASS_PANE, BRICK, STONE_BRICKS, BOOKSHELF, LANTERN]
+        description: "Craft {amount} {target}"
+        base-amount: 16
+        amount-range: [8, 64]
+    rewards:
+      money: 60.0
+      job-xp: 45.0
+
+  # =========================================================================
+  # JOB DAILY — BUILDER
+  # =========================================================================
+  place_blocks:
+    category: JOB_DAILY
+    job: builder
+    weight: 3
+    steps:
+      - action: PLACE
+        targets: [STONE_BRICKS, BRICKS, QUARTZ_BLOCK, POLISHED_ANDESITE, POLISHED_GRANITE, POLISHED_DIORITE, SMOOTH_STONE, DEEPSLATE_BRICKS]
+        description: "Place {amount} {target}"
+        base-amount: 64
+        amount-range: [32, 256]
+    rewards:
+      money: 55.0
+      job-xp: 40.0
+
+  # =========================================================================
+  # JOB DAILY — ENCHANTER
+  # =========================================================================
+  enchant_items:
+    category: JOB_DAILY
+    job: enchanter
+    weight: 3
+    steps:
+      - action: ENCHANT
+        targets: [DIAMOND_PICKAXE, DIAMOND_SWORD, DIAMOND_AXE, DIAMOND_HELMET, DIAMOND_CHESTPLATE, DIAMOND_LEGGINGS, DIAMOND_BOOTS, BOW, FISHING_ROD]
+        description: "Enchant {amount} items"
+        base-amount: 3
+        amount-range: [1, 12]
+    rewards:
+      money: 120.0
+      job-xp: 80.0
+
+  # =========================================================================
+  # JOB DAILY — BREWER
+  # =========================================================================
+  brew_potions:
+    category: JOB_DAILY
+    job: brewer
+    weight: 3
+    steps:
+      - action: BREW
+        description: "Brew {amount} potions"
+        base-amount: 6
+        amount-range: [3, 24]
+    rewards:
+      money: 90.0
+      job-xp: 60.0
+
+  # =========================================================================
+  # JOB DAILY — EXPLORER
+  # =========================================================================
+  explore_chunks:
+    category: JOB_DAILY
+    job: explorer
+    weight: 3
+    steps:
+      - action: EXPLORE_CHUNK
+        description: "Discover {amount} new chunks"
+        base-amount: 20
+        amount-range: [10, 80]
+    rewards:
+      money: 100.0
+      job-xp: 70.0
+
+  # =========================================================================
+  # JOB DAILY — WEAPONSMITH
+  # =========================================================================
+  craft_weapons:
+    category: JOB_DAILY
+    job: weaponsmith
+    weight: 3
+    steps:
+      - action: CRAFT
+        targets: [IRON_SWORD, DIAMOND_SWORD, SHIELD, BOW, CROSSBOW, ARROW]
+        description: "Craft {amount} {target}"
+        base-amount: 4
+        amount-range: [2, 16]
+    rewards:
+      money: 85.0
+      job-xp: 60.0
+
+  # =========================================================================
+  # GENERAL DAILY — for all players regardless of job
+  # =========================================================================
+  general_mine:
+    category: GENERAL_DAILY
+    weight: 3
+    steps:
+      - action: BREAK
+        targets: [STONE, DEEPSLATE, COBBLESTONE, COBBLED_DEEPSLATE, IRON_ORE, DEEPSLATE_IRON_ORE, COAL_ORE, DEEPSLATE_COAL_ORE]
+        description: "Mine {amount} {target}"
+        base-amount: 48
+        amount-range: [24, 192]
+    rewards:
+      money: 60.0
+      xp-levels: 2
+
+  general_slay_hostiles:
+    category: GENERAL_DAILY
+    weight: 3
+    steps:
+      - action: KILL
+        targets: [ZOMBIE, SKELETON, SPIDER, CREEPER, WITCH, ENDERMAN]
+        description: "Slay {amount} {target}"
+        base-amount: 12
+        amount-range: [5, 48]
+    rewards:
+      money: 75.0
+      xp-levels: 3
+
+  general_fishing:
+    category: GENERAL_DAILY
+    weight: 2
+    steps:
+      - action: FISH
+        targets: [COD, SALMON]
+        description: "Catch {amount} fish"
+        base-amount: 8
+        amount-range: [4, 32]
+    rewards:
+      money: 55.0
+      xp-levels: 2
+
+  general_craft:
+    category: GENERAL_DAILY
+    weight: 2
+    steps:
+      - action: CRAFT
+        targets: [BREAD, TORCH, LADDER, RAIL, PAPER, BOOK, CHEST, BARREL, CAMPFIRE]
+        description: "Craft {amount} {target}"
+        base-amount: 16
+        amount-range: [8, 64]
+    rewards:
+      money: 50.0
+      xp-levels: 1
+
+  general_farm:
+    category: GENERAL_DAILY
+    weight: 2
+    steps:
+      - action: FARM
+        targets: [WHEAT, CARROTS, POTATOES, BEETROOTS, SUGAR_CANE]
+        description: "Harvest {amount} {target}"
+        base-amount: 24
+        amount-range: [12, 96]
+    rewards:
+      money: 55.0
+      xp-levels: 2
+
+  general_explore:
+    category: GENERAL_DAILY
+    weight: 1
+    steps:
+      - action: EXPLORE_CHUNK
+        description: "Explore {amount} new chunks"
+        base-amount: 10
+        amount-range: [5, 40]
+    rewards:
+      money: 80.0
+      xp-levels: 3
+
+  general_tame:
+    category: GENERAL_DAILY
+    weight: 1
+    steps:
+      - action: TAME
+        targets: [WOLF, CAT, PARROT, HORSE]
+        description: "Tame {amount} {target}"
+        base-amount: 2
+        amount-range: [1, 8]
+    rewards:
+      money: 100.0
+      xp-levels: 3
+
+  general_eat:
+    category: GENERAL_DAILY
+    weight: 2
+    steps:
+      - action: EAT
+        targets: [COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_MUTTON, COOKED_SALMON, COOKED_COD, GOLDEN_APPLE, BREAD, BAKED_POTATO]
+        description: "Eat {amount} {target}"
+        base-amount: 12
+        amount-range: [6, 48]
+    rewards:
+      money: 40.0
+      xp-levels: 1
+
+  general_smelt:
+    category: GENERAL_DAILY
+    weight: 2
+    steps:
+      - action: SMELT
+        targets: [IRON_INGOT, GOLD_INGOT, COPPER_INGOT, GLASS, STONE, SMOOTH_STONE, CHARCOAL]
+        description: "Smelt {amount} {target}"
+        base-amount: 16
+        amount-range: [8, 64]
+    rewards:
+      money: 55.0
+      xp-levels: 2
+
+  general_build:
+    category: GENERAL_DAILY
+    weight: 2
+    steps:
+      - action: PLACE
+        targets: [OAK_PLANKS, SPRUCE_PLANKS, BIRCH_PLANKS, STONE_BRICKS, COBBLESTONE, GLASS, BRICKS]
+        description: "Place {amount} {target}"
+        base-amount: 48
+        amount-range: [24, 192]
+    rewards:
+      money: 45.0
+      xp-levels: 1
+
+  # =========================================================================
+  # WEEKLY — longer multi-step quests
+  # =========================================================================
+  weekly_mining_expedition:
+    category: WEEKLY
+    weight: 3
+    steps:
+      - action: BREAK
+        targets: [IRON_ORE, DEEPSLATE_IRON_ORE, COPPER_ORE, DEEPSLATE_COPPER_ORE]
+        description: "Mine {amount} {target}"
+        base-amount: 96
+        amount-range: [48, 384]
+      - action: SMELT
+        targets: [IRON_INGOT, COPPER_INGOT]
+        description: "Smelt {amount} ingots"
+        base-amount: 48
+        amount-range: [24, 192]
+    rewards:
+      money: 400.0
+      job-xp: 200.0
+      xp-levels: 8
+
+  weekly_diamond_hunt:
+    category: WEEKLY
+    weight: 2
+    steps:
+      - action: BREAK
+        targets: [DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE]
+        description: "Mine {amount} diamond ore"
+        base-amount: 16
+        amount-range: [8, 64]
+      - action: CRAFT
+        targets: [DIAMOND_PICKAXE, DIAMOND_SWORD, DIAMOND_AXE]
+        description: "Craft {amount} diamond tools"
+        base-amount: 2
+        amount-range: [1, 8]
+    rewards:
+      money: 500.0
+      job-xp: 250.0
+      xp-levels: 10
+
+  weekly_slayer:
+    category: WEEKLY
+    weight: 3
+    steps:
+      - action: KILL
+        targets: [ZOMBIE, SKELETON, SPIDER, CREEPER]
+        description: "Slay {amount} {target}"
+        base-amount: 64
+        amount-range: [32, 256]
+      - action: KILL
+        targets: [WITCH, ENDERMAN, PHANTOM]
+        description: "Defeat {amount} {target}"
+        base-amount: 12
+        amount-range: [6, 48]
+    rewards:
+      money: 450.0
+      xp-levels: 12
+
+  weekly_farmer:
+    category: WEEKLY
+    weight: 2
+    steps:
+      - action: FARM
+        targets: [WHEAT, CARROTS, POTATOES]
+        description: "Harvest {amount} {target}"
+        base-amount: 128
+        amount-range: [64, 512]
+      - action: CRAFT
+        targets: [BREAD, CAKE, PUMPKIN_PIE]
+        description: "Bake {amount} {target}"
+        base-amount: 32
+        amount-range: [16, 128]
+      - action: EAT
+        targets: [BREAD, CAKE, PUMPKIN_PIE]
+        description: "Eat {amount} baked goods"
+        base-amount: 16
+        amount-range: [8, 64]
+    rewards:
+      money: 350.0
+      job-xp: 180.0
+      xp-levels: 8
+
+  weekly_lumberjack:
+    category: WEEKLY
+    weight: 2
+    steps:
+      - action: BREAK
+        targets: [OAK_LOG, BIRCH_LOG, SPRUCE_LOG, DARK_OAK_LOG, JUNGLE_LOG]
+        description: "Chop {amount} {target}"
+        base-amount: 192
+        amount-range: [96, 768]
+      - action: CRAFT
+        targets: [OAK_PLANKS, BIRCH_PLANKS, SPRUCE_PLANKS, DARK_OAK_PLANKS]
+        description: "Craft {amount} planks"
+        base-amount: 256
+        amount-range: [128, 1024]
+    rewards:
+      money: 300.0
+      job-xp: 160.0
+      xp-levels: 6
+
+  weekly_explorer:
+    category: WEEKLY
+    weight: 2
+    steps:
+      - action: EXPLORE_CHUNK
+        description: "Discover {amount} new chunks"
+        base-amount: 50
+        amount-range: [25, 200]
+      - action: FISH
+        targets: [COD, SALMON, TROPICAL_FISH]
+        description: "Fish {amount} catches along the way"
+        base-amount: 15
+        amount-range: [8, 60]
+    rewards:
+      money: 400.0
+      xp-levels: 10
+
+  weekly_blacksmith:
+    category: WEEKLY
+    weight: 2
+    steps:
+      - action: BREAK
+        targets: [IRON_ORE, DEEPSLATE_IRON_ORE]
+        description: "Mine {amount} iron ore"
+        base-amount: 64
+        amount-range: [32, 256]
+      - action: SMELT
+        targets: [IRON_INGOT]
+        description: "Smelt {amount} iron ingots"
+        base-amount: 48
+        amount-range: [24, 192]
+      - action: CRAFT
+        targets: [IRON_PICKAXE, IRON_AXE, IRON_SWORD, IRON_HELMET, IRON_CHESTPLATE, IRON_LEGGINGS, IRON_BOOTS, SHIELD]
+        description: "Forge {amount} iron equipment"
+        base-amount: 6
+        amount-range: [3, 24]
+    rewards:
+      money: 500.0
+      job-xp: 250.0
+      xp-levels: 10
+      items:
+        - material: EXPERIENCE_BOTTLE
+          amount: 8
+
+  weekly_brewer:
+    category: WEEKLY
+    weight: 1
+    steps:
+      - action: FARM
+        targets: [NETHER_WART]
+        description: "Harvest {amount} nether wart"
+        base-amount: 32
+        amount-range: [16, 128]
+      - action: BREW
+        description: "Brew {amount} potions"
+        base-amount: 18
+        amount-range: [9, 72]
+    rewards:
+      money: 350.0
+      job-xp: 180.0
+      xp-levels: 8
+
+  # =========================================================================
+  # CHALLENGE — hard quests, mid+ tier only, better rewards
+  # =========================================================================
+  challenge_wither_hunt:
+    category: CHALLENGE
+    weight: 1
+    min-tier: 5.0
+    steps:
+      - action: KILL
+        targets: [WITHER_SKELETON]
+        description: "Slay {amount} wither skeletons"
+        base-amount: 20
+        amount-range: [10, 50]
+      - action: KILL
+        targets: [WITHER]
+        description: "Defeat the Wither"
+        base-amount: 1
+        amount-range: [1, 3]
+    rewards:
+      money: 2000.0
+      job-xp: 500.0
+      xp-levels: 20
+      items:
+        - material: NETHER_STAR
+          amount: 1
+
+  challenge_deep_mining:
+    category: CHALLENGE
+    weight: 2
+    min-tier: 3.0
+    steps:
+      - action: BREAK
+        targets: [DEEPSLATE_DIAMOND_ORE]
+        description: "Mine {amount} deepslate diamond ore"
+        base-amount: 24
+        amount-range: [12, 64]
+      - action: BREAK
+        targets: [DEEPSLATE_EMERALD_ORE]
+        description: "Mine {amount} deepslate emerald ore"
+        base-amount: 12
+        amount-range: [6, 32]
+      - action: BREAK
+        targets: [ANCIENT_DEBRIS]
+        description: "Mine {amount} ancient debris"
+        base-amount: 4
+        amount-range: [2, 12]
+    rewards:
+      money: 1500.0
+      job-xp: 400.0
+      xp-levels: 15
+      items:
+        - material: NETHERITE_SCRAP
+          amount: 2
+
+  challenge_nether_expedition:
+    category: CHALLENGE
+    weight: 2
+    min-tier: 4.0
+    steps:
+      - action: KILL
+        targets: [BLAZE]
+        description: "Defeat {amount} blazes"
+        base-amount: 20
+        amount-range: [10, 50]
+      - action: KILL
+        targets: [GHAST]
+        description: "Shoot down {amount} ghasts"
+        base-amount: 5
+        amount-range: [3, 15]
+      - action: KILL
+        targets: [PIGLIN_BRUTE]
+        description: "Defeat {amount} piglin brutes"
+        base-amount: 8
+        amount-range: [4, 20]
+    rewards:
+      money: 1200.0
+      job-xp: 350.0
+      xp-levels: 15
+
+  challenge_master_crafter:
+    category: CHALLENGE
+    weight: 2
+    min-tier: 3.0
+    steps:
+      - action: CRAFT
+        targets: [DIAMOND_PICKAXE, DIAMOND_AXE, DIAMOND_SWORD]
+        description: "Craft {amount} diamond tools"
+        base-amount: 3
+        amount-range: [2, 8]
+      - action: ENCHANT
+        targets: [DIAMOND_PICKAXE, DIAMOND_SWORD, DIAMOND_AXE]
+        description: "Enchant {amount} diamond items"
+        base-amount: 3
+        amount-range: [2, 8]
+      - action: BREW
+        description: "Brew {amount} potions"
+        base-amount: 12
+        amount-range: [6, 36]
+    rewards:
+      money: 1000.0
+      job-xp: 300.0
+      xp-levels: 12
+      items:
+        - material: EXPERIENCE_BOTTLE
+          amount: 16
+
+  challenge_enderman_slayer:
+    category: CHALLENGE
+    weight: 1
+    min-tier: 4.0
+    steps:
+      - action: KILL
+        targets: [ENDERMAN]
+        description: "Slay {amount} endermen"
+        base-amount: 30
+        amount-range: [15, 80]
+      - action: CRAFT
+        targets: [ENDER_CHEST, ENDER_EYE]
+        description: "Craft {amount} ender items"
+        base-amount: 4
+        amount-range: [2, 12]
+    rewards:
+      money: 800.0
+      xp-levels: 12
+      items:
+        - material: ENDER_PEARL
+          amount: 8
+
+  challenge_ocean_master:
+    category: CHALLENGE
+    weight: 1
+    min-tier: 3.0
+    steps:
+      - action: FISH
+        targets: [COD, SALMON]
+        description: "Catch {amount} fish"
+        base-amount: 40
+        amount-range: [20, 100]
+      - action: FISH
+        targets: [TROPICAL_FISH, PUFFERFISH]
+        description: "Catch {amount} rare fish"
+        base-amount: 10
+        amount-range: [5, 30]
+      - action: KILL
+        targets: [DROWNED, GUARDIAN, ELDER_GUARDIAN]
+        description: "Defeat {amount} aquatic threats"
+        base-amount: 15
+        amount-range: [8, 40]
+    rewards:
+      money: 900.0
+      xp-levels: 12
+      items:
+        - material: HEART_OF_THE_SEA
+          amount: 1
+
+  challenge_supreme_miner:
+    category: CHALLENGE
+    weight: 2
+    min-tier: 4.0
+    steps:
+      - action: BREAK
+        targets: [STONE, DEEPSLATE]
+        description: "Mine {amount} stone"
+        base-amount: 500
+        amount-range: [250, 2000]
+      - action: BREAK
+        targets: [IRON_ORE, DEEPSLATE_IRON_ORE, GOLD_ORE, DEEPSLATE_GOLD_ORE]
+        description: "Mine {amount} ore"
+        base-amount: 64
+        amount-range: [32, 256]
+      - action: BREAK
+        targets: [DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE]
+        description: "Mine {amount} diamonds"
+        base-amount: 16
+        amount-range: [8, 64]
+    rewards:
+      money: 1100.0
+      job-xp: 400.0
+      xp-levels: 15
+
+  challenge_survival_week:
+    category: CHALLENGE
+    weight: 2
+    min-tier: 3.0
+    steps:
+      - action: KILL
+        targets: [ZOMBIE, SKELETON, SPIDER, CREEPER, WITCH, ENDERMAN]
+        description: "Slay {amount} hostile mobs"
+        base-amount: 100
+        amount-range: [50, 400]
+      - action: FARM
+        targets: [WHEAT, CARROTS, POTATOES]
+        description: "Harvest {amount} crops"
+        base-amount: 128
+        amount-range: [64, 512]
+      - action: CRAFT
+        targets: [BREAD, COOKED_BEEF, COOKED_PORKCHOP]
+        description: "Prepare {amount} food"
+        base-amount: 32
+        amount-range: [16, 128]
+    rewards:
+      money: 800.0
+      xp-levels: 12
