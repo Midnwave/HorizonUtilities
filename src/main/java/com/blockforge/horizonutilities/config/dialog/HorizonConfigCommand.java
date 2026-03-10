@@ -58,6 +58,9 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
         SECTIONS.put("customitems",   "custom-items.yml");
         SECTIONS.put("tournaments",   "tournaments.yml");
         SECTIONS.put("crafting",      "crafting-tables.yml");
+        SECTIONS.put("quests",        "horizon-quests.yml");
+        SECTIONS.put("scoreboard",    "scoreboard-config.yml");
+        SECTIONS.put("rtp",           "rtp.yml");
     }
 
     /** Human-readable description for each config section */
@@ -78,6 +81,9 @@ public class HorizonConfigCommand implements CommandExecutor, TabCompleter {
         SECTION_DESCRIPTIONS.put("customitems", "Custom items \u2014 recipes & attributes");
         SECTION_DESCRIPTIONS.put("tournaments", "Tournaments \u2014 schedules & rewards");
         SECTION_DESCRIPTIONS.put("crafting",    "Crafting tables \u2014 custom crafting stations");
+        SECTION_DESCRIPTIONS.put("quests",      "Quest system \u2014 templates, tier formula & rewards");
+        SECTION_DESCRIPTIONS.put("scoreboard",  "Quest scoreboard \u2014 display & formatting");
+        SECTION_DESCRIPTIONS.put("rtp",         "Random teleport \u2014 ranges, costs & safety");
         // maintenance uses JSON state, not a configurable YAML file
     }
 
