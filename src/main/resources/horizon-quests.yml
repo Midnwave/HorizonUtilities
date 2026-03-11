@@ -99,3 +99,27 @@ quest-counts:
 difficulty-scale: 0.12
 # Reward multiplier per tier unit: scaled_reward = base * (1 + tier * scale)
 reward-scale: 0.15
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Boss Bar — shows quest progress as a boss bar on screen
+# ─────────────────────────────────────────────────────────────────────────────
+bossbar:
+  enabled: true
+  duration-seconds: 5            # How long the bar stays visible (0 = permanent)
+  max-bars: 3                    # Max boss bars shown at once per player
+  show-on-complete: true         # Show a "Complete!" bar when quest finishes
+  complete-duration-seconds: 3   # How long the completion bar stays
+
+  # MiniMessage format — placeholders: <icon> <quest> <description> <progress> <total>
+  format: "<icon> <gray><quest></gray> <dark_gray>|</dark_gray> <white><description></white> <yellow><progress>/<total></yellow>"
+  complete-format: "<icon> <green><bold><quest></bold> — Complete!</green>"
+
+  # Bar overlay style: PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+  style: NOTCHED_10
+
+  # Bar color per quest category: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  colors:
+    job-daily: GREEN
+    general-daily: YELLOW
+    weekly: BLUE
+    challenge: PURPLE

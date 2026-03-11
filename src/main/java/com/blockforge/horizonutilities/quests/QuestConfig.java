@@ -1,6 +1,7 @@
 package com.blockforge.horizonutilities.quests;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
+import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -40,6 +41,17 @@ public class QuestConfig {
     // Scaling
     private double difficultyScale;
     private double rewardScale;
+
+    // Boss bar
+    private boolean bossBarEnabled;
+    private int bossBarDurationSeconds;
+    private int bossBarMaxBars;
+    private boolean bossBarShowOnComplete;
+    private int bossBarCompleteDurationSeconds;
+    private String bossBarFormat;
+    private String bossBarCompleteFormat;
+    private BossBar.Overlay bossBarOverlay;
+    private final Map<QuestCategory, BossBar.Color> bossBarCategoryColors = new EnumMap<>(QuestCategory.class);
 
     public QuestConfig(HorizonUtilitiesPlugin plugin) {
         this.plugin = plugin;
@@ -109,6 +121,34 @@ public class QuestConfig {
         difficultyScale = cfg.getDouble("difficulty-scale", 0.12);
         rewardScale     = cfg.getDouble("reward-scale", 0.15);
 
+        // Boss bar
+        bossBarEnabled                = cfg.getBoolean("bossbar.enabled", true);
+        bossBarDurationSeconds        = cfg.getInt("bossbar.duration-seconds", 5);
+        bossBarMaxBars                = cfg.getInt("bossbar.max-bars", 3);
+        bossBarShowOnComplete         = cfg.getBoolean("bossbar.show-on-complete", true);
+        bossBarCompleteDurationSeconds= cfg.getInt("bossbar.complete-duration-seconds", 3);
+        bossBarFormat                 = cfg.getString("bossbar.format",
+            "<icon> <gray><quest></gray> <dark_gray>|</dark_gray> <white><description></white> <yellow><progress>/<total></yellow>");
+        bossBarCompleteFormat         = cfg.getString("bossbar.complete-format",
+            "<icon> <green><bold><quest></bold> — Complete!</green>");
+
+        String overlayStr = cfg.getString("bossbar.style", "NOTCHED_10").toUpperCase();
+        try {
+            bossBarOverlay = BossBar.Overlay.valueOf(overlayStr);
+        } catch (IllegalArgumentException e) {
+            bossBarOverlay = BossBar.Overlay.NOTCHED_10;
+        }
+
+        bossBarCategoryColors.clear();
+        bossBarCategoryColors.put(QuestCategory.JOB_DAILY,
+            parseBossColor(cfg.getString("bossbar.colors.job-daily", "GREEN")));
+        bossBarCategoryColors.put(QuestCategory.GENERAL_DAILY,
+            parseBossColor(cfg.getString("bossbar.colors.general-daily", "YELLOW")));
+        bossBarCategoryColors.put(QuestCategory.WEEKLY,
+            parseBossColor(cfg.getString("bossbar.colors.weekly", "BLUE")));
+        bossBarCategoryColors.put(QuestCategory.CHALLENGE,
+            parseBossColor(cfg.getString("bossbar.colors.challenge", "PURPLE")));
+
         logger.info("[Quests] Configuration loaded (procedural generation mode).");
     }
 
@@ -127,6 +167,17 @@ public class QuestConfig {
     public TierWeights getTierWeights()         { return tierWeights; }
     public double getDifficultyScale()          { return difficultyScale; }
     public double getRewardScale()              { return rewardScale; }
+
+    // Boss bar getters
+    public boolean isBossBarEnabled()                           { return bossBarEnabled; }
+    public int getBossBarDurationSeconds()                      { return bossBarDurationSeconds; }
+    public int getBossBarMaxBars()                              { return bossBarMaxBars; }
+    public boolean isBossBarShowOnComplete()                    { return bossBarShowOnComplete; }
+    public int getBossBarCompleteDurationSeconds()              { return bossBarCompleteDurationSeconds; }
+    public String getBossBarFormat()                            { return bossBarFormat; }
+    public String getBossBarCompleteFormat()                    { return bossBarCompleteFormat; }
+    public BossBar.Overlay getBossBarOverlay()                  { return bossBarOverlay; }
+    public Map<QuestCategory, BossBar.Color> getBossBarCategoryColors() { return bossBarCategoryColors; }
 
     public QuestCountConfig getQuestCount(QuestCategory category) {
         return questCounts.getOrDefault(category,
@@ -169,6 +220,14 @@ public class QuestConfig {
         public int calculateCount(double tier) {
             if (tier < minTier) return 0;
             return Math.min(max, (int) Math.floor(base + tier * perTier));
+        }
+    }
+
+    private static BossBar.Color parseBossColor(String name) {
+        try {
+            return BossBar.Color.valueOf(name.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return BossBar.Color.WHITE;
         }
     }
 }

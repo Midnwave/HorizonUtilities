@@ -40,6 +40,7 @@ public class QuestManager {
     private final QuestAntiExploit antiExploit;
     private final QuestRewardHandler rewardHandler;
     private final QuestTracker tracker;
+    private final QuestBossBarManager bossBarManager;
     private final Logger logger;
 
     /** In-memory cache: player UUID -> all active quests */
@@ -58,6 +59,7 @@ public class QuestManager {
         this.antiExploit = new QuestAntiExploit(config, storage);
         this.rewardHandler = new QuestRewardHandler(plugin, storage, antiExploit);
         this.tracker = new QuestTracker(this);
+        this.bossBarManager = new QuestBossBarManager(plugin, config);
 
         scheduleResetCheck();
         schedulePurge();
@@ -150,6 +152,8 @@ public class QuestManager {
      * Called when a player quits — flush from cache.
      */
     public void onPlayerQuit(UUID uuid) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) bossBarManager.removeAll(player);
         playerQuests.remove(uuid);
         playerTiers.remove(uuid);
     }
@@ -180,6 +184,13 @@ public class QuestManager {
         // Save progress async
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
             storage.updateQuestProgress(quest));
+
+        // Update boss bar
+        if (justCompleted) {
+            bossBarManager.showCompleted(player, quest);
+        } else {
+            bossBarManager.showProgress(player, quest);
+        }
 
         if (justCompleted) {
             onQuestCompleted(player, quest);
@@ -500,6 +511,7 @@ public class QuestManager {
         if (resetTaskId != -1) {
             Bukkit.getScheduler().cancelTask(resetTaskId);
         }
+        bossBarManager.shutdown();
         playerQuests.clear();
         playerTiers.clear();
     }

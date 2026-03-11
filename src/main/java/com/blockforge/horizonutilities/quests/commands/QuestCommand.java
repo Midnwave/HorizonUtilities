@@ -27,12 +27,17 @@ public class QuestCommand implements CommandExecutor {
     private final HorizonUtilitiesPlugin plugin;
     private final QuestManager questManager;
     private final MessagesManager msg;
+    private final QuestGUI questGUI;
 
     public QuestCommand(HorizonUtilitiesPlugin plugin, QuestManager questManager) {
         this.plugin = plugin;
         this.questManager = questManager;
         this.msg = plugin.getMessagesManager();
+        this.questGUI = new QuestGUI(questManager);
+        Bukkit.getPluginManager().registerEvents(questGUI, plugin);
     }
+
+    public QuestGUI getQuestGUI() { return questGUI; }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -58,27 +63,7 @@ public class QuestCommand implements CommandExecutor {
     }
 
     private void showAllQuests(Player player) {
-        List<ActiveQuest> quests = questManager.getPlayerQuests(player.getUniqueId());
-        if (quests.isEmpty()) {
-            msg.send(player, "quest-none-active");
-            return;
-        }
-
-        double tier = questManager.getPlayerTier(player.getUniqueId());
-        player.sendMessage(msg.format("quest-header"));
-        player.sendMessage(msg.format("quest-tier",
-            Placeholder.parsed("tier", String.format("%.1f", tier))));
-
-        for (QuestCategory cat : QuestCategory.values()) {
-            List<ActiveQuest> catQuests = quests.stream()
-                .filter(q -> q.getCategory() == cat)
-                .toList();
-            if (catQuests.isEmpty()) continue;
-
-            displayCategory(player, cat, catQuests);
-        }
-
-        player.sendMessage(msg.format("quest-footer"));
+        questGUI.open(player);
     }
 
     private void showCategory(CommandSender sender, QuestCategory category) {
@@ -86,65 +71,7 @@ public class QuestCommand implements CommandExecutor {
             msg.send(sender, "player-only");
             return;
         }
-
-        List<ActiveQuest> catQuests = questManager.getPlayerQuests(player.getUniqueId(), category);
-        if (catQuests.isEmpty()) {
-            msg.send(player, "quest-none-active");
-            return;
-        }
-
-        displayCategory(player, category, catQuests);
-    }
-
-    private void displayCategory(Player player, QuestCategory cat, List<ActiveQuest> quests) {
-        long completed = quests.stream().filter(ActiveQuest::isCompleted).count();
-        player.sendMessage(msg.format("quest-category-header",
-            Placeholder.parsed("icon", cat.getIcon()),
-            Placeholder.parsed("category", cat.getDisplayName()),
-            Placeholder.parsed("completed", String.valueOf(completed)),
-            Placeholder.parsed("total", String.valueOf(quests.size()))));
-
-        for (ActiveQuest quest : quests) {
-            displayQuest(player, quest);
-        }
-    }
-
-    private void displayQuest(Player player, ActiveQuest quest) {
-        if (quest.isCompleted()) {
-            player.sendMessage(msg.format("quest-line-complete",
-                Placeholder.parsed("description", quest.getTemplateId().replace('_', ' ').replace('-', ' '))));
-            return;
-        }
-
-        ActiveQuest.ActiveStep step = quest.getCurrentStep();
-        if (step == null) return;
-
-        int stepNum = quest.getCurrentStepIndex() + 1;
-        int totalSteps = quest.getTotalSteps();
-
-        player.sendMessage(msg.format("quest-line-incomplete",
-            Placeholder.parsed("description", step.getDescription()),
-            Placeholder.parsed("step", String.valueOf(stepNum)),
-            Placeholder.parsed("steps", String.valueOf(totalSteps))));
-
-        String bar = buildProgressBar(step.getCurrentProgress(), step.getTargetAmount(), 10);
-        player.sendMessage(msg.format("quest-line-progress",
-            Placeholder.parsed("bar", bar),
-            Placeholder.parsed("progress", String.valueOf(step.getCurrentProgress())),
-            Placeholder.parsed("total", String.valueOf(step.getTargetAmount()))));
-    }
-
-    private String buildProgressBar(int current, int max, int bars) {
-        int filled = max > 0 ? (int) Math.round((double) current / max * bars) : 0;
-        filled = Math.min(filled, bars);
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("<green>");
-        for (int i = 0; i < filled; i++) sb.append("\u2588");
-        sb.append("</green><gray>");
-        for (int i = filled; i < bars; i++) sb.append("\u2588");
-        sb.append("</gray>");
-        return sb.toString();
+        questGUI.open(player, category);
     }
 
     private void showHistory(CommandSender sender) {
