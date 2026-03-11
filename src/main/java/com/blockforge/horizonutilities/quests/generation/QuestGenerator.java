@@ -10,8 +10,8 @@ import java.util.UUID;
 
 /**
  * Seed-based quest generation engine using fully procedural building.
- * Same player + same day + same category + same index = same quest every time.
- * Quests are generated on-the-fly from Bukkit enums — no templates needed.
+ * Same player + same day + same category + same index, same quest every time.
+ * Quests are generated on-the-fly from Bukkit enums, no templates are needed.
  */
 public final class QuestGenerator {
 

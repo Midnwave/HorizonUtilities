@@ -282,7 +282,21 @@ public final class ProceduralQuestBuilder {
             // Bias toward harder targets for challenges
             return pickBiasedTarget(pool, true, rng);
         }
-        return pool.get(rng.nextInt(pool.size()));
+
+        // Filter pool by tier — low-tier players shouldn't get rare targets
+        // Max allowed difficulty scales with tier: tier 0 = 0.3, tier 5 = 0.65, tier 10 = 1.0
+        double maxDifficulty = Math.min(1.0, 0.3 + tier * 0.07);
+        List<String> tierPool = new ArrayList<>();
+        for (String target : pool) {
+            if (MaterialPools.getDifficulty(target) <= maxDifficulty) {
+                tierPool.add(target);
+            }
+        }
+        // Fall back to full pool if filtering removed everything
+        if (tierPool.isEmpty()) tierPool = pool;
+
+        // Bias toward easier targets (weighted random)
+        return pickBiasedTarget(tierPool, false, rng);
     }
 
     /**
