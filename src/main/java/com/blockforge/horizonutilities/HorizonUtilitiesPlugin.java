@@ -277,6 +277,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         gemsManager.getConfig().load();
 
         // Quest system
+        com.blockforge.horizonutilities.quests.generation.MaterialPools.initialize();
         questConfig = new QuestConfig(this);
         questConfig.load();
         questStorage = new QuestStorage(databaseManager, getLogger());
@@ -455,6 +456,11 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         if (questsCmd != null) {
             questsCmd.setExecutor(new QuestCommand(this, questManager));
             questsCmd.setTabCompleter(new QuestTabCompleter());
+            // Force override /quests so BeautyQuests doesn't claim it
+            var cmdMap = getServer().getCommandMap();
+            cmdMap.getKnownCommands().put("quests", questsCmd);
+            cmdMap.getKnownCommands().put("quest", questsCmd);
+            cmdMap.getKnownCommands().put("q", questsCmd);
         }
 
         var sbCmd = getCommand("sb");

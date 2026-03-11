@@ -347,9 +347,23 @@ public class DatabaseManager {
                 "assigned_at INTEGER NOT NULL," +
                 "completed INTEGER NOT NULL DEFAULT 0," +
                 "completed_at INTEGER," +
-                "rewards_claimed INTEGER NOT NULL DEFAULT 0)");
+                "rewards_claimed INTEGER NOT NULL DEFAULT 0," +
+                "reward_money REAL NOT NULL DEFAULT 0," +
+                "reward_job_xp REAL NOT NULL DEFAULT 0," +
+                "reward_xp_levels INTEGER NOT NULL DEFAULT 0," +
+                "reward_gems INTEGER NOT NULL DEFAULT 0," +
+                "job_id TEXT," +
+                "quest_name TEXT NOT NULL DEFAULT 'Quest')");
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_hq_player ON horizon_quests(player_uuid)");
             stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_hq_period ON horizon_quests(player_uuid, category, period_key)");
+
+            // Migrate existing tables: add new columns if missing
+            try { stmt.executeUpdate("ALTER TABLE horizon_quests ADD COLUMN reward_money REAL NOT NULL DEFAULT 0"); } catch (SQLException ignored) {}
+            try { stmt.executeUpdate("ALTER TABLE horizon_quests ADD COLUMN reward_job_xp REAL NOT NULL DEFAULT 0"); } catch (SQLException ignored) {}
+            try { stmt.executeUpdate("ALTER TABLE horizon_quests ADD COLUMN reward_xp_levels INTEGER NOT NULL DEFAULT 0"); } catch (SQLException ignored) {}
+            try { stmt.executeUpdate("ALTER TABLE horizon_quests ADD COLUMN reward_gems INTEGER NOT NULL DEFAULT 0"); } catch (SQLException ignored) {}
+            try { stmt.executeUpdate("ALTER TABLE horizon_quests ADD COLUMN job_id TEXT"); } catch (SQLException ignored) {}
+            try { stmt.executeUpdate("ALTER TABLE horizon_quests ADD COLUMN quest_name TEXT NOT NULL DEFAULT 'Quest'"); } catch (SQLException ignored) {}
 
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_quest_steps (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +

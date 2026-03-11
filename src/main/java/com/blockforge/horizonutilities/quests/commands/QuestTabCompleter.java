@@ -13,7 +13,7 @@ import java.util.List;
 public class QuestTabCompleter implements TabCompleter {
 
     private static final List<String> ROOT_SUBS = List.of("daily", "jobs", "weekly", "challenges", "history", "admin");
-    private static final List<String> ADMIN_SUBS = List.of("reload", "reset", "settier", "generate");
+    private static final List<String> ADMIN_SUBS = List.of("reload", "reset", "settier", "generate", "import");
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -32,7 +32,7 @@ public class QuestTabCompleter implements TabCompleter {
 
         if (args.length == 3 && args[0].equalsIgnoreCase("admin")) {
             String sub = args[1].toLowerCase();
-            if (sub.equals("reset") || sub.equals("settier") || sub.equals("generate")) {
+            if (sub.equals("reset") || sub.equals("settier") || sub.equals("generate") || sub.equals("import")) {
                 return onlinePlayerNames(args[2]);
             }
         }

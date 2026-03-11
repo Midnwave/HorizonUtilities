@@ -7,12 +7,9 @@ import com.blockforge.horizonutilities.quests.antiexploit.QuestAntiExploit;
 import com.blockforge.horizonutilities.quests.generation.QuestGenerator;
 import com.blockforge.horizonutilities.quests.generation.TierCalculator;
 import com.blockforge.horizonutilities.quests.model.ActiveQuest;
-import com.blockforge.horizonutilities.quests.model.QuestTemplate;
 import com.blockforge.horizonutilities.quests.rewards.QuestRewardHandler;
 import com.blockforge.horizonutilities.quests.rewards.RewardDefinition;
 import com.blockforge.horizonutilities.quests.tracking.QuestTracker;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.title.Title;
@@ -89,11 +86,6 @@ public class QuestManager {
             }
             playerTiers.put(uuid, tier);
 
-            // Reattach scaled rewards from templates
-            for (ActiveQuest quest : loaded) {
-                reattachRewards(quest, tier);
-            }
-
             // Generate missing categories for current period
             String dailyKey = getDailyPeriodKey();
             String weeklyKey = getWeeklyPeriodKey();
@@ -105,7 +97,7 @@ public class QuestManager {
             if (player != null) {
                 List<JobPlayer> jobs = plugin.getJobManager().getPlayerJobs(uuid);
                 for (JobPlayer jp : jobs) {
-                    if (!hasQuestsInCache(loaded, QuestCategory.JOB_DAILY, dailyKey, jp.getJobId())) {
+                    if (!hasQuestsInCache(uuid, loaded, QuestCategory.JOB_DAILY, dailyKey, jp.getJobId())) {
                         List<ActiveQuest> generated = QuestGenerator.generateQuests(
                             uuid, dailyKey, QuestCategory.JOB_DAILY, tier, config,
                             jp.getJobId(), List.of());
@@ -115,19 +107,19 @@ public class QuestManager {
             }
 
             // General dailies
-            if (!hasQuestsInCache(loaded, QuestCategory.GENERAL_DAILY, dailyKey, null)) {
+            if (!hasQuestsInCache(uuid, loaded, QuestCategory.GENERAL_DAILY, dailyKey, null)) {
                 newQuests.addAll(QuestGenerator.generateQuests(
                     uuid, dailyKey, QuestCategory.GENERAL_DAILY, tier, config, null, List.of()));
             }
 
             // Weeklies
-            if (!hasQuestsInCache(loaded, QuestCategory.WEEKLY, weeklyKey, null)) {
+            if (!hasQuestsInCache(uuid, loaded, QuestCategory.WEEKLY, weeklyKey, null)) {
                 newQuests.addAll(QuestGenerator.generateQuests(
                     uuid, weeklyKey, QuestCategory.WEEKLY, tier, config, null, List.of()));
             }
 
             // Challenges
-            if (!hasQuestsInCache(loaded, QuestCategory.CHALLENGE, weeklyKey, null)) {
+            if (!hasQuestsInCache(uuid, loaded, QuestCategory.CHALLENGE, weeklyKey, null)) {
                 newQuests.addAll(QuestGenerator.generateQuests(
                     uuid, weeklyKey, QuestCategory.CHALLENGE, tier, config, null, recentChallenges));
             }
@@ -142,9 +134,6 @@ public class QuestManager {
 
             // Reload everything from DB now that new quests are saved
             List<ActiveQuest> allQuests = storage.loadAllQuests(uuid);
-            for (ActiveQuest q : allQuests) {
-                reattachRewards(q, tier);
-            }
             playerQuests.put(uuid, allQuests);
 
             // Notify player
@@ -173,6 +162,14 @@ public class QuestManager {
     public void trackAction(Player player, QuestActionType actionType, String material) {
         if (!config.isEnabled()) return;
         tracker.trackAction(player, actionType, material);
+    }
+
+    /**
+     * Track a quest action with a custom amount (for batch operations like shift-click crafting).
+     */
+    public void trackAction(Player player, QuestActionType actionType, String material, int amount) {
+        if (!config.isEnabled()) return;
+        tracker.trackAction(player, actionType, material, amount);
     }
 
     /**
@@ -270,8 +267,6 @@ public class QuestManager {
         if (dbId > 0) {
             // Reload from DB
             List<ActiveQuest> all = storage.loadAllQuests(uuid);
-            double tier = playerTiers.getOrDefault(uuid, difficulty);
-            for (ActiveQuest q : all) reattachRewards(q, tier);
             playerQuests.put(uuid, all);
 
             // Find the one we just created
@@ -315,7 +310,7 @@ public class QuestManager {
 
         // Notifications
         if (config.isNotifyOnComplete()) {
-            String questName = quest.getTemplateId().replace('_', ' ').replace('-', ' ');
+            String questName = quest.getQuestName();
             msg.send(player, "quest-completed", Placeholder.parsed("quest", questName));
 
             RewardDefinition rewards = quest.getScaledRewards();
@@ -377,34 +372,17 @@ public class QuestManager {
             Placeholder.parsed("plural", incomplete > 1 ? "s" : ""));
     }
 
-    private void reattachRewards(ActiveQuest quest, double tier) {
-        if (quest.getScaledRewards() != null) return;
-
-        // Find the template and recalculate scaled rewards
-        for (QuestTemplate t : config.getTemplates()) {
-            if (t.getTemplateId().equals(quest.getTemplateId())) {
-                double rewardMultiplier = 1.0 + tier * config.getRewardScale();
-                RewardDefinition scaledRewards = t.getRewards().scaled(rewardMultiplier);
-                // Use reflection-free approach: quest stores null rewards, we set via package access
-                quest.setScaledRewards(scaledRewards);
-                return;
-            }
-        }
-    }
-
-    private boolean hasQuestsInCache(List<ActiveQuest> loaded, QuestCategory category,
+    private boolean hasQuestsInCache(UUID playerUuid, List<ActiveQuest> loaded, QuestCategory category,
                                       String periodKey, String jobId) {
         for (ActiveQuest q : loaded) {
             if (q.getCategory() == category && q.getPeriodKey().equals(periodKey)) {
-                if (jobId == null || q.getTemplateId().startsWith(jobId)) {
+                if (jobId == null || jobId.equalsIgnoreCase(q.getJobId())) {
                     return true;
                 }
             }
         }
         // Also check DB directly for accuracy
-        return storage.hasQuestsForPeriod(
-            loaded.isEmpty() ? null : loaded.get(0).getPlayerUuid(),
-            category, periodKey);
+        return storage.hasQuestsForPeriod(playerUuid, category, periodKey);
     }
 
     // ========== PERIOD KEYS ==========

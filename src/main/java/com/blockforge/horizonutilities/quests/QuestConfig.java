@@ -1,22 +1,17 @@
 package com.blockforge.horizonutilities.quests;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
-import com.blockforge.horizonutilities.quests.model.QuestTemplate;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
- * Loads all quest settings, tier formula weights, quest counts, and templates
- * from horizon-quests.yml.
+ * Loads quest settings, tier formula weights, quest counts, and scaling from horizon-quests.yml.
+ * Templates are no longer used — quests are generated procedurally at runtime.
  */
 public class QuestConfig {
 
@@ -45,9 +40,6 @@ public class QuestConfig {
     // Scaling
     private double difficultyScale;
     private double rewardScale;
-
-    // Templates
-    private final List<QuestTemplate> templates = new ArrayList<>();
 
     public QuestConfig(HorizonUtilitiesPlugin plugin) {
         this.plugin = plugin;
@@ -117,25 +109,7 @@ public class QuestConfig {
         difficultyScale = cfg.getDouble("difficulty-scale", 0.12);
         rewardScale     = cfg.getDouble("reward-scale", 0.15);
 
-        // Templates
-        templates.clear();
-        ConfigurationSection templatesSec = cfg.getConfigurationSection("templates");
-        if (templatesSec == null) {
-            logger.warning("[Quests] No templates found in horizon-quests.yml");
-            return;
-        }
-
-        for (String templateId : templatesSec.getKeys(false)) {
-            ConfigurationSection ts = templatesSec.getConfigurationSection(templateId);
-            if (ts == null) continue;
-            try {
-                templates.add(QuestTemplate.fromConfig(templateId, ts));
-            } catch (Exception e) {
-                logger.warning("[Quests] Failed to load template '" + templateId + "': " + e.getMessage());
-            }
-        }
-
-        logger.info("[Quests] Loaded " + templates.size() + " quest templates.");
+        logger.info("[Quests] Configuration loaded (procedural generation mode).");
     }
 
     // --- Getters ---
@@ -153,26 +127,10 @@ public class QuestConfig {
     public TierWeights getTierWeights()         { return tierWeights; }
     public double getDifficultyScale()          { return difficultyScale; }
     public double getRewardScale()              { return rewardScale; }
-    public List<QuestTemplate> getTemplates()   { return templates; }
 
     public QuestCountConfig getQuestCount(QuestCategory category) {
         return questCounts.getOrDefault(category,
                 new QuestCountConfig(1, 0.2, 4, 0));
-    }
-
-    /**
-     * Get templates filtered by category (and optionally by job).
-     */
-    public List<QuestTemplate> getTemplatesForCategory(QuestCategory category, String jobId) {
-        return templates.stream()
-                .filter(t -> t.getCategory() == category)
-                .filter(t -> {
-                    if (category == QuestCategory.JOB_DAILY && t.isJobSpecific()) {
-                        return t.getJobId().equalsIgnoreCase(jobId);
-                    }
-                    return true;
-                })
-                .collect(Collectors.toList());
     }
 
     // --- Records ---

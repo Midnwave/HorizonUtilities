@@ -31,8 +31,9 @@ public class QuestStorage {
     public int saveQuest(ActiveQuest quest) {
         String insertQuest = "INSERT INTO horizon_quests " +
             "(player_uuid, template_id, category, period_key, seed, current_step, total_steps, " +
-            "assigned_at, completed, completed_at, rewards_claimed) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "assigned_at, completed, completed_at, rewards_claimed, " +
+            "reward_money, reward_job_xp, reward_xp_levels, reward_gems, job_id, quest_name) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         String insertStep = "INSERT INTO horizon_quest_steps " +
             "(quest_id, step_index, action_type, target_material, target_amount, " +
@@ -60,6 +61,14 @@ public class QuestStorage {
                         ps.setNull(10, Types.INTEGER);
                     }
                     ps.setInt(11, quest.isRewardsClaimed() ? 1 : 0);
+                    // Persist rewards directly in DB (procedural quests have no template to re-derive from)
+                    RewardDefinition rewards = quest.getScaledRewards();
+                    ps.setDouble(12, rewards != null ? rewards.getMoney() : 0);
+                    ps.setDouble(13, rewards != null ? rewards.getJobXp() : 0);
+                    ps.setInt(14, rewards != null ? rewards.getXpLevels() : 0);
+                    ps.setInt(15, rewards != null ? rewards.getGems() : 0);
+                    ps.setString(16, quest.getJobId());
+                    ps.setString(17, quest.getQuestName());
                     ps.executeUpdate();
 
                     try (ResultSet keys = ps.getGeneratedKeys()) {
@@ -235,12 +244,21 @@ public class QuestStorage {
         Long completedAt = rs.getObject("completed_at") != null ? rs.getLong("completed_at") : null;
         boolean rewardsClaimed = rs.getInt("rewards_claimed") == 1;
 
+        // Rewards stored directly in DB (procedural quests have no template)
+        double rewardMoney = rs.getDouble("reward_money");
+        double rewardJobXp = rs.getDouble("reward_job_xp");
+        int rewardXpLevels = rs.getInt("reward_xp_levels");
+        int rewardGems = rs.getInt("reward_gems");
+        RewardDefinition rewards = new RewardDefinition(rewardMoney, rewardJobXp, rewardXpLevels, rewardGems, List.of());
+
+        String jobId = rs.getString("job_id");
+        String questName = rs.getString("quest_name");
+
         List<ActiveQuest.ActiveStep> steps = loadSteps(id);
 
-        // Rewards are reconstructed from the template at runtime, not stored in DB.
-        // QuestManager will re-attach scaled rewards after loading.
         return new ActiveQuest(id, playerUuid, templateId, category, periodKey, seed,
-            steps, null, currentStep, completed, completedAt, rewardsClaimed, assignedAt);
+            steps, rewards, currentStep, completed, completedAt, rewardsClaimed, assignedAt,
+            jobId, questName != null ? questName : "Quest");
     }
 
     // ========== DELETION / CLEANUP ==========

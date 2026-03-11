@@ -26,11 +26,14 @@ public class ActiveQuest {
     private Long completedAt;
     private boolean rewardsClaimed;
     private final long assignedAt;
+    private final String jobId;       // null if not job-specific
+    private final String questName;   // procedurally generated display name
 
     public ActiveQuest(int dbId, UUID playerUuid, String templateId, QuestCategory category,
                        String periodKey, long seed, List<ActiveStep> steps,
                        RewardDefinition scaledRewards, int currentStepIndex,
-                       boolean completed, Long completedAt, boolean rewardsClaimed, long assignedAt) {
+                       boolean completed, Long completedAt, boolean rewardsClaimed, long assignedAt,
+                       String jobId, String questName) {
         this.dbId = dbId;
         this.playerUuid = playerUuid;
         this.templateId = templateId;
@@ -44,6 +47,18 @@ public class ActiveQuest {
         this.completedAt = completedAt;
         this.rewardsClaimed = rewardsClaimed;
         this.assignedAt = assignedAt;
+        this.jobId = jobId;
+        this.questName = questName;
+    }
+
+    /** Backwards-compatible constructor (jobId=null, questName from templateId). */
+    public ActiveQuest(int dbId, UUID playerUuid, String templateId, QuestCategory category,
+                       String periodKey, long seed, List<ActiveStep> steps,
+                       RewardDefinition scaledRewards, int currentStepIndex,
+                       boolean completed, Long completedAt, boolean rewardsClaimed, long assignedAt) {
+        this(dbId, playerUuid, templateId, category, periodKey, seed, steps,
+             scaledRewards, currentStepIndex, completed, completedAt, rewardsClaimed, assignedAt,
+             null, templateId != null ? templateId.replace('_', ' ').replace('-', ' ') : "Quest");
     }
 
     // --- Identification ---
@@ -54,6 +69,8 @@ public class ActiveQuest {
     public String getPeriodKey()       { return periodKey; }
     public long getSeed()              { return seed; }
     public long getAssignedAt()        { return assignedAt; }
+    public String getJobId()           { return jobId; }
+    public String getQuestName()       { return questName; }
 
     // --- Steps ---
     public List<ActiveStep> getSteps()      { return steps; }
