@@ -133,7 +133,7 @@ public class QuestEventListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFurnaceExtract(FurnaceExtractEvent event) {
         questManager.trackAction(event.getPlayer(), QuestActionType.SMELT,
-            event.getItemType().name());
+            event.getItemType().name(), event.getItemAmount());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

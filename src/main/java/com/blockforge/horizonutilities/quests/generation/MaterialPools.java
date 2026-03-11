@@ -360,25 +360,72 @@ public final class MaterialPools {
         diff("VINDICATOR", 0.4); diff("PILLAGER", 0.3); diff("RAVAGER", 0.6);
         diff("EVOKER", 0.5); diff("VEX", 0.35);
 
-        // Passive (easy to find/kill)
+        // Passive/breedable/tameable (for BREED, TAME, SHEAR — not KILL anymore)
         for (String s : PASSIVE_ANIMALS) diff(s, 0.05);
+        // Rarer passive mobs
+        diff("AXOLOTL", 0.3); diff("SNIFFER", 0.6); diff("CAMEL", 0.4);
+        diff("PANDA", 0.35); diff("POLAR_BEAR", 0.3); diff("DOLPHIN", 0.25);
+        diff("PARROT", 0.35); diff("FOX", 0.2); diff("FROG", 0.2);
+        // Tameable difficulty (some are rarer to find)
+        diff("WOLF", 0.15); diff("CAT", 0.15); diff("MULE", 0.5);
+        diff("HORSE", 0.1); diff("DONKEY", 0.2); diff("LLAMA", 0.25);
 
-        // Crafting materials by tier
+        // Nether hostile (already set above, bump ZOMBIFIED_PIGLIN)
+        diff("ZOMBIFIED_PIGLIN", 0.25);
+
+        // Crafting materials by tier — comprehensive
         diff("NETHERITE_SCRAP", 0.9);
-        diff("DIAMOND_PICKAXE", 0.6); diff("DIAMOND_SWORD", 0.6);
+        diff("DIAMOND_PICKAXE", 0.6); diff("DIAMOND_AXE", 0.6); diff("DIAMOND_SWORD", 0.6);
+        diff("DIAMOND_SHOVEL", 0.55); diff("DIAMOND_HOE", 0.55);
         diff("DIAMOND_CHESTPLATE", 0.7); diff("DIAMOND_HELMET", 0.6);
-        diff("IRON_PICKAXE", 0.25); diff("IRON_SWORD", 0.25);
+        diff("DIAMOND_LEGGINGS", 0.65); diff("DIAMOND_BOOTS", 0.55);
+        diff("IRON_PICKAXE", 0.25); diff("IRON_SWORD", 0.25); diff("IRON_AXE", 0.25);
+        diff("IRON_HELMET", 0.2); diff("IRON_CHESTPLATE", 0.25);
+        diff("IRON_LEGGINGS", 0.22); diff("IRON_BOOTS", 0.2);
         diff("GOLDEN_APPLE", 0.5); diff("GOLDEN_CARROT", 0.35);
+        diff("GOLDEN_HELMET", 0.35); diff("GOLDEN_CHESTPLATE", 0.4);
+        diff("SHIELD", 0.3); diff("CROSSBOW", 0.35); diff("BOW", 0.15);
+        diff("TURTLE_HELMET", 0.7); diff("TRIDENT", 0.85); diff("SPECTRAL_ARROW", 0.4);
+        diff("TIPPED_ARROW", 0.45);
+        // Building/redstone
+        diff("TNT", 0.4); diff("HOPPER", 0.3); diff("PISTON", 0.2);
+        diff("STICKY_PISTON", 0.35); diff("OBSERVER", 0.3);
+        diff("COMPARATOR", 0.25); diff("REPEATER", 0.15);
 
         // Fish (common to rare)
         diff("COD", 0.1); diff("SALMON", 0.15);
         diff("TROPICAL_FISH", 0.3); diff("PUFFERFISH", 0.35);
-        diff("SADDLE", 0.6); diff("NAME_TAG", 0.6); diff("ENCHANTED_BOOK", 0.7);
+        diff("SADDLE", 0.7); diff("NAME_TAG", 0.7); diff("ENCHANTED_BOOK", 0.8);
+        diff("FISHING_ROD", 0.4); diff("BOW", 0.4);
+        diff("LILY_PAD", 0.15); diff("STRING", 0.1); diff("BONE", 0.1);
 
-        // Smelting
+        // Smelting (common to rare)
         diff("IRON_INGOT", 0.2); diff("GOLD_INGOT", 0.35); diff("COPPER_INGOT", 0.15);
         diff("CHARCOAL", 0.05); diff("GLASS", 0.05); diff("STONE", 0.05);
-        diff("BRICK", 0.1); diff("COOKED_BEEF", 0.1); diff("COOKED_PORKCHOP", 0.1);
+        diff("SMOOTH_STONE", 0.08); diff("BRICK", 0.1); diff("NETHER_BRICK", 0.2);
+        diff("COOKED_BEEF", 0.1); diff("COOKED_PORKCHOP", 0.1); diff("COOKED_CHICKEN", 0.08);
+        diff("COOKED_MUTTON", 0.1); diff("COOKED_RABBIT", 0.15); diff("COOKED_SALMON", 0.12);
+        diff("COOKED_COD", 0.1); diff("BAKED_POTATO", 0.08); diff("DRIED_KELP", 0.05);
+        diff("NETHERITE_SCRAP", 0.9); diff("SPONGE", 0.6);
+        diff("TERRACOTTA", 0.1); diff("GREEN_DYE", 0.15); diff("LIME_DYE", 0.15);
+
+        // Crops (easy to hard)
+        diff("WHEAT", 0.05); diff("CARROTS", 0.05); diff("POTATOES", 0.05);
+        diff("BEETROOTS", 0.08); diff("SUGAR_CANE", 0.05); diff("BAMBOO", 0.05);
+        diff("MELON", 0.1); diff("PUMPKIN", 0.1); diff("CACTUS", 0.08);
+        diff("SWEET_BERRY_BUSH", 0.1); diff("NETHER_WART", 0.2);
+        diff("COCOA", 0.15); diff("TORCHFLOWER", 0.4); diff("PITCHER_PLANT", 0.5);
+
+        // Enchantable items (rarer = harder)
+        diff("BOOK", 0.05);
+
+        // Edible items
+        diff("BREAD", 0.08); diff("APPLE", 0.1); diff("COOKED_BEEF", 0.1);
+        diff("GOLDEN_APPLE", 0.5); diff("ENCHANTED_GOLDEN_APPLE", 0.95);
+        diff("GOLDEN_CARROT", 0.35); diff("CHORUS_FRUIT", 0.3);
+        diff("RABBIT_STEW", 0.2); diff("MUSHROOM_STEW", 0.1);
+        diff("SUSPICIOUS_STEW", 0.15); diff("HONEY_BOTTLE", 0.2);
+        diff("PUMPKIN_PIE", 0.1); diff("CAKE", 0.2); diff("COOKIE", 0.08);
     }
 
     private static void diff(String name, double difficulty) {
@@ -399,7 +446,7 @@ public final class MaterialPools {
         return switch (action) {
             case BREAK -> ALL_MINEABLE;
             case PLACE -> PLACEABLE_BLOCKS;
-            case KILL -> ALL_KILLABLE;
+            case KILL -> ALL_HOSTILE;
             case FISH -> FISH_CATCHES;
             case CRAFT -> ALL_CRAFTABLE;
             case SMELT -> SMELTABLE_OUTPUTS;

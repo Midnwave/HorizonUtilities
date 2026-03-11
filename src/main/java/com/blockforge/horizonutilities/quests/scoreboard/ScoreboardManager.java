@@ -5,6 +5,7 @@ import com.blockforge.horizonutilities.quests.QuestManager;
 import com.blockforge.horizonutilities.quests.QuestStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.Map;
 import java.util.UUID;
@@ -84,8 +85,9 @@ public class ScoreboardManager {
         if (enabled) {
             updatePlayer(player);
         } else {
-            // Reset to main scoreboard so AnimatedScoreboard can take over
-            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            // Set a blank custom scoreboard — prevents AnimatedScoreboard from displaying
+            Scoreboard blank = Bukkit.getScoreboardManager().getNewScoreboard();
+            player.setScoreboard(blank);
         }
     }
 
@@ -139,8 +141,10 @@ public class ScoreboardManager {
 
         if (mode.equals("QUESTS")) {
             questScoreboard.render(player);
+        } else {
+            // NORMAL mode: reset to main scoreboard so AnimatedScoreboard can take over
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
-        // NORMAL mode: don't touch, let AnimatedScoreboard handle it
     }
 
     /**

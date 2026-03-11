@@ -222,9 +222,19 @@ public final class ProceduralQuestBuilder {
 
     private static int pickStepCount(QuestCategory category, double tier, Random rng) {
         return switch (category) {
-            case JOB_DAILY -> tier >= 5.0 && rng.nextDouble() < 0.2 ? 2 : 1;
-            case GENERAL_DAILY -> 1;
-            case WEEKLY -> 2 + rng.nextInt(2); // 2-3
+            case JOB_DAILY -> {
+                // Higher tiers get more steps: tier 0-3 = 1, tier 3-6 = 1-2, tier 6+ = 1-3
+                if (tier >= 6.0) yield 1 + rng.nextInt(3);       // 1-3
+                if (tier >= 3.0) yield 1 + rng.nextInt(2);       // 1-2
+                yield 1;
+            }
+            case GENERAL_DAILY -> {
+                // Scale with tier: tier 0-2 = 1, tier 2-5 = 1-2, tier 5+ = 1-3
+                if (tier >= 5.0) yield 1 + rng.nextInt(3);       // 1-3
+                if (tier >= 2.0) yield 1 + rng.nextInt(2);       // 1-2
+                yield 1;
+            }
+            case WEEKLY -> 2 + rng.nextInt(2);                   // 2-3
             case CHALLENGE -> 2 + rng.nextInt(Math.max(1, (int)(tier / 3))); // 2-5 based on tier
         };
     }
@@ -338,9 +348,13 @@ public final class ProceduralQuestBuilder {
         int[] baseRange = BASE_AMOUNTS.getOrDefault(action, new int[]{5, 50});
         double targetDifficulty = target != null ? MaterialPools.getDifficulty(target) : 0.3;
 
-        // Base amount: random within range, inversely scaled by target difficulty
-        // Harder targets = lower amounts
-        double difficultyScale = 1.0 - (targetDifficulty * 0.7); // 0.3 to 1.0
+        // Base amount: random within range, aggressively scaled by target difficulty
+        // Easy targets (0.05): scale ~0.95 → near full amount
+        // Medium targets (0.4): scale ~0.68 → moderate reduction
+        // Hard targets (0.7): scale ~0.37 → big reduction
+        // Very rare (0.9+): scale ~0.10 → tiny amounts (1-5 range)
+        double difficultyScale = Math.pow(1.0 - targetDifficulty, 2.0); // quadratic curve: 0.01 to 1.0
+        difficultyScale = Math.max(0.05, difficultyScale); // floor at 5% of base
         int rawBase = baseRange[0] + rng.nextInt(Math.max(1, baseRange[1] - baseRange[0]));
         int base = Math.max(1, (int)(rawBase * difficultyScale));
 
