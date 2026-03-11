@@ -1,6 +1,7 @@
 package com.blockforge.horizonutilities.quests.generation;
 
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
+import com.blockforge.horizonutilities.auraskills.AuraSkillsHook;
 import com.blockforge.horizonutilities.jobs.JobPlayer;
 import com.blockforge.horizonutilities.quests.QuestConfig;
 import org.bukkit.Material;
@@ -89,9 +90,16 @@ public final class TierCalculator {
         // Exploration
         score += Math.min((double) uniqueChunks / w.explorationDivisor(), 1.0) * w.explorationWeight();
 
+        // AuraSkills average level (soft-depends, gracefully 0 if absent)
+        AuraSkillsHook auraHook = plugin.getAuraSkillsManager() != null
+                ? plugin.getAuraSkillsManager().getHook() : null;
+        double avgSkillLevel = (auraHook != null && auraHook.isAvailable())
+                ? auraHook.getAverageSkillLevel(player) : 0;
+        score += Math.min(avgSkillLevel / w.auraSkillsDivisor(), 1.0) * w.auraSkillsWeight();
+
         // Diversity bonus: how many activity categories are non-trivial
         int diverseCount = 0;
-        int diverseTotal = 7;
+        int diverseTotal = 8;
         if (totalBlocksMined > w.diversityBlocksThreshold()) diverseCount++;
         if (totalMobsKilled > w.diversityKillsThreshold()) diverseCount++;
         if (distanceKm > w.diversityDistanceThreshold()) diverseCount++;
@@ -99,6 +107,7 @@ public final class TierCalculator {
         if (fishCaught > w.diversityFishingThreshold()) diverseCount++;
         if (animalsBred > w.diversityBreedingThreshold()) diverseCount++;
         if (avgJobLevel > w.diversityJobLevelThreshold()) diverseCount++;
+        if (avgSkillLevel > w.diversityAuraSkillsThreshold()) diverseCount++;
 
         double diversityBonus = (double) diverseCount / diverseTotal;
         score += diversityBonus * w.diversityWeight();

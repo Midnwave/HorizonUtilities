@@ -362,10 +362,13 @@ public final class MaterialPools {
 
         // Passive/breedable/tameable (for BREED, TAME, SHEAR — not KILL anymore)
         for (String s : PASSIVE_ANIMALS) diff(s, 0.05);
-        // Rarer passive mobs
-        diff("AXOLOTL", 0.3); diff("SNIFFER", 0.6); diff("CAMEL", 0.4);
-        diff("PANDA", 0.35); diff("POLAR_BEAR", 0.3); diff("DOLPHIN", 0.25);
-        diff("PARROT", 0.35); diff("FOX", 0.2); diff("FROG", 0.2);
+        // Rarer passive mobs (biome-specific or hard to find)
+        diff("AXOLOTL", 0.4); diff("SNIFFER", 0.7); diff("CAMEL", 0.5);
+        diff("PANDA", 0.45); diff("POLAR_BEAR", 0.4); diff("DOLPHIN", 0.35);
+        diff("PARROT", 0.45); diff("FOX", 0.25); diff("FROG", 0.25);
+        diff("TURTLE", 0.35); diff("MOOSHROOM", 0.7); diff("GOAT", 0.3);
+        diff("OCELOT", 0.4); diff("RABBIT", 0.2); diff("ARMADILLO", 0.35);
+        diff("BEE", 0.3); diff("STRIDER", 0.5); diff("ALLAY", 0.6);
         // Tameable difficulty (some are rarer to find)
         diff("WOLF", 0.15); diff("CAT", 0.15); diff("MULE", 0.5);
         diff("HORSE", 0.1); diff("DONKEY", 0.2); diff("LLAMA", 0.25);

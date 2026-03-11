@@ -59,6 +59,10 @@ tier:
   exploration-weight: 0.5
   exploration-divisor: 500
 
+  # Average AuraSkills skill level (soft-depends — ignored if AuraSkills absent)
+  auraskills-weight: 0.03
+  auraskills-divisor: 50           # avg level 50 = max contribution
+
   # Diversity bonus: fraction of activity categories that are non-trivial
   diversity-weight: 0.3
   diversity-blocks-threshold: 1000
@@ -68,6 +72,7 @@ tier:
   diversity-fishing-threshold: 50
   diversity-breeding-threshold: 20
   diversity-job-level-threshold: 10
+  diversity-auraskills-threshold: 30  # avg skill level above 30 counts as active
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Quest Counts — how many quests per category, scaled by tier
@@ -96,9 +101,23 @@ quest-counts:
     min-tier: 3.0
 
 # Amount multiplier per tier unit: scaled_amount = base * (1 + tier * scale)
-difficulty-scale: 0.12
+# Higher = amounts grow faster with tier. At 0.30: tier 5 gets 2.5x base, tier 10 gets 4x.
+difficulty-scale: 0.30
 # Reward multiplier per tier unit: scaled_reward = base * (1 + tier * scale)
-reward-scale: 0.15
+# At 0.25: tier 5 gets 2.25x rewards, tier 10 gets 3.5x
+reward-scale: 0.25
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Reward Tuning — control how generous quest rewards are
+# Increase these values to make rewards more generous across the board.
+# ─────────────────────────────────────────────────────────────────────────────
+# Base difficulty score added per quest step (ensures every quest has a minimum reward)
+# Higher = all quests pay more. 1.0 means each step is inherently worth ~$150+
+reward-base-per-step: 1.0
+# Money earned per unit of difficulty score (the main reward knob)
+reward-money-per-difficulty: 150.0
+# Job XP earned per unit of difficulty score
+reward-jobxp-per-difficulty: 100.0
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Boss Bar — shows quest progress as a boss bar on screen

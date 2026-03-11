@@ -5,6 +5,7 @@ import com.blockforge.horizonutilities.quests.QuestCategory;
 import com.blockforge.horizonutilities.quests.QuestConfig;
 import com.blockforge.horizonutilities.quests.model.ActiveQuest;
 import com.blockforge.horizonutilities.quests.rewards.RewardDefinition;
+import org.bukkit.Material;
 
 import java.util.*;
 
@@ -43,25 +44,25 @@ public final class ProceduralQuestBuilder {
     // Base amount ranges per action [min, max] before tier scaling
     private static final Map<QuestActionType, int[]> BASE_AMOUNTS = new EnumMap<>(QuestActionType.class);
     static {
-        BASE_AMOUNTS.put(QuestActionType.BREAK,    new int[]{16, 256});
-        BASE_AMOUNTS.put(QuestActionType.PLACE,    new int[]{16, 128});
-        BASE_AMOUNTS.put(QuestActionType.KILL,     new int[]{5, 50});
-        BASE_AMOUNTS.put(QuestActionType.FISH,     new int[]{3, 25});
-        BASE_AMOUNTS.put(QuestActionType.CRAFT,    new int[]{3, 32});
-        BASE_AMOUNTS.put(QuestActionType.SMELT,    new int[]{8, 64});
-        BASE_AMOUNTS.put(QuestActionType.BREW,     new int[]{2, 12});
-        BASE_AMOUNTS.put(QuestActionType.ENCHANT,  new int[]{1, 8});
-        BASE_AMOUNTS.put(QuestActionType.REPAIR,   new int[]{1, 5});
-        BASE_AMOUNTS.put(QuestActionType.TAME,     new int[]{1, 5});
-        BASE_AMOUNTS.put(QuestActionType.SHEAR,    new int[]{3, 20});
-        BASE_AMOUNTS.put(QuestActionType.MILK,     new int[]{3, 15});
-        BASE_AMOUNTS.put(QuestActionType.FARM,     new int[]{10, 64});
-        BASE_AMOUNTS.put(QuestActionType.EAT,      new int[]{5, 30});
-        BASE_AMOUNTS.put(QuestActionType.BREED,    new int[]{2, 15});
-        BASE_AMOUNTS.put(QuestActionType.EXPLORE_CHUNK,    new int[]{10, 100});
-        BASE_AMOUNTS.put(QuestActionType.EXPLORE_DISTANCE, new int[]{500, 5000});
-        BASE_AMOUNTS.put(QuestActionType.TRADE_PLAYER,     new int[]{1, 5});
-        BASE_AMOUNTS.put(QuestActionType.TRADE_AH,         new int[]{1, 5});
+        BASE_AMOUNTS.put(QuestActionType.BREAK,    new int[]{128, 384});
+        BASE_AMOUNTS.put(QuestActionType.PLACE,    new int[]{48, 256});
+        BASE_AMOUNTS.put(QuestActionType.KILL,     new int[]{12, 64});
+        BASE_AMOUNTS.put(QuestActionType.FISH,     new int[]{6, 32});
+        BASE_AMOUNTS.put(QuestActionType.CRAFT,    new int[]{6, 40});
+        BASE_AMOUNTS.put(QuestActionType.SMELT,    new int[]{16, 96});
+        BASE_AMOUNTS.put(QuestActionType.BREW,     new int[]{3, 18});
+        BASE_AMOUNTS.put(QuestActionType.ENCHANT,  new int[]{1, 10});
+        BASE_AMOUNTS.put(QuestActionType.REPAIR,   new int[]{1, 6});
+        BASE_AMOUNTS.put(QuestActionType.TAME,     new int[]{1, 6});
+        BASE_AMOUNTS.put(QuestActionType.SHEAR,    new int[]{6, 32});
+        BASE_AMOUNTS.put(QuestActionType.MILK,     new int[]{5, 24});
+        BASE_AMOUNTS.put(QuestActionType.FARM,     new int[]{24, 128});
+        BASE_AMOUNTS.put(QuestActionType.EAT,      new int[]{8, 48});
+        BASE_AMOUNTS.put(QuestActionType.BREED,    new int[]{3, 16});
+        BASE_AMOUNTS.put(QuestActionType.EXPLORE_CHUNK,    new int[]{15, 150});
+        BASE_AMOUNTS.put(QuestActionType.EXPLORE_DISTANCE, new int[]{1000, 8000});
+        BASE_AMOUNTS.put(QuestActionType.TRADE_PLAYER,     new int[]{1, 6});
+        BASE_AMOUNTS.put(QuestActionType.TRADE_AH,         new int[]{1, 6});
     }
 
     // Intrinsic difficulty multiplier per action (affects reward calc)
@@ -77,11 +78,11 @@ public final class ProceduralQuestBuilder {
         ACTION_DIFFICULTY.put(QuestActionType.ENCHANT, 0.8);
         ACTION_DIFFICULTY.put(QuestActionType.REPAIR, 0.5);
         ACTION_DIFFICULTY.put(QuestActionType.TAME, 0.6);
-        ACTION_DIFFICULTY.put(QuestActionType.SHEAR, 0.2);
-        ACTION_DIFFICULTY.put(QuestActionType.MILK, 0.2);
+        ACTION_DIFFICULTY.put(QuestActionType.SHEAR, 0.4);
+        ACTION_DIFFICULTY.put(QuestActionType.MILK, 0.35);
         ACTION_DIFFICULTY.put(QuestActionType.FARM, 0.3);
-        ACTION_DIFFICULTY.put(QuestActionType.EAT, 0.2);
-        ACTION_DIFFICULTY.put(QuestActionType.BREED, 0.4);
+        ACTION_DIFFICULTY.put(QuestActionType.EAT, 0.25);
+        ACTION_DIFFICULTY.put(QuestActionType.BREED, 0.5);
         ACTION_DIFFICULTY.put(QuestActionType.EXPLORE_CHUNK, 0.5);
         ACTION_DIFFICULTY.put(QuestActionType.EXPLORE_DISTANCE, 0.4);
         ACTION_DIFFICULTY.put(QuestActionType.TRADE_PLAYER, 0.5);
@@ -191,9 +192,12 @@ public final class ProceduralQuestBuilder {
             String description = generateDescription(action, target, amount, stepRng);
 
             // Track difficulty for reward calculation
+            // Each step has a BASE contribution (so even small quests feel worthwhile)
+            // plus a scaling component from target rarity * action difficulty * amount
             double targetDiff = target != null ? MaterialPools.getDifficulty(target) : 0.3;
             double actionDiff = ACTION_DIFFICULTY.getOrDefault(action, 0.3);
-            totalDifficultyScore += targetDiff * actionDiff * amount;
+            double basePerStep = config.getRewardBasePerStep();
+            totalDifficultyScore += basePerStep + (targetDiff * actionDiff * amount);
 
             steps.add(new ActiveQuest.ActiveStep(
                 -1, s, action, target, amount, 0, false, description
@@ -204,7 +208,7 @@ public final class ProceduralQuestBuilder {
 
         // Calculate rewards from total difficulty
         double rewardMultiplier = 1.0 + tier * config.getRewardScale();
-        RewardDefinition rewards = calculateRewards(totalDifficultyScore, category, tier, rewardMultiplier, rng);
+        RewardDefinition rewards = calculateRewards(totalDifficultyScore, category, tier, rewardMultiplier, config, rng);
 
         // Generate quest name and synthetic ID
         QuestActionType primaryAction = steps.get(0).getActionType();
@@ -362,12 +366,12 @@ public final class ProceduralQuestBuilder {
         int[] baseRange = BASE_AMOUNTS.getOrDefault(action, new int[]{5, 50});
         double targetDifficulty = target != null ? MaterialPools.getDifficulty(target) : 0.3;
 
-        // Base amount: random within range, aggressively scaled by target difficulty
-        // Easy targets (0.05): scale ~0.95 → near full amount
-        // Medium targets (0.4): scale ~0.68 → moderate reduction
-        // Hard targets (0.7): scale ~0.37 → big reduction
-        // Very rare (0.9+): scale ~0.10 → tiny amounts (1-5 range)
-        double difficultyScale = Math.pow(1.0 - targetDifficulty, 2.0); // quadratic curve: 0.01 to 1.0
+        // Base amount: random within range, aggressively scaled by target difficulty (cubic curve)
+        // Easy targets (0.05): scale ~0.86 → near full amount (stone: 2-6 stacks)
+        // Medium targets (0.3): scale ~0.34 → big reduction (iron ore: ~1-2 stacks)
+        // Hard targets (0.7): scale ~0.03 → tiny amounts (diamond ore: 3-10)
+        // Very rare (0.9+): scale ~0.001 → minimal (ancient debris: 1-2)
+        double difficultyScale = Math.pow(1.0 - targetDifficulty, 3.0); // cubic curve for aggressive rarity scaling
         difficultyScale = Math.max(0.05, difficultyScale); // floor at 5% of base
         int rawBase = baseRange[0] + rng.nextInt(Math.max(1, baseRange[1] - baseRange[0]));
         int base = Math.max(1, (int)(rawBase * difficultyScale));
@@ -456,32 +460,130 @@ public final class ProceduralQuestBuilder {
     // ===== Reward calculation =====
 
     private static RewardDefinition calculateRewards(double difficultyScore, QuestCategory category,
-                                                      double tier, double rewardMultiplier, Random rng) {
-        // Base reward values derived from difficulty score
-        double moneyPerDiff = 50.0;
-        double jobXpPerDiff = 30.0;
+                                                      double tier, double rewardMultiplier, QuestConfig config, Random rng) {
+        // Reward values from config (tunable per-server)
+        double moneyPerDiff = config.getRewardMoneyPerDifficulty();
+        double jobXpPerDiff = config.getRewardJobXpPerDifficulty();
 
         double money = difficultyScore * moneyPerDiff * rewardMultiplier;
         double jobXp = difficultyScore * jobXpPerDiff * rewardMultiplier;
 
+        // Minimum floor so no quest ever feels worthless
+        money = Math.max(money, 75.0 * rewardMultiplier);
+        jobXp = Math.max(jobXp, 50.0 * rewardMultiplier);
+
         // Category bonuses
         money *= switch (category) {
             case JOB_DAILY, GENERAL_DAILY -> 1.0;
+            case WEEKLY -> 2.5;
+            case CHALLENGE -> 4.0;
+        };
+        jobXp *= switch (category) {
+            case JOB_DAILY, GENERAL_DAILY -> 1.0;
             case WEEKLY -> 2.0;
-            case CHALLENGE -> 3.5;
+            case CHALLENGE -> 3.0;
         };
 
-        // XP levels: 1 per 100 difficulty, capped
-        int xpLevels = Math.min(10, (int)(difficultyScore / 100.0 * rewardMultiplier));
+        // XP levels: always at least 1, scales with difficulty
+        int xpLevels = Math.max(1, (int)(difficultyScore * 0.8 * rewardMultiplier));
+        xpLevels *= switch (category) {
+            case JOB_DAILY, GENERAL_DAILY -> 1;
+            case WEEKLY -> 2;
+            case CHALLENGE -> 3;
+        };
+        xpLevels = Math.min(xpLevels, 30);
 
         // Gems: only for challenges or high-tier weekly
         int gems = 0;
         if (category == QuestCategory.CHALLENGE) {
-            gems = Math.max(1, (int)(difficultyScore / 200.0 * rewardMultiplier));
-        } else if (category == QuestCategory.WEEKLY && tier >= 5.0) {
-            gems = rng.nextDouble() < 0.3 ? 1 : 0;
+            gems = Math.max(1, (int)(difficultyScore / 50.0 * rewardMultiplier));
+        } else if (category == QuestCategory.WEEKLY && tier >= 4.0) {
+            gems = rng.nextDouble() < 0.4 ? 1 : 0;
         }
 
-        return new RewardDefinition(money, jobXp, xpLevels, gems, List.of());
+        // Item rewards — chance-based, better items for harder quests
+        List<RewardDefinition.ItemReward> items = generateItemRewards(difficultyScore, category, tier, rng);
+
+        return new RewardDefinition(money, jobXp, xpLevels, gems, items);
+    }
+
+    /**
+     * Generate random item rewards based on quest difficulty and category.
+     * Daily quests: ~40% chance of 1 item reward (common items)
+     * Weekly quests: ~70% chance of 1-2 item rewards (better items)
+     * Challenge quests: ~90% chance of 2-3 item rewards (rare items)
+     */
+    private static List<RewardDefinition.ItemReward> generateItemRewards(
+            double difficultyScore, QuestCategory category, double tier, Random rng) {
+
+        List<RewardDefinition.ItemReward> items = new ArrayList<>();
+
+        // Chance and count based on category
+        double chance;
+        int maxItems;
+        switch (category) {
+            case JOB_DAILY -> { chance = 0.35; maxItems = 1; }
+            case GENERAL_DAILY -> { chance = 0.40; maxItems = 1; }
+            case WEEKLY -> { chance = 0.70; maxItems = 2; }
+            case CHALLENGE -> { chance = 0.90; maxItems = 3; }
+            default -> { chance = 0.3; maxItems = 1; }
+        }
+
+        // Tier increases chance slightly
+        chance = Math.min(1.0, chance + tier * 0.02);
+
+        if (rng.nextDouble() > chance) return items;
+
+        int itemCount = 1 + rng.nextInt(maxItems);
+
+        // Item pools by tier/difficulty bracket
+        Material[][] commonItems = {
+                {Material.BREAD, Material.COOKED_BEEF, Material.COOKED_PORKCHOP, Material.COOKED_CHICKEN,
+                 Material.ARROW, Material.TORCH, Material.OAK_PLANKS, Material.COAL,
+                 Material.IRON_INGOT, Material.BONE_MEAL, Material.LEATHER, Material.STRING},
+        };
+        Material[][] midItems = {
+                {Material.IRON_INGOT, Material.GOLD_INGOT, Material.LAPIS_LAZULI, Material.REDSTONE,
+                 Material.EXPERIENCE_BOTTLE, Material.GOLDEN_APPLE, Material.BOOK,
+                 Material.EMERALD, Material.ENDER_PEARL, Material.BLAZE_ROD,
+                 Material.NAME_TAG, Material.SADDLE, Material.HONEY_BOTTLE},
+        };
+        Material[][] rareItems = {
+                {Material.DIAMOND, Material.EMERALD, Material.GOLDEN_APPLE, Material.ENCHANTED_GOLDEN_APPLE,
+                 Material.NETHERITE_SCRAP, Material.TOTEM_OF_UNDYING, Material.ELYTRA,
+                 Material.HEART_OF_THE_SEA, Material.NETHER_STAR, Material.SHULKER_SHELL,
+                 Material.TRIDENT, Material.WITHER_SKELETON_SKULL},
+        };
+
+        for (int i = 0; i < itemCount; i++) {
+            Material[] pool;
+            int amount;
+
+            if (tier >= 7.0 && category == QuestCategory.CHALLENGE && rng.nextDouble() < 0.3) {
+                // Rare items for high-tier challenges
+                pool = rareItems[0];
+                amount = 1 + rng.nextInt(2);
+            } else if (tier >= 3.0 || category == QuestCategory.WEEKLY) {
+                // Mid-tier items
+                pool = midItems[0];
+                amount = 1 + rng.nextInt(Math.max(1, (int)(tier * 0.5)));
+                amount = Math.min(amount, 16);
+            } else {
+                // Common items for low tier
+                pool = commonItems[0];
+                amount = 2 + rng.nextInt(Math.max(1, 4 + (int)(tier)));
+                amount = Math.min(amount, 32);
+            }
+
+            Material chosen = pool[rng.nextInt(pool.length)];
+
+            // Don't duplicate items already in the list
+            boolean duplicate = items.stream().anyMatch(ir -> ir.material() == chosen);
+            if (duplicate) continue;
+
+            items.add(new RewardDefinition.ItemReward(chosen, amount));
+        }
+
+        return items;
     }
 }

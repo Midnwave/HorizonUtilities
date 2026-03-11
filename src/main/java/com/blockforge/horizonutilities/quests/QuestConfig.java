@@ -41,6 +41,9 @@ public class QuestConfig {
     // Scaling
     private double difficultyScale;
     private double rewardScale;
+    private double rewardBasePerStep;
+    private double rewardMoneyPerDifficulty;
+    private double rewardJobXpPerDifficulty;
 
     // Boss bar
     private boolean bossBarEnabled;
@@ -102,7 +105,10 @@ public class QuestConfig {
                 cfg.getInt("tier.diversity-crafting-threshold", 200),
                 cfg.getInt("tier.diversity-fishing-threshold", 50),
                 cfg.getInt("tier.diversity-breeding-threshold", 20),
-                cfg.getDouble("tier.diversity-job-level-threshold", 10)
+                cfg.getDouble("tier.diversity-job-level-threshold", 10),
+                cfg.getDouble("tier.auraskills-weight", 0.03),
+                cfg.getDouble("tier.auraskills-divisor", 50),
+                cfg.getInt("tier.diversity-auraskills-threshold", 30)
         );
 
         // Quest counts
@@ -118,8 +124,11 @@ public class QuestConfig {
         }
 
         // Scaling
-        difficultyScale = cfg.getDouble("difficulty-scale", 0.12);
-        rewardScale     = cfg.getDouble("reward-scale", 0.15);
+        difficultyScale = cfg.getDouble("difficulty-scale", 0.30);
+        rewardScale     = cfg.getDouble("reward-scale", 0.25);
+        rewardBasePerStep         = cfg.getDouble("reward-base-per-step", 1.0);
+        rewardMoneyPerDifficulty  = cfg.getDouble("reward-money-per-difficulty", 150.0);
+        rewardJobXpPerDifficulty  = cfg.getDouble("reward-jobxp-per-difficulty", 100.0);
 
         // Boss bar
         bossBarEnabled                = cfg.getBoolean("bossbar.enabled", true);
@@ -167,6 +176,9 @@ public class QuestConfig {
     public TierWeights getTierWeights()         { return tierWeights; }
     public double getDifficultyScale()          { return difficultyScale; }
     public double getRewardScale()              { return rewardScale; }
+    public double getRewardBasePerStep()        { return rewardBasePerStep; }
+    public double getRewardMoneyPerDifficulty() { return rewardMoneyPerDifficulty; }
+    public double getRewardJobXpPerDifficulty() { return rewardJobXpPerDifficulty; }
 
     // Boss bar getters
     public boolean isBossBarEnabled()                           { return bossBarEnabled; }
@@ -208,7 +220,10 @@ public class QuestConfig {
             int diversityCraftingThreshold,
             int diversityFishingThreshold,
             int diversityBreedingThreshold,
-            double diversityJobLevelThreshold
+            double diversityJobLevelThreshold,
+            double auraSkillsWeight,
+            double auraSkillsDivisor,
+            int diversityAuraSkillsThreshold
     ) {}
 
     public record QuestCountConfig(

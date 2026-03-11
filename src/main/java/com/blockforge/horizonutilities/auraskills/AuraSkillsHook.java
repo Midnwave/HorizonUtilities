@@ -123,5 +123,54 @@ public class AuraSkillsHook {
         } catch (Exception ignored) {}
     }
 
+    /**
+     * Gets the sum of all skill levels for a player.
+     * AuraSkills 2.x: SkillsUser#getSkillLevel(Skill) for each Skills enum value.
+     *
+     * @return total skill levels, or 0 if unavailable
+     */
+    public int getTotalSkillLevel(Player player) {
+        if (!available) return 0;
+        try {
+            Object user = getUserMethod.invoke(userManagerObj, player.getUniqueId());
+            if (user == null) return 0;
+
+            // Get all skill enum constants
+            Object[] skills = skillsClass.getEnumConstants();
+            if (skills == null) return 0;
+
+            // Find getSkillLevel method — takes Skill interface
+            Class<?> skillInterface = skillsClass.getInterfaces().length > 0
+                    ? skillsClass.getInterfaces()[0] : skillsClass;
+            Method getSkillLevel = user.getClass().getMethod("getSkillLevel", skillInterface);
+
+            int total = 0;
+            for (Object skill : skills) {
+                try {
+                    int level = (int) getSkillLevel.invoke(user, skill);
+                    total += level;
+                } catch (Exception ignored) {}
+            }
+            return total;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the average skill level across all skills.
+     */
+    public double getAverageSkillLevel(Player player) {
+        if (!available) return 0;
+        try {
+            Object[] skills = skillsClass.getEnumConstants();
+            if (skills == null || skills.length == 0) return 0;
+            int total = getTotalSkillLevel(player);
+            return (double) total / skills.length;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     public boolean isAvailable() { return available; }
 }
