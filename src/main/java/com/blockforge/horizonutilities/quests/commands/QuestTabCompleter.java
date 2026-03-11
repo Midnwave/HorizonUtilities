@@ -13,7 +13,7 @@ import java.util.List;
 public class QuestTabCompleter implements TabCompleter {
 
     private static final List<String> ROOT_SUBS = List.of("daily", "jobs", "weekly", "challenges", "history", "admin");
-    private static final List<String> ADMIN_SUBS = List.of("reload", "reset", "settier", "generate", "import");
+    private static final List<String> ADMIN_SUBS = List.of("reload", "reset", "settier", "generate", "create", "import");
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {

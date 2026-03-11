@@ -28,13 +28,16 @@ public class QuestCommand implements CommandExecutor {
     private final QuestManager questManager;
     private final MessagesManager msg;
     private final QuestGUI questGUI;
+    private final AdminQuestCreatorGUI adminCreatorGUI;
 
     public QuestCommand(HorizonUtilitiesPlugin plugin, QuestManager questManager) {
         this.plugin = plugin;
         this.questManager = questManager;
         this.msg = plugin.getMessagesManager();
         this.questGUI = new QuestGUI(questManager);
+        this.adminCreatorGUI = new AdminQuestCreatorGUI(questManager);
         Bukkit.getPluginManager().registerEvents(questGUI, plugin);
+        Bukkit.getPluginManager().registerEvents(adminCreatorGUI, plugin);
     }
 
     public QuestGUI getQuestGUI() { return questGUI; }
@@ -105,6 +108,7 @@ public class QuestCommand implements CommandExecutor {
             case "reset" -> handleAdminReset(sender, args);
             case "settier" -> handleAdminSetTier(sender, args);
             case "generate" -> handleAdminGenerate(sender, args);
+            case "create" -> handleAdminCreate(sender);
             case "import" -> handleAdminImport(sender, args);
             default -> msg.send(sender, "quest-admin-usage");
         }
@@ -185,6 +189,17 @@ public class QuestCommand implements CommandExecutor {
                 }
             });
         });
+    }
+
+    /**
+     * /quests admin create — opens a GUI wizard to build and assign a custom quest.
+     */
+    private void handleAdminCreate(CommandSender sender) {
+        if (!(sender instanceof Player player)) {
+            msg.send(sender, "player-only");
+            return;
+        }
+        adminCreatorGUI.open(player);
     }
 
     /**

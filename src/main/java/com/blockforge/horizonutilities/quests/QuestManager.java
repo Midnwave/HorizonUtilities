@@ -243,6 +243,7 @@ public class QuestManager {
 
     public QuestConfig getConfig() { return config; }
     public QuestStorage getStorage() { return storage; }
+    public HorizonUtilitiesPlugin getPlugin() { return plugin; }
 
     // ========== ADMIN ==========
 
