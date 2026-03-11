@@ -138,12 +138,15 @@ public final class TierCalculator {
      * Query the jobs_explored_chunks table for the count of unique chunks explored.
      */
     private static int getExploredChunkCount(HorizonUtilitiesPlugin plugin, String uuid) {
-        try (Connection conn = plugin.getDatabaseManager().getConnection();
-             PreparedStatement ps = conn.prepareStatement(
+        try {
+            Connection conn = plugin.getDatabaseManager().getConnection();
+            try (PreparedStatement ps = conn.prepareStatement(
                      "SELECT COUNT(*) FROM jobs_explored_chunks WHERE player_uuid = ?")) {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt(1);
+                ps.setString(1, uuid);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) return rs.getInt(1);
+                }
+            }
         } catch (Exception ignored) {}
         return 0;
     }

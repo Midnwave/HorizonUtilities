@@ -2,6 +2,9 @@ package com.blockforge.horizonutilities.quests.tracking;
 
 import com.blockforge.horizonutilities.quests.QuestActionType;
 import com.blockforge.horizonutilities.quests.QuestManager;
+import com.blockforge.horizonutilities.quests.generation.MaterialPools;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -14,9 +17,12 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
@@ -25,6 +31,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Bukkit event listener that feeds non-job actions into the quest tracker.
  * Job actions are tracked separately via JobManager.processAction().
@@ -32,6 +42,9 @@ import org.bukkit.inventory.ItemStack;
 public class QuestEventListener implements Listener {
 
     private final QuestManager questManager;
+
+    /** Tracks which player last interacted with each brewing stand location */
+    private final Map<Location, UUID> brewingStandUsers = new ConcurrentHashMap<>();
 
     public QuestEventListener(QuestManager questManager) {
         this.questManager = questManager;
@@ -46,15 +59,23 @@ public class QuestEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        questManager.onPlayerQuit(event.getPlayer().getUniqueId());
+        UUID uuid = event.getPlayer().getUniqueId();
+        questManager.onPlayerQuit(uuid);
+        // Clean up brewing stand ownership entries for this player
+        brewingStandUsers.values().removeIf(uuid::equals);
     }
 
     // ========== GENERAL ACTIONS (non-job tracked) ==========
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        questManager.trackAction(event.getPlayer(), QuestActionType.BREAK,
-            event.getBlock().getType().name());
+        String material = event.getBlock().getType().name();
+        questManager.trackAction(event.getPlayer(), QuestActionType.BREAK, material);
+
+        // Also track as FARM for crop blocks
+        if (MaterialPools.CROPS.contains(material)) {
+            questManager.trackAction(event.getPlayer(), QuestActionType.FARM, material);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -106,7 +127,7 @@ public class QuestEventListener implements Listener {
             amount = maxCraftable * result.getAmount();
         }
 
-        questManager.trackAction(player, QuestActionType.CRAFT, result.getType().name());
+        questManager.trackAction(player, QuestActionType.CRAFT, result.getType().name(), amount);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -155,5 +176,39 @@ public class QuestEventListener implements Listener {
         }
 
         // Detect taming (already handled by EntityTameEvent if needed, but this covers interaction)
+    }
+
+    // ========== TAME ==========
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEntityTame(EntityTameEvent event) {
+        if (!(event.getOwner() instanceof Player player)) return;
+        questManager.trackAction(player, QuestActionType.TAME,
+            event.getEntity().getType().name());
+    }
+
+    // ========== BREW (tracked via brewing stand ownership) ==========
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        if (event.getInventory().getType() == InventoryType.BREWING
+                && event.getPlayer() instanceof Player player) {
+            Location loc = event.getInventory().getLocation();
+            if (loc != null) {
+                brewingStandUsers.put(loc, player.getUniqueId());
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBrew(BrewEvent event) {
+        Location loc = event.getBlock().getLocation();
+        UUID ownerUuid = brewingStandUsers.get(loc);
+        if (ownerUuid != null) {
+            Player player = Bukkit.getPlayer(ownerUuid);
+            if (player != null && player.isOnline()) {
+                questManager.trackAction(player, QuestActionType.BREW, null);
+            }
+        }
     }
 }
