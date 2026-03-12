@@ -6,8 +6,17 @@
 # Internal config version — do not change manually
 config-version: 1
 
-# Maximum number of jobs a single player can be enrolled in at once
+# Maximum number of jobs a single player can be enrolled in at once (fallback default)
 max-concurrent-jobs: 3
+
+# Permission-based job limit overrides.
+# Checked in order — first matching permission wins.
+# Use -1 for unlimited.
+max-concurrent-jobs-permissions:
+  horizonutilities.jobs.limit.1: 1
+  horizonutilities.jobs.limit.3: 3
+  horizonutilities.jobs.limit.5: 5
+  horizonutilities.jobs.limit.unlimited: -1
 
 # Highest level achievable in any job (applies globally unless overridden per job)
 max-level: 200

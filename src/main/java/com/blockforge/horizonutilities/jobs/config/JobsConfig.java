@@ -5,6 +5,8 @@ import net.kyori.adventure.bossbar.BossBar;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import org.bukkit.entity.Player;
+
 import java.io.File;
 import java.util.*;
 
@@ -17,6 +19,7 @@ public class JobsConfig {
 
     // General
     private int maxConcurrentJobs;
+    private final Map<String, Integer> permissionJobLimits = new LinkedHashMap<>();
     private int maxLevel;
     private int maxPrestige;
     private double prestigeMultiplier;
@@ -79,6 +82,15 @@ public class JobsConfig {
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
         maxConcurrentJobs   = cfg.getInt("max-concurrent-jobs", 3);
+
+        permissionJobLimits.clear();
+        var jobLimitsSection = cfg.getConfigurationSection("max-concurrent-jobs-permissions");
+        if (jobLimitsSection != null) {
+            for (String key : jobLimitsSection.getKeys(false)) {
+                permissionJobLimits.put(key, jobLimitsSection.getInt(key));
+            }
+        }
+
         maxLevel            = cfg.getInt("max-level", 200);
         maxPrestige         = cfg.getInt("max-prestige", 10);
         prestigeMultiplier  = cfg.getDouble("prestige-multiplier", 0.10);
@@ -144,6 +156,16 @@ public class JobsConfig {
     // -------------------------------------------------------------------------
 
     public int getMaxConcurrentJobs()         { return maxConcurrentJobs; }
+    public int getMaxConcurrentJobs(Player player) {
+        for (Map.Entry<String, Integer> entry : permissionJobLimits.entrySet()) {
+            if (player.hasPermission(entry.getKey())) {
+                int val = entry.getValue();
+                if (val < 0) return Integer.MAX_VALUE;
+                return val;
+            }
+        }
+        return maxConcurrentJobs;
+    }
     public int getMaxLevel()                  { return maxLevel; }
     public int getMaxPrestige()               { return maxPrestige; }
     public double getPrestigeMultiplier()     { return prestigeMultiplier; }

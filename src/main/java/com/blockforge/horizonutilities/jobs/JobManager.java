@@ -169,10 +169,11 @@ public class JobManager {
             return false;
         }
 
-        // Capacity check
-        if (current.size() >= config.getMaxConcurrentJobs()) {
+        // Capacity check (permission-based limits)
+        int maxJobs = config.getMaxConcurrentJobs(player);
+        if (current.size() >= maxJobs) {
             player.sendMessage(Component.text(
-                    "[Jobs] You can only be in " + config.getMaxConcurrentJobs() + " job(s) at once.", NamedTextColor.RED));
+                    "[Jobs] You can only be in " + maxJobs + " job(s) at once.", NamedTextColor.RED));
             return false;
         }
 
