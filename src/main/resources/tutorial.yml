@@ -1,0 +1,1087 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Tutorial / Server Guide Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+settings:
+  auto-open-first-join: true
+  first-join-delay-ticks: 60
+  completion-reward:
+    money: 500.0
+    items:
+      - material: STONE_SWORD
+        amount: 1
+      - material: STONE_AXE
+        amount: 1
+      - material: STONE_PICKAXE
+        amount: 1
+      - material: LEATHER_HELMET
+        amount: 1
+        leather-color: "#FFD700"
+      - material: LEATHER_CHESTPLATE
+        amount: 1
+        leather-color: "#FFD700"
+      - material: LEATHER_LEGGINGS
+        amount: 1
+        leather-color: "#FFD700"
+      - material: LEATHER_BOOTS
+        amount: 1
+        leather-color: "#FFD700"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Categories — Each becomes an icon on the main menu and has its own sub-pages
+# ─────────────────────────────────────────────────────────────────────────────
+
+categories:
+  # ── 1. Economy ──────────────────────────────────────────────────────────────
+  economy:
+    display-name: "<gold>Economy & Money"
+    icon: GOLD_INGOT
+    slot: 10
+    color: GOLD
+    glass-pane: ORANGE_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Learn about earning and spending money"
+      - "<gray>Balances, payments, and the economy"
+    pages:
+      1:
+        title: "<gold>Economy & Money"
+        items:
+          - slot: 10
+            material: GOLD_INGOT
+            name: "<gold>Your Balance"
+            lore:
+              - "<gray>Check your balance with <yellow>/bal"
+              - "<gray>See others' balance: <yellow>/bal <player>"
+              - ""
+              - "<gray>Money is the core currency on Horizon SMP."
+              - "<gray>You earn it through jobs, quests, trading,"
+              - "<gray>and the auction house."
+          - slot: 12
+            material: EMERALD
+            name: "<gold>Earning Money"
+            lore:
+              - "<gray>There are many ways to earn money:"
+              - ""
+              - "<yellow>Jobs <gray>- Get paid for mining, farming, etc."
+              - "<yellow>Quests <gray>- Complete daily/weekly objectives"
+              - "<yellow>Auction House <gray>- Sell items to other players"
+              - "<yellow>Trading <gray>- Direct player-to-player trades"
+              - "<yellow>Chat Games <gray>- Win mini-games in chat"
+          - slot: 14
+            material: GOLD_NUGGET
+            name: "<gold>Paying Others"
+            lore:
+              - "<gray>Send money to other players:"
+              - "<yellow>/pay <player> <amount>"
+              - ""
+              - "<gray>All transactions are logged for security."
+          - slot: 16
+            material: SUNFLOWER
+            name: "<gold>Economy Tips"
+            lore:
+              - "<gray>Tips for building your wealth:"
+              - ""
+              - "<yellow>1. <gray>Join a job right away with <yellow>/jobs"
+              - "<yellow>2. <gray>Complete daily quests for bonus money"
+              - "<yellow>3. <gray>Sell rare items on the auction house"
+              - "<yellow>4. <gray>Watch for server boost events!"
+
+  # ── 2. Jobs ─────────────────────────────────────────────────────────────────
+  jobs:
+    display-name: "<aqua>Jobs"
+    icon: IRON_PICKAXE
+    slot: 11
+    color: AQUA
+    glass-pane: CYAN_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Earn money by working!"
+      - "<gray>11 unique jobs to choose from"
+    pages:
+      1:
+        title: "<aqua>Jobs - Overview"
+        items:
+          - slot: 10
+            material: IRON_PICKAXE
+            name: "<aqua>What Are Jobs?"
+            lore:
+              - "<gray>Jobs let you earn money by doing"
+              - "<gray>everyday Minecraft activities!"
+              - ""
+              - "<gray>Get paid for mining, farming, fishing,"
+              - "<gray>killing mobs, crafting, and more."
+              - ""
+              - "<yellow>/jobs <gray>- Open the jobs menu"
+              - "<yellow>/jobs list <gray>- Browse available jobs"
+          - slot: 12
+            material: EXPERIENCE_BOTTLE
+            name: "<aqua>Leveling Up"
+            lore:
+              - "<gray>Each job has its own level (max 200)."
+              - "<gray>Higher levels unlock better pay and perks."
+              - ""
+              - "<gray>Level up by performing job actions."
+              - "<gray>XP formula scales with your level."
+              - ""
+              - "<yellow>/jobs stats <gray>- View your job levels"
+          - slot: 14
+            material: NETHER_STAR
+            name: "<aqua>Prestige"
+            lore:
+              - "<gray>At max level, you can <yellow>prestige<gray>!"
+              - "<gray>This resets your level to 1 but grants"
+              - "<gray>a permanent <green>+10% income bonus<gray>."
+              - ""
+              - "<gray>Max prestige: <yellow>10 <gray>(+100% total)"
+              - ""
+              - "<yellow>/jobs prestige <gray>- Prestige a maxed job"
+          - slot: 16
+            material: PAPER
+            name: "<aqua>Job Limit"
+            lore:
+              - "<gray>You can have multiple jobs at once!"
+              - "<gray>Your limit depends on your rank."
+              - ""
+              - "<gray>Default: <yellow>3 jobs"
+              - "<gray>Higher ranks can hold more."
+              - ""
+              - "<yellow>/jobs join <job> <gray>- Join a job"
+              - "<yellow>/jobs leave <job> <gray>- Leave a job"
+      2:
+        title: "<aqua>Jobs - Available Jobs"
+        items:
+          - slot: 10
+            material: DIAMOND_PICKAXE
+            name: "<aqua>Miner"
+            lore:
+              - "<gray>Earn money by mining ores and stone."
+              - "<gray>Great for cave explorers!"
+          - slot: 11
+            material: GOLDEN_HOE
+            name: "<aqua>Farmer"
+            lore:
+              - "<gray>Earn money by harvesting crops."
+              - "<gray>Wheat, carrots, potatoes, and more!"
+          - slot: 12
+            material: FISHING_ROD
+            name: "<aqua>Fisherman"
+            lore:
+              - "<gray>Earn money by fishing."
+              - "<gray>Rare catches pay more!"
+          - slot: 13
+            material: DIAMOND_SWORD
+            name: "<aqua>Hunter"
+            lore:
+              - "<gray>Earn money by killing mobs."
+              - "<gray>Hostile mobs pay the most."
+          - slot: 14
+            material: CRAFTING_TABLE
+            name: "<aqua>Crafter"
+            lore:
+              - "<gray>Earn money by crafting items."
+              - "<gray>Complex recipes pay more."
+          - slot: 15
+            material: BREWING_STAND
+            name: "<aqua>Brewer"
+            lore:
+              - "<gray>Earn money by brewing potions."
+          - slot: 16
+            material: ENCHANTING_TABLE
+            name: "<aqua>Enchanter"
+            lore:
+              - "<gray>Earn money by enchanting items."
+          - slot: 19
+            material: DIAMOND_AXE
+            name: "<aqua>Woodcutter"
+            lore:
+              - "<gray>Earn money by chopping trees."
+          - slot: 20
+            material: BRICKS
+            name: "<aqua>Builder"
+            lore:
+              - "<gray>Earn money by placing blocks."
+          - slot: 21
+            material: COMPASS
+            name: "<aqua>Explorer"
+            lore:
+              - "<gray>Earn money by discovering new chunks."
+          - slot: 22
+            material: ANVIL
+            name: "<aqua>Weaponsmith"
+            lore:
+              - "<gray>Earn money by repairing and trading."
+
+  # ── 3. Quests ───────────────────────────────────────────────────────────────
+  quests:
+    display-name: "<yellow>Quests"
+    icon: WRITABLE_BOOK
+    slot: 12
+    color: YELLOW
+    glass-pane: YELLOW_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Complete objectives for rewards!"
+      - "<gray>Daily, weekly, and challenge quests"
+    pages:
+      1:
+        title: "<yellow>Quests"
+        items:
+          - slot: 10
+            material: WRITABLE_BOOK
+            name: "<yellow>Quest System"
+            lore:
+              - "<gray>Quests give you objectives to complete"
+              - "<gray>for money, XP, and other rewards."
+              - ""
+              - "<gray>Quests are generated fresh each day"
+              - "<gray>based on your level and active jobs."
+              - ""
+              - "<yellow>/quests <gray>- Open the quest menu"
+          - slot: 12
+            material: CLOCK
+            name: "<yellow>Daily Quests"
+            lore:
+              - "<gray>New quests every day! Complete them"
+              - "<gray>before reset for full rewards."
+              - ""
+              - "<yellow>General Dailies <gray>- Available to everyone"
+              - "<yellow>Job Dailies <gray>- Based on your active jobs"
+          - slot: 14
+            material: RECOVERY_COMPASS
+            name: "<yellow>Weekly Quests"
+            lore:
+              - "<gray>Bigger objectives, bigger rewards."
+              - "<gray>Reset every Monday at midnight."
+              - ""
+              - "<gray>Weekly quests scale with your tier."
+          - slot: 16
+            material: DRAGON_EGG
+            name: "<yellow>Challenges"
+            lore:
+              - "<gray>One-time objectives with unique rewards."
+              - "<gray>These don't reset — complete them once!"
+              - ""
+              - "<gray>Harder challenges unlock as you progress."
+
+  # ── 4. Auction House ────────────────────────────────────────────────────────
+  auction-house:
+    display-name: "<#FF8C00>Auction House"
+    icon: CHEST
+    slot: 13
+    color: GOLD
+    glass-pane: ORANGE_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Buy and sell items with other players"
+      - "<gray>Bidding, instant buy, and price history"
+    pages:
+      1:
+        title: "<#FF8C00>Auction House"
+        items:
+          - slot: 10
+            material: CHEST
+            name: "<#FF8C00>Browse Listings"
+            lore:
+              - "<gray>Open the auction house to browse"
+              - "<gray>items listed by other players."
+              - ""
+              - "<gray>Filter by category, search by name,"
+              - "<gray>or sort by price."
+              - ""
+              - "<yellow>/ah <gray>- Open the auction house"
+          - slot: 12
+            material: WRITABLE_BOOK
+            name: "<#FF8C00>Selling Items"
+            lore:
+              - "<gray>List items for other players to buy!"
+              - ""
+              - "<yellow>/ah sell <price> <gray>- List held item"
+              - ""
+              - "<gray>A small listing fee is charged."
+              - "<gray>A sales tax applies to completed sales."
+          - slot: 14
+            material: GOLD_INGOT
+            name: "<#FF8C00>Bidding"
+            lore:
+              - "<gray>Some listings accept bids!"
+              - "<gray>Place a bid and compete with others."
+              - ""
+              - "<gray>Anti-snipe: Auctions extend if a bid"
+              - "<gray>is placed near the end time."
+              - ""
+              - "<gray>Your bid money is held in escrow."
+          - slot: 16
+            material: SPYGLASS
+            name: "<#FF8C00>Price History"
+            lore:
+              - "<gray>Check historical prices for any item"
+              - "<gray>to make smart buying/selling decisions."
+              - ""
+              - "<yellow>/ah history <gray>- View your transactions"
+              - "<yellow>/ah collect <gray>- Collect sold earnings"
+
+  # ── 5. Trading & Bounties ───────────────────────────────────────────────────
+  trading:
+    display-name: "<green>Trading & Bounties"
+    icon: EMERALD
+    slot: 14
+    color: GREEN
+    glass-pane: LIME_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Trade with players and set bounties"
+    pages:
+      1:
+        title: "<green>Trading & Bounties"
+        items:
+          - slot: 10
+            material: EMERALD
+            name: "<green>Player Trading"
+            lore:
+              - "<gray>Trade items and money directly"
+              - "<gray>with another player using a safe GUI."
+              - ""
+              - "<yellow>/trade <player> <gray>- Send a trade request"
+              - ""
+              - "<gray>Both players must confirm before"
+              - "<gray>the trade goes through."
+          - slot: 12
+            material: SKELETON_SKULL
+            name: "<green>Bounty System"
+            lore:
+              - "<gray>Place a bounty on another player!"
+              - "<gray>Anyone who kills them claims the reward."
+              - ""
+              - "<yellow>/bounty set <player> <amount>"
+              - "<yellow>/bounty list <gray>- View active bounties"
+              - ""
+              - "<gray>Anonymous bounties cost extra but"
+              - "<gray>hide who placed them."
+          - slot: 14
+            material: BELL
+            name: "<green>Bounty Alerts"
+            lore:
+              - "<gray>When near a player with a bounty,"
+              - "<gray>you'll receive a proximity alert!"
+              - ""
+              - "<gray>Bounties expire after a set time"
+              - "<gray>and refund the placer."
+
+  # ── 6. Lottery & Games ──────────────────────────────────────────────────────
+  lottery:
+    display-name: "<light_purple>Lottery & Games"
+    icon: FIREWORK_ROCKET
+    slot: 15
+    color: LIGHT_PURPLE
+    glass-pane: MAGENTA_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Try your luck and test your wits!"
+    pages:
+      1:
+        title: "<light_purple>Lottery & Games"
+        items:
+          - slot: 10
+            material: FIREWORK_ROCKET
+            name: "<light_purple>Lottery"
+            lore:
+              - "<gray>Buy tickets and win big!"
+              - ""
+              - "<yellow>/lottery buy <gray>- Purchase a ticket"
+              - "<yellow>/lottery info <gray>- View current pot"
+              - ""
+              - "<gray>Multiple tiers: daily and weekly draws."
+              - "<gray>More tickets = higher chance to win!"
+          - slot: 12
+            material: NAME_TAG
+            name: "<light_purple>Chat Games"
+            lore:
+              - "<gray>Mini-games that pop up in chat!"
+              - ""
+              - "<yellow>Unscramble <gray>- Unscramble a word"
+              - "<yellow>Math <gray>- Solve a math equation"
+              - "<yellow>Retype <gray>- Retype a phrase correctly"
+              - "<yellow>Unreverse <gray>- Reverse a word back"
+              - "<yellow>Recipe Guess <gray>- Name the crafting recipe"
+              - ""
+              - "<gray>First correct answer wins a prize!"
+          - slot: 14
+            material: DIAMOND
+            name: "<light_purple>Leaderboards"
+            lore:
+              - "<gray>Compete for the top spot!"
+              - ""
+              - "<yellow>/chatgames top <gray>- View the leaderboard"
+              - "<yellow>/chatgames stats <gray>- View your stats"
+
+  # ── 7. Warps & Teleportation ────────────────────────────────────────────────
+  warps:
+    display-name: "<blue>Warps & Teleportation"
+    icon: ENDER_PEARL
+    slot: 16
+    color: BLUE
+    glass-pane: BLUE_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Get around the server quickly"
+      - "<gray>Warps, homes, TPA, and more"
+    pages:
+      1:
+        title: "<blue>Warps & Teleportation"
+        items:
+          - slot: 10
+            material: ENDER_PEARL
+            name: "<blue>Server Warps"
+            lore:
+              - "<gray>Teleport to important locations."
+              - ""
+              - "<yellow>/warp <name> <gray>- Teleport to a warp"
+              - "<yellow>/warps <gray>- List all warps"
+              - "<yellow>/spawn <gray>- Return to spawn"
+          - slot: 12
+            material: RED_BED
+            name: "<blue>Homes"
+            lore:
+              - "<gray>Set personal teleport points!"
+              - ""
+              - "<yellow>/sethome <name> <gray>- Set a home"
+              - "<yellow>/home <name> <gray>- Teleport to a home"
+              - "<yellow>/homes <gray>- List all your homes"
+              - "<yellow>/delhome <name> <gray>- Delete a home"
+              - ""
+              - "<gray>Default: <yellow>1 home"
+              - "<gray>Higher ranks can set more."
+          - slot: 14
+            material: COMPASS
+            name: "<blue>TPA (Teleport Requests)"
+            lore:
+              - "<gray>Request to teleport to other players."
+              - ""
+              - "<yellow>/tpa <player> <gray>- Request to teleport"
+              - "<yellow>/tpahere <player> <gray>- Ask them to come"
+              - "<yellow>/tpaccept <gray>- Accept a request"
+              - "<yellow>/tpdeny <gray>- Deny a request"
+          - slot: 16
+            material: CHORUS_FRUIT
+            name: "<blue>Random Teleport"
+            lore:
+              - "<gray>Teleport to a random safe location!"
+              - "<gray>Great for finding a new place to build."
+              - ""
+              - "<yellow>/rtp <gray>- Random teleport"
+              - "<yellow>/wild <gray>- Same as /rtp"
+              - ""
+              - "<gray>Has a cooldown between uses."
+      2:
+        title: "<blue>Warps - Player Warps"
+        items:
+          - slot: 10
+            material: END_PORTAL_FRAME
+            name: "<blue>Player Warps"
+            lore:
+              - "<gray>Create your own public warps!"
+              - "<gray>Other players can visit your builds."
+              - ""
+              - "<yellow>/pwarp set <name> <gray>- Create a warp"
+              - "<yellow>/pwarp <name> <gray>- Visit a player warp"
+              - "<yellow>/pwarp list <gray>- Browse all player warps"
+              - "<yellow>/pwarp delete <name> <gray>- Remove your warp"
+          - slot: 12
+            material: GOLDEN_APPLE
+            name: "<blue>Warp Ratings"
+            lore:
+              - "<gray>Rate player warps with stars!"
+              - "<gray>The best warps rise to the top."
+              - ""
+              - "<yellow>/pwarp rate <name> <1-5>"
+
+  # ── 8. Claims & GriefPrevention ─────────────────────────────────────────────
+  claims:
+    display-name: "<dark_green>Claims & Protection"
+    icon: GOLDEN_SHOVEL
+    slot: 19
+    color: DARK_GREEN
+    glass-pane: GREEN_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Protect your builds from griefing"
+      - "<gray>Golden shovel claiming system"
+    pages:
+      1:
+        title: "<dark_green>Claims - Basics"
+        items:
+          - slot: 10
+            material: GOLDEN_SHOVEL
+            name: "<dark_green>Creating a Claim"
+            lore:
+              - "<gray>Use a <yellow>Golden Shovel <gray>to claim land!"
+              - ""
+              - "<yellow>Step 1: <gray>Hold a golden shovel"
+              - "<yellow>Step 2: <gray>Right-click one corner"
+              - "<yellow>Step 3: <gray>Right-click the opposite corner"
+              - ""
+              - "<gray>Your claim is now protected!"
+              - "<gray>Only you can build inside it."
+          - slot: 12
+            material: GOLD_BLOCK
+            name: "<dark_green>Claim Blocks"
+            lore:
+              - "<gray>You need <yellow>claim blocks <gray>to claim land."
+              - "<gray>You earn them passively over time"
+              - "<gray>just by playing on the server."
+              - ""
+              - "<gray>Each block of area costs 1 claim block."
+              - "<gray>Check yours with <yellow>/claimlist"
+          - slot: 14
+            material: PLAYER_HEAD
+            name: "<dark_green>Trusting Players"
+            lore:
+              - "<gray>Let friends build in your claim!"
+              - ""
+              - "<yellow>/trust <player> <gray>- Full build access"
+              - "<yellow>/containertrust <player> <gray>- Chest access"
+              - "<yellow>/accesstrust <player> <gray>- Door/button access"
+              - "<yellow>/permissiontrust <player> <gray>- Can trust others"
+              - "<yellow>/untrust <player> <gray>- Remove access"
+          - slot: 16
+            material: OAK_FENCE
+            name: "<dark_green>Claim Management"
+            lore:
+              - "<gray>Useful claim commands:"
+              - ""
+              - "<yellow>/abandonclaim <gray>- Remove current claim"
+              - "<yellow>/claimlist <gray>- List all your claims"
+              - "<yellow>/claimexplosions <gray>- Toggle explosions"
+              - "<yellow>/trapped <gray>- Escape if stuck in a claim"
+      2:
+        title: "<dark_green>Claims - Flags (GPFR)"
+        items:
+          - slot: 10
+            material: RED_BANNER
+            name: "<dark_green>Claim Flags"
+            lore:
+              - "<gray>Claims have special flags that control"
+              - "<gray>various behaviors within your land."
+              - ""
+              - "<gray>Flags are managed by"
+              - "<yellow>GriefPreventionFlagsReborn<gray>."
+          - slot: 12
+            material: TNT
+            name: "<dark_green>Explosion Flags"
+            lore:
+              - "<gray>Control explosions in your claim."
+              - "<gray>By default, explosions cannot damage"
+              - "<gray>blocks inside claims."
+          - slot: 14
+            material: ZOMBIE_HEAD
+            name: "<dark_green>Mob Flags"
+            lore:
+              - "<gray>Control mob spawning and behavior"
+              - "<gray>within your claimed land."
+          - slot: 16
+            material: IRON_DOOR
+            name: "<dark_green>Access Flags"
+            lore:
+              - "<gray>Fine-tune who can interact with"
+              - "<gray>doors, buttons, levers, and other"
+              - "<gray>redstone components in your claim."
+
+  # ── 9. Combat & PvP ─────────────────────────────────────────────────────────
+  combat:
+    display-name: "<red>Combat & PvP"
+    icon: IRON_SWORD
+    slot: 20
+    color: RED
+    glass-pane: RED_STAINED_GLASS_PANE
+    lore:
+      - "<gray>PvP combat rules and restrictions"
+    pages:
+      1:
+        title: "<red>Combat & PvP"
+        items:
+          - slot: 10
+            material: IRON_SWORD
+            name: "<red>Combat Tagging"
+            lore:
+              - "<gray>When you hit or get hit by a player,"
+              - "<gray>you become <red>combat tagged<gray>!"
+              - ""
+              - "<gray>While tagged, you <red>cannot<gray>:"
+              - "<red>  - <gray>Teleport (/home, /spawn, /tpa)"
+              - "<red>  - <gray>Open ender chests"
+              - "<red>  - <gray>Activate flight"
+              - "<red>  - <gray>Use certain commands"
+          - slot: 12
+            material: SKELETON_SKULL
+            name: "<red>Combat Logging"
+            lore:
+              - "<gray>If you <red>log out <gray>while combat tagged,"
+              - "<gray>you will be <red>killed automatically<gray>!"
+              - ""
+              - "<gray>Your items will drop as normal."
+              - "<gray>Don't disconnect during a fight!"
+          - slot: 14
+            material: CLOCK
+            name: "<red>Combat Timer"
+            lore:
+              - "<gray>The combat tag lasts for a set duration."
+              - "<gray>A countdown appears on your action bar."
+              - ""
+              - "<yellow>/combat status <gray>- Check your tag"
+          - slot: 16
+            material: SHIELD
+            name: "<red>PvP Tips"
+            lore:
+              - "<gray>Tips for PvP on Horizon SMP:"
+              - ""
+              - "<yellow>1. <gray>Claims protect you from PvP inside"
+              - "<yellow>2. <gray>Don't carry valuables in the wild"
+              - "<yellow>3. <gray>Watch for bounty proximity alerts"
+              - "<yellow>4. <gray>Potions and golden apples are key"
+
+  # ── 10. Custom Items & CraftEngine ──────────────────────────────────────────
+  craftengine:
+    display-name: "<dark_purple>Custom Items & Recipes"
+    icon: BREWING_STAND
+    slot: 21
+    color: DARK_PURPLE
+    glass-pane: PURPLE_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Unique custom items and CraftEngine recipes"
+      - "<gray>Click items to view crafting recipes!"
+    pages:
+      1:
+        title: "<dark_purple>Custom Equipment"
+        items:
+          - slot: 10
+            material: GOLDEN_PICKAXE
+            name: "<#FF8C00>Topaz Pickaxe"
+            lore:
+              - "<gray>A powerful custom pickaxe made from Topaz."
+              - "<gray>64 durability, golden-tier speed."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "AAA"
+                - " S "
+                - " S "
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STICK, name: "<gray>Stick" }
+              result: { material: GOLDEN_PICKAXE, name: "<#FF8C00>Topaz Pickaxe" }
+          - slot: 11
+            material: GOLDEN_AXE
+            name: "<#FF8C00>Topaz Axe"
+            lore:
+              - "<gray>A custom axe crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "AA "
+                - "AS "
+                - " S "
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STICK, name: "<gray>Stick" }
+              result: { material: GOLDEN_AXE, name: "<#FF8C00>Topaz Axe" }
+          - slot: 12
+            material: GOLDEN_SWORD
+            name: "<#FF8C00>Topaz Sword"
+            lore:
+              - "<gray>A custom sword forged from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - " A "
+                - " A "
+                - " S "
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STICK, name: "<gray>Stick" }
+              result: { material: GOLDEN_SWORD, name: "<#FF8C00>Topaz Sword" }
+          - slot: 13
+            material: GOLDEN_SHOVEL
+            name: "<#FF8C00>Topaz Shovel"
+            lore:
+              - "<gray>A custom shovel crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - " A "
+                - " S "
+                - " S "
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STICK, name: "<gray>Stick" }
+              result: { material: GOLDEN_SHOVEL, name: "<#FF8C00>Topaz Shovel" }
+          - slot: 14
+            material: GOLDEN_HOE
+            name: "<#FF8C00>Topaz Hoe"
+            lore:
+              - "<gray>A custom hoe crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "AA "
+                - " S "
+                - " S "
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STICK, name: "<gray>Stick" }
+              result: { material: GOLDEN_HOE, name: "<#FF8C00>Topaz Hoe" }
+          - slot: 15
+            material: CHAINMAIL_HELMET
+            name: "<#FF8C00>Topaz Helmet"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "AAA"
+                - "A A"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_HELMET, name: "<#FF8C00>Topaz Helmet" }
+          - slot: 16
+            material: CHAINMAIL_CHESTPLATE
+            name: "<#FF8C00>Topaz Chestplate"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "A A"
+                - "AAA"
+                - "AAA"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_CHESTPLATE, name: "<#FF8C00>Topaz Chestplate" }
+          - slot: 19
+            material: CHAINMAIL_LEGGINGS
+            name: "<#FF8C00>Topaz Leggings"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "AAA"
+                - "A A"
+                - "A A"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_LEGGINGS, name: "<#FF8C00>Topaz Leggings" }
+          - slot: 20
+            material: CHAINMAIL_BOOTS
+            name: "<#FF8C00>Topaz Boots"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "A A"
+                - "A A"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_BOOTS, name: "<#FF8C00>Topaz Boots" }
+          - slot: 21
+            material: BOW
+            name: "<#FF8C00>Topaz Bow"
+            lore:
+              - "<gray>A custom bow crafted from Topaz."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - " AS"
+                - "A S"
+                - " AS"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STRING, name: "<gray>String" }
+              result: { material: BOW, name: "<#FF8C00>Topaz Bow" }
+          - slot: 22
+            material: CROSSBOW
+            name: "<#FF8C00>Topaz Crossbow"
+            lore:
+              - "<gray>A powerful custom crossbow."
+              - ""
+              - "<yellow>Click to view recipe!"
+            recipe:
+              type: shaped
+              pattern:
+                - "SAS"
+                - "STS"
+                - " S "
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+                S: { material: STICK, name: "<gray>Stick" }
+                T: { material: TRIPWIRE_HOOK, name: "<gray>Tripwire Hook" }
+              result: { material: CROSSBOW, name: "<#FF8C00>Topaz Crossbow" }
+          - slot: 24
+            material: STONE_PICKAXE
+            name: "<white>Drill"
+            lore:
+              - "<gray>A range-mining tool that breaks"
+              - "<gray>blocks in a 3x1 area!"
+              - "<gray>512 durability."
+      2:
+        title: "<dark_purple>Furniture & Custom Blocks"
+        items:
+          - slot: 10
+            material: OAK_STAIRS
+            name: "<dark_purple>Bench"
+            lore:
+              - "<gray>A placeable bench you can sit on!"
+              - "<gray>Seats two players side by side."
+              - ""
+              - "<gray>Part of the CraftEngine furniture pack."
+          - slot: 11
+            material: OAK_STAIRS
+            name: "<dark_purple>Wooden Chair"
+            lore:
+              - "<gray>A single-seat wooden chair."
+              - "<gray>Can be rotated in 8 directions."
+          - slot: 12
+            material: ARMOR_STAND
+            name: "<dark_purple>Globe"
+            lore:
+              - "<gray>A decorative spinning globe!"
+              - "<gray>Place it on any surface."
+          - slot: 13
+            material: FLOWER_POT
+            name: "<dark_purple>Flower Basket"
+            lore:
+              - "<gray>A hanging flower basket."
+              - "<gray>Can hang from walls, ceilings, or ground."
+          - slot: 14
+            material: RED_WOOL
+            name: "<dark_purple>Sofa"
+            lore:
+              - "<gray>A comfy sleeper sofa!"
+              - "<gray>Works as a block you can sit on."
+          - slot: 15
+            material: LANTERN
+            name: "<dark_purple>Table Lamp"
+            lore:
+              - "<gray>A toggleable table lamp."
+              - "<gray>Click to turn on and off!"
+          - slot: 19
+            material: OAK_SAPLING
+            name: "<dark_purple>Palm Tree"
+            lore:
+              - "<gray>Custom palm trees with their own"
+              - "<gray>log, wood, and plank variants."
+          - slot: 20
+            material: ALLIUM
+            name: "<dark_purple>Fairy Flower"
+            lore:
+              - "<gray>A beautiful animated fairy flower."
+              - "<gray>Glows with a soft magical light."
+          - slot: 21
+            material: SOUL_LANTERN
+            name: "<dark_purple>Chinese Lantern"
+            lore:
+              - "<gray>An animated hanging lantern."
+              - "<gray>Adds an eastern aesthetic."
+          - slot: 22
+            material: LIGHTNING_ROD
+            name: "<dark_purple>Copper Coil"
+            lore:
+              - "<gray>A decorative copper coil block."
+          - slot: 24
+            material: LAPIS_BLOCK
+            name: "<dark_purple>Chipped Block Variants"
+            lore:
+              - "<gray>Over <yellow>158+ <gray>block variants!"
+              - ""
+              - "<gray>Alternative textures for:"
+              - "<yellow>Wool, Terracotta, Glass, Planks,"
+              - "<yellow>Stone, Cobblestone, Bricks, Copper,"
+              - "<yellow>and many more!"
+              - ""
+              - "<gray>Craft them using the base block"
+              - "<gray>with flint, sticks, or string."
+          - slot: 28
+            material: TRIPWIRE_HOOK
+            name: "<dark_purple>Grappling Hook"
+            lore:
+              - "<gray>A <yellow>custom item <gray>from HorizonUtilities!"
+              - "<gray>Launch yourself in the direction"
+              - "<gray>you're looking. Great for mobility!"
+              - ""
+              - "<yellow>/customitem give grappling_hook"
+          - slot: 29
+            material: SNOWBALL
+            name: "<dark_purple>Ice Bomb"
+            lore:
+              - "<gray>Throw to create ice blocks on impact!"
+              - "<gray>A fun custom throwable item."
+          - slot: 30
+            material: BONE
+            name: "<dark_purple>Wolf Whistle"
+            lore:
+              - "<gray>Use to summon a wolf companion!"
+              - "<gray>A handy custom item."
+
+  # ── 11. Chat Features ───────────────────────────────────────────────────────
+  chat:
+    display-name: "<#FF69B4>Chat Features"
+    icon: OAK_SIGN
+    slot: 22
+    color: LIGHT_PURPLE
+    glass-pane: PINK_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Chat enhancements and features"
+    pages:
+      1:
+        title: "<#FF69B4>Chat Features"
+        items:
+          - slot: 10
+            material: OAK_SIGN
+            name: "<#FF69B4>Chat Placeholders"
+            lore:
+              - "<gray>Use special placeholders in chat!"
+              - ""
+              - "<yellow>{balance} <gray>- Show your money"
+              - "<yellow>{health} <gray>- Show your HP"
+              - "<yellow>{item} <gray>- Show your held item"
+              - "<yellow>{ping} <gray>- Show your ping"
+              - "<yellow>{pos} <gray>- Show your coordinates"
+          - slot: 12
+            material: BELL
+            name: "<#FF69B4>Mentions"
+            lore:
+              - "<gray>Tag other players in chat!"
+              - "<gray>Type <yellow>@playername <gray>to mention them."
+              - ""
+              - "<gray>They'll hear a notification sound"
+              - "<gray>and see their name highlighted."
+          - slot: 14
+            material: NAME_TAG
+            name: "<#FF69B4>Chat Bubbles"
+            lore:
+              - "<gray>Your chat messages appear as floating"
+              - "<gray>text above your head!"
+              - ""
+              - "<yellow>/chatbubbles toggle <gray>- Toggle on/off"
+
+  # ── 12. Black Market ────────────────────────────────────────────────────────
+  blackmarket:
+    display-name: "<dark_red>Black Market"
+    icon: WITHER_SKELETON_SKULL
+    slot: 23
+    color: DARK_RED
+    glass-pane: RED_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Buy rare and exclusive items"
+    pages:
+      1:
+        title: "<dark_red>Black Market"
+        items:
+          - slot: 10
+            material: WITHER_SKELETON_SKULL
+            name: "<dark_red>The Black Market"
+            lore:
+              - "<gray>A secret shop selling rare items!"
+              - "<gray>Items rotate and have limited stock."
+              - ""
+              - "<yellow>/bm <gray>- Open the black market"
+          - slot: 12
+            material: NETHERITE_PICKAXE
+            name: "<dark_red>Breaker Tools"
+            lore:
+              - "<gray>Special tools with limited uses"
+              - "<gray>that have unique abilities."
+              - ""
+              - "<gray>They break after a set number of uses."
+              - "<gray>Powerful but expensive!"
+          - slot: 14
+            material: BEDROCK
+            name: "<dark_red>Rare Items"
+            lore:
+              - "<gray>Some items can only be obtained"
+              - "<gray>from the Black Market!"
+              - ""
+              - "<gray>Save up and check back regularly"
+              - "<gray>for new stock."
+
+  # ── 13. Tournaments ─────────────────────────────────────────────────────────
+  tournaments:
+    display-name: "<gold>Tournaments"
+    icon: GOLDEN_APPLE
+    slot: 24
+    color: GOLD
+    glass-pane: YELLOW_STAINED_GLASS_PANE
+    lore:
+      - "<gray>Compete in server events!"
+    pages:
+      1:
+        title: "<gold>Tournaments"
+        items:
+          - slot: 10
+            material: GOLDEN_APPLE
+            name: "<gold>What Are Tournaments?"
+            lore:
+              - "<gray>Server-wide competitive events!"
+              - "<gray>Complete objectives to win prizes."
+              - ""
+              - "<yellow>/tournament list <gray>- View active events"
+              - "<yellow>/tournament join <gray>- Join a tournament"
+              - "<yellow>/tournament status <gray>- Check progress"
+          - slot: 12
+            material: DIAMOND_SWORD
+            name: "<gold>Objective Types"
+            lore:
+              - "<gray>Tournaments can have various goals:"
+              - ""
+              - "<yellow>Kills <gray>- Most player/mob kills"
+              - "<yellow>Blocks Broken <gray>- Mine the most"
+              - "<yellow>Levels <gray>- Gain the most job levels"
+              - "<gray>...and more!"
+          - slot: 14
+            material: CHEST
+            name: "<gold>Prizes"
+            lore:
+              - "<gray>Tournament winners receive rewards"
+              - "<gray>set by server admins."
+              - ""
+              - "<gray>Keep an eye on chat for new"
+              - "<gray>tournament announcements!"
+
+  # ── 14. Gems (Coming Soon) ──────────────────────────────────────────────────
+  gems:
+    display-name: "<aqua>Gems <gray>(Coming Soon)"
+    icon: DIAMOND
+    slot: 25
+    color: AQUA
+    glass-pane: LIGHT_BLUE_STAINED_GLASS_PANE
+    lore:
+      - "<gray>A secondary premium currency"
+      - "<yellow>Coming soon!"
+    pages:
+      1:
+        title: "<aqua>Gems - Coming Soon"
+        items:
+          - slot: 13
+            material: DIAMOND
+            name: "<aqua>Gems Currency"
+            lore:
+              - "<gray>Gems are a secondary currency"
+              - "<gray>that will be used for premium"
+              - "<gray>features and exclusive items."
+              - ""
+              - "<yellow>This feature is coming soon!"
+              - ""
+              - "<gray>Stay tuned for updates."

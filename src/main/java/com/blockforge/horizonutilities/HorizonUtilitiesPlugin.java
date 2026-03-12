@@ -102,6 +102,11 @@ import com.blockforge.horizonutilities.rtp.RtpManager;
 import com.blockforge.horizonutilities.maintenance.MaintenanceCommand;
 import com.blockforge.horizonutilities.maintenance.MaintenanceListener;
 import com.blockforge.horizonutilities.maintenance.MaintenanceManager;
+import com.blockforge.horizonutilities.homes.HomeCommand;
+import com.blockforge.horizonutilities.homes.HomeManager;
+import com.blockforge.horizonutilities.tutorial.TutorialCommand;
+import com.blockforge.horizonutilities.tutorial.TutorialGUIListener;
+import com.blockforge.horizonutilities.tutorial.TutorialManager;
 import com.blockforge.horizonutilities.tax.TaxManager;
 import com.blockforge.horizonutilities.jobs.commands.JobsCommand;
 import com.blockforge.horizonutilities.jobs.commands.JobsTabCompleter;
@@ -162,6 +167,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private RtpConfig rtpConfig;
     private RtpManager rtpManager;
+    private HomeManager homeManager;
+    private TutorialManager tutorialManager;
 
     @Override
     public void onEnable() {
@@ -293,6 +300,12 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         rtpConfig.load();
         rtpManager = new RtpManager(this, rtpConfig, questStorage);
 
+        // Homes
+        homeManager = new HomeManager(this);
+
+        // Tutorial
+        tutorialManager = new TutorialManager(this);
+
         var pm = getServer().getPluginManager();
         pm.registerEvents(new MaintenanceListener(maintenanceManager), this);
         pm.registerEvents(new ChatBubbleListener(this, chatBubbleManager), this);
@@ -332,6 +345,7 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         pm.registerEvents(new AnvilListener(this), this);
         pm.registerEvents(new QuestEventListener(questManager), this);
         pm.registerEvents(new RtpListener(this, rtpManager), this);
+        pm.registerEvents(new TutorialGUIListener(), this);
 
         var ahCmd = getCommand("ah");
         if (ahCmd != null) {
@@ -477,6 +491,30 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             rtpCmd.setTabCompleter(rtpCmdExec);
         }
 
+        // Home commands
+        var homeCmd = new HomeCommand(this, homeManager);
+        var homeBukkitCmd = getCommand("home");
+        if (homeBukkitCmd != null) { homeBukkitCmd.setExecutor(homeCmd); homeBukkitCmd.setTabCompleter(homeCmd); }
+        var sethomeCmd = getCommand("sethome");
+        if (sethomeCmd != null) { sethomeCmd.setExecutor(homeCmd); sethomeCmd.setTabCompleter(homeCmd); }
+        var delhomeCmd = getCommand("delhome");
+        if (delhomeCmd != null) { delhomeCmd.setExecutor(homeCmd); delhomeCmd.setTabCompleter(homeCmd); }
+        var homesCmd = getCommand("homes");
+        if (homesCmd != null) { homesCmd.setExecutor(homeCmd); homesCmd.setTabCompleter(homeCmd); }
+
+        // Tutorial command — force override /help so Bukkit's built-in doesn't claim it
+        var tutorialCmd = new TutorialCommand(this, tutorialManager);
+        pm.registerEvents(tutorialCmd, this);
+        var helpBukkitCmd = getCommand("help");
+        if (helpBukkitCmd != null) {
+            helpBukkitCmd.setExecutor(tutorialCmd);
+            helpBukkitCmd.setTabCompleter(tutorialCmd);
+            var cmdMap = getServer().getCommandMap();
+            cmdMap.getKnownCommands().put("help", helpBukkitCmd);
+            cmdMap.getKnownCommands().put("guide", helpBukkitCmd);
+            cmdMap.getKnownCommands().put("tutorial", helpBukkitCmd);
+        }
+
         new AuctionExpireTask(this).start();
         chatGameManager.startScheduler();
         new LotteryDrawTask(this, lotteryManager).start();
@@ -521,6 +559,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         if (questManager != null) questManager.reload();
         if (scoreboardManager != null) scoreboardManager.reload();
         if (rtpConfig != null) rtpConfig.load();
+        if (homeManager != null) homeManager.loadConfig();
+        if (tutorialManager != null) tutorialManager.reload();
     }
 
     public static HorizonUtilitiesPlugin getInstance() { return instance; }
@@ -570,4 +610,6 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public ScoreboardManager getScoreboardManager()       { return scoreboardManager; }
     public RtpConfig getRtpConfig()                       { return rtpConfig; }
     public RtpManager getRtpManager()                     { return rtpManager; }
+    public HomeManager getHomeManager()                   { return homeManager; }
+    public TutorialManager getTutorialManager()           { return tutorialManager; }
 }

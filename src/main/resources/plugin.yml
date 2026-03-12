@@ -105,6 +105,27 @@ commands:
     description: Random teleport to a safe location
     aliases: [randomtp, wild]
     usage: /<command> [world]
+  help:
+    description: Open the server tutorial guide
+    aliases: [guide, tutorial]
+    usage: /<command> [reload]
+    permission: horizonutilities.tutorial.use
+  home:
+    description: Teleport to a home
+    usage: /<command> [name]
+    permission: horizonutilities.homes.teleport
+  sethome:
+    description: Set a home at your location
+    usage: /<command> [name]
+    permission: horizonutilities.homes.set
+  delhome:
+    description: Delete a home
+    usage: /<command> <name>
+    permission: horizonutilities.homes.delete
+  homes:
+    description: List your homes
+    usage: /<command>
+    permission: horizonutilities.homes.teleport
 permissions:
   horizonutilities.ah.use:
     default: true
@@ -341,4 +362,49 @@ permissions:
     default: false
   horizonutilities.rtp.bypass.cost:
     description: Bypass RTP cost
+    default: false
+  # Tutorial
+  horizonutilities.tutorial.use:
+    description: Open the tutorial guide
+    default: true
+  horizonutilities.tutorial.admin:
+    description: Reload tutorial config
+    default: op
+  # Homes
+  horizonutilities.homes.teleport:
+    description: Teleport to homes
+    default: true
+  horizonutilities.homes.set:
+    description: Set homes
+    default: true
+  horizonutilities.homes.delete:
+    description: Delete homes
+    default: true
+  horizonutilities.homes.bypass.cooldown:
+    description: Bypass home teleport cooldown
+    default: false
+  horizonutilities.homes.3:
+    description: Allow up to 3 homes
+    default: false
+  horizonutilities.homes.5:
+    description: Allow up to 5 homes
+    default: false
+  horizonutilities.homes.10:
+    description: Allow up to 10 homes
+    default: false
+  horizonutilities.homes.unlimited:
+    description: Unlimited homes
+    default: false
+  # Job limits
+  horizonutilities.jobs.limit.1:
+    description: Allow 1 concurrent job
+    default: false
+  horizonutilities.jobs.limit.3:
+    description: Allow 3 concurrent jobs
+    default: false
+  horizonutilities.jobs.limit.5:
+    description: Allow 5 concurrent jobs
+    default: false
+  horizonutilities.jobs.limit.unlimited:
+    description: Unlimited concurrent jobs
     default: false

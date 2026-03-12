@@ -406,6 +406,33 @@ public class DatabaseManager {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS horizon_rtp_cooldowns (" +
                 "player_uuid TEXT PRIMARY KEY," +
                 "last_used INTEGER NOT NULL)");
+
+            // Homes
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS homes (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "player_uuid TEXT NOT NULL," +
+                "name TEXT NOT NULL," +
+                "world TEXT NOT NULL," +
+                "x REAL NOT NULL," +
+                "y REAL NOT NULL," +
+                "z REAL NOT NULL," +
+                "yaw REAL NOT NULL," +
+                "pitch REAL NOT NULL," +
+                "created_at INTEGER NOT NULL," +
+                "UNIQUE(player_uuid, name))");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_homes_player ON homes(player_uuid)");
+
+            // Tutorial completion tracking
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tutorial_completion (" +
+                "player_uuid TEXT NOT NULL," +
+                "category_id TEXT NOT NULL," +
+                "visited_at INTEGER NOT NULL," +
+                "PRIMARY KEY (player_uuid, category_id))");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_tutorial_player ON tutorial_completion(player_uuid)");
+
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tutorial_rewards (" +
+                "player_uuid TEXT PRIMARY KEY," +
+                "claimed_at INTEGER NOT NULL)");
         }
     }
 
