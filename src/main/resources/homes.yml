@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# HorizonUtilities — Homes Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Default maximum homes per player (overridden by permissions below)
+default-max-homes: 1
+
+# Permission-based home limits.
+# Players with the permission node get the corresponding max homes.
+# Checked in order — first matching permission wins.
+# Use "unlimited" for no limit.
+max-homes:
+  horizonutilities.homes.3: 3
+  horizonutilities.homes.5: 5
+  horizonutilities.homes.10: 10
+  horizonutilities.homes.unlimited: -1
+
+# Cooldown in seconds between teleporting to homes
+teleport-cooldown-seconds: 5
+
+# Warmup in seconds — player must stand still
+teleport-warmup-seconds: 3
+
+# Allow homes across different worlds
+allow-cross-world: true
+
+# Max character length for home names
+max-name-length: 16
