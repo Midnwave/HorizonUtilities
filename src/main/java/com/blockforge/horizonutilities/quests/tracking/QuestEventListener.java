@@ -54,13 +54,21 @@ public class QuestEventListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        questManager.onPlayerJoin(event.getPlayer().getUniqueId());
+        UUID uuid = event.getPlayer().getUniqueId();
+        questManager.onPlayerJoin(uuid);
+        // Load scoreboard preferences so /sb toggle works correctly
+        if (questManager.getPlugin().getScoreboardManager() != null) {
+            questManager.getPlugin().getScoreboardManager().onPlayerJoin(uuid);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
         questManager.onPlayerQuit(uuid);
+        if (questManager.getPlugin().getScoreboardManager() != null) {
+            questManager.getPlugin().getScoreboardManager().onPlayerQuit(uuid);
+        }
         // Clean up brewing stand ownership entries for this player
         brewingStandUsers.values().removeIf(uuid::equals);
     }
