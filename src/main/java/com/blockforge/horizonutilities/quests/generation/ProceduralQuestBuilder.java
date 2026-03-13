@@ -484,8 +484,8 @@ public final class ProceduralQuestBuilder {
             case CHALLENGE -> 3.0;
         };
 
-        // XP levels: always at least 1, scales with difficulty
-        int xpLevels = Math.max(1, (int)(difficultyScore * 0.8 * rewardMultiplier));
+        // XP levels: always at least 1, scales with difficulty (nerfed 35%)
+        int xpLevels = Math.max(1, (int)(difficultyScore * 0.52 * rewardMultiplier));
         xpLevels *= switch (category) {
             case JOB_DAILY, GENERAL_DAILY -> 1;
             case WEEKLY -> 2;

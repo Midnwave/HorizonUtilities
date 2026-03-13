@@ -80,25 +80,29 @@ tier:
 # ─────────────────────────────────────────────────────────────────────────────
 quest-counts:
   job-daily:
-    base: 1
-    per-tier: 0.3
-    max: 4
+    base: 3
+    per-tier: 0.4
+    max: 7
+    min: 3
     min-tier: 0
   general-daily:
-    base: 1
-    per-tier: 0.2
-    max: 3
+    base: 3
+    per-tier: 0.3
+    max: 6
+    min: 3
     min-tier: 0
   weekly:
-    base: 1
-    per-tier: 0.15
-    max: 3
+    base: 2
+    per-tier: 0.2
+    max: 5
+    min: 2
     min-tier: 0
   challenge:
-    base: 0
-    per-tier: 0.15
-    max: 2
-    min-tier: 3.0
+    base: 1
+    per-tier: 0.2
+    max: 4
+    min: 1
+    min-tier: 2.0
 
 # Amount multiplier per tier unit: scaled_amount = base * (1 + tier * scale)
 # Higher = amounts grow faster with tier. At 0.30: tier 5 gets 2.5x base, tier 10 gets 4x.

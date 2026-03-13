@@ -115,10 +115,16 @@ public class QuestConfig {
         questCounts.clear();
         for (QuestCategory cat : QuestCategory.values()) {
             String key = "quest-counts." + cat.name().toLowerCase().replace('_', '-');
+            int defaultMin = switch (cat) {
+                case JOB_DAILY, GENERAL_DAILY -> 3;
+                case WEEKLY -> 2;
+                case CHALLENGE -> 1;
+            };
             questCounts.put(cat, new QuestCountConfig(
                     cfg.getInt(key + ".base", cat == QuestCategory.CHALLENGE ? 0 : 1),
                     cfg.getDouble(key + ".per-tier", 0.2),
                     cfg.getInt(key + ".max", 4),
+                    cfg.getInt(key + ".min", defaultMin),
                     cfg.getDouble(key + ".min-tier", cat == QuestCategory.CHALLENGE ? 3.0 : 0)
             ));
         }
@@ -193,7 +199,7 @@ public class QuestConfig {
 
     public QuestCountConfig getQuestCount(QuestCategory category) {
         return questCounts.getOrDefault(category,
-                new QuestCountConfig(1, 0.2, 4, 0));
+                new QuestCountConfig(1, 0.2, 4, 3, 0));
     }
 
     // --- Records ---
@@ -230,11 +236,13 @@ public class QuestConfig {
             int base,
             double perTier,
             int max,
+            int min,
             double minTier
     ) {
         public int calculateCount(double tier) {
             if (tier < minTier) return 0;
-            return Math.min(max, (int) Math.floor(base + tier * perTier));
+            int count = Math.min(max, (int) Math.floor(base + tier * perTier));
+            return Math.max(count, min);
         }
     }
 
