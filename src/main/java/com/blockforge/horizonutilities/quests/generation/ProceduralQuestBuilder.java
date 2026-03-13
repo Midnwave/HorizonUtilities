@@ -25,7 +25,7 @@ public final class ProceduralQuestBuilder {
         VERBS.put(QuestActionType.KILL,     new String[]{"Slay", "Defeat", "Hunt", "Eliminate"});
         VERBS.put(QuestActionType.FISH,     new String[]{"Catch", "Fish up", "Reel in"});
         VERBS.put(QuestActionType.CRAFT,    new String[]{"Craft", "Create", "Make"});
-        VERBS.put(QuestActionType.SMELT,    new String[]{"Smelt", "Cook", "Refine"});
+        VERBS.put(QuestActionType.SMELT,    new String[]{"Smelt", "Refine", "Process"});
         VERBS.put(QuestActionType.BREW,     new String[]{"Brew", "Concoct"});
         VERBS.put(QuestActionType.ENCHANT,  new String[]{"Enchant", "Imbue"});
         VERBS.put(QuestActionType.REPAIR,   new String[]{"Repair"});
@@ -40,6 +40,13 @@ public final class ProceduralQuestBuilder {
         VERBS.put(QuestActionType.TRADE_PLAYER,     new String[]{"Trade with players"});
         VERBS.put(QuestActionType.TRADE_AH,         new String[]{"Sell on auction house"});
     }
+
+    // Food items from the SMELT pool — use cooking verbs instead of smelting verbs
+    private static final Set<String> SMELT_FOOD_TARGETS = Set.of(
+        "COOKED_BEEF", "COOKED_PORKCHOP", "COOKED_CHICKEN", "COOKED_MUTTON",
+        "COOKED_RABBIT", "COOKED_SALMON", "COOKED_COD", "BAKED_POTATO", "DRIED_KELP"
+    );
+    private static final String[] SMELT_FOOD_VERBS = {"Cook", "Grill", "Roast"};
 
     // Base amount ranges per action [min, max] before tier scaling
     private static final Map<QuestActionType, int[]> BASE_AMOUNTS = new EnumMap<>(QuestActionType.class);
@@ -413,7 +420,12 @@ public final class ProceduralQuestBuilder {
     // ===== Description generation =====
 
     private static String generateDescription(QuestActionType action, String target, int amount, Random rng) {
-        String[] verbs = VERBS.getOrDefault(action, new String[]{action.name().toLowerCase()});
+        String[] verbs;
+        if (action == QuestActionType.SMELT && target != null && SMELT_FOOD_TARGETS.contains(target)) {
+            verbs = SMELT_FOOD_VERBS;
+        } else {
+            verbs = VERBS.getOrDefault(action, new String[]{action.name().toLowerCase()});
+        }
         String verb = verbs[rng.nextInt(verbs.length)];
 
         if (target == null) {
