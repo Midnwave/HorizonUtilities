@@ -644,7 +644,7 @@ categories:
       - "<gray>Click items to view crafting recipes!"
     pages:
       1:
-        title: "<dark_purple>Custom Equipment"
+        title: "<dark_purple>Topaz Tools"
         items:
           - slot: 10
             material: GOLDEN_PICKAXE
@@ -653,7 +653,9 @@ categories:
               - "<gray>A powerful custom pickaxe made from Topaz."
               - "<gray>64 durability, golden-tier speed."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_pickaxe"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_pickaxe"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -664,13 +666,15 @@ categories:
                 A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
                 S: { material: STICK, name: "<gray>Stick" }
               result: { material: GOLDEN_PICKAXE, name: "<#FF8C00>Topaz Pickaxe" }
-          - slot: 11
+          - slot: 12
             material: GOLDEN_AXE
             name: "<#FF8C00>Topaz Axe"
             lore:
               - "<gray>A custom axe crafted from Topaz."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_axe"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_axe"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -681,13 +685,15 @@ categories:
                 A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
                 S: { material: STICK, name: "<gray>Stick" }
               result: { material: GOLDEN_AXE, name: "<#FF8C00>Topaz Axe" }
-          - slot: 12
+          - slot: 14
             material: GOLDEN_SWORD
             name: "<#FF8C00>Topaz Sword"
             lore:
               - "<gray>A custom sword forged from Topaz."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_sword"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_sword"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -698,13 +704,15 @@ categories:
                 A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
                 S: { material: STICK, name: "<gray>Stick" }
               result: { material: GOLDEN_SWORD, name: "<#FF8C00>Topaz Sword" }
-          - slot: 13
+          - slot: 16
             material: GOLDEN_SHOVEL
             name: "<#FF8C00>Topaz Shovel"
             lore:
               - "<gray>A custom shovel crafted from Topaz."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_shovel"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_shovel"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -715,13 +723,15 @@ categories:
                 A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
                 S: { material: STICK, name: "<gray>Stick" }
               result: { material: GOLDEN_SHOVEL, name: "<#FF8C00>Topaz Shovel" }
-          - slot: 14
+          - slot: 19
             material: GOLDEN_HOE
             name: "<#FF8C00>Topaz Hoe"
             lore:
               - "<gray>A custom hoe crafted from Topaz."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_hoe"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_hoe"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -732,75 +742,15 @@ categories:
                 A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
                 S: { material: STICK, name: "<gray>Stick" }
               result: { material: GOLDEN_HOE, name: "<#FF8C00>Topaz Hoe" }
-          - slot: 15
-            material: CHAINMAIL_HELMET
-            name: "<#FF8C00>Topaz Helmet"
-            lore:
-              - "<gray>Custom armor crafted from Topaz."
-              - ""
-              - "<yellow>Click to view recipe!"
-            recipe:
-              type: shaped
-              pattern:
-                - "AAA"
-                - "A A"
-              ingredients:
-                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
-              result: { material: CHAINMAIL_HELMET, name: "<#FF8C00>Topaz Helmet" }
-          - slot: 16
-            material: CHAINMAIL_CHESTPLATE
-            name: "<#FF8C00>Topaz Chestplate"
-            lore:
-              - "<gray>Custom armor crafted from Topaz."
-              - ""
-              - "<yellow>Click to view recipe!"
-            recipe:
-              type: shaped
-              pattern:
-                - "A A"
-                - "AAA"
-                - "AAA"
-              ingredients:
-                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
-              result: { material: CHAINMAIL_CHESTPLATE, name: "<#FF8C00>Topaz Chestplate" }
-          - slot: 19
-            material: CHAINMAIL_LEGGINGS
-            name: "<#FF8C00>Topaz Leggings"
-            lore:
-              - "<gray>Custom armor crafted from Topaz."
-              - ""
-              - "<yellow>Click to view recipe!"
-            recipe:
-              type: shaped
-              pattern:
-                - "AAA"
-                - "A A"
-                - "A A"
-              ingredients:
-                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
-              result: { material: CHAINMAIL_LEGGINGS, name: "<#FF8C00>Topaz Leggings" }
-          - slot: 20
-            material: CHAINMAIL_BOOTS
-            name: "<#FF8C00>Topaz Boots"
-            lore:
-              - "<gray>Custom armor crafted from Topaz."
-              - ""
-              - "<yellow>Click to view recipe!"
-            recipe:
-              type: shaped
-              pattern:
-                - "A A"
-                - "A A"
-              ingredients:
-                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
-              result: { material: CHAINMAIL_BOOTS, name: "<#FF8C00>Topaz Boots" }
           - slot: 21
             material: BOW
             name: "<#FF8C00>Topaz Bow"
             lore:
               - "<gray>A custom bow crafted from Topaz."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_bow"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_bow"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -811,13 +761,15 @@ categories:
                 A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
                 S: { material: STRING, name: "<gray>String" }
               result: { material: BOW, name: "<#FF8C00>Topaz Bow" }
-          - slot: 22
+          - slot: 23
             material: CROSSBOW
             name: "<#FF8C00>Topaz Crossbow"
             lore:
               - "<gray>A powerful custom crossbow."
               - ""
-              - "<yellow>Click to view recipe!"
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_crossbow"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_crossbow"
+              - "<dark_gray>Base Material: <gray>paper"
             recipe:
               type: shaped
               pattern:
@@ -829,15 +781,92 @@ categories:
                 S: { material: STICK, name: "<gray>Stick" }
                 T: { material: TRIPWIRE_HOOK, name: "<gray>Tripwire Hook" }
               result: { material: CROSSBOW, name: "<#FF8C00>Topaz Crossbow" }
-          - slot: 24
+          - slot: 25
             material: STONE_PICKAXE
             name: "<white>Drill"
             lore:
               - "<gray>A range-mining tool that breaks"
               - "<gray>blocks in a 3x1 area!"
               - "<gray>512 durability."
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:drill"
+              - "<dark_gray>Model: <gray>horizonsmp:item/drill"
+              - "<dark_gray>Base Material: <gray>paper"
       2:
-        title: "<dark_purple>Furniture & Custom Blocks"
+        title: "<dark_purple>Topaz Armor"
+        items:
+          - slot: 10
+            material: CHAINMAIL_HELMET
+            name: "<#FF8C00>Topaz Helmet"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_helmet"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_helmet"
+              - "<dark_gray>Base Material: <gray>paper"
+            recipe:
+              type: shaped
+              pattern:
+                - "AAA"
+                - "A A"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_HELMET, name: "<#FF8C00>Topaz Helmet" }
+          - slot: 12
+            material: CHAINMAIL_CHESTPLATE
+            name: "<#FF8C00>Topaz Chestplate"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_chestplate"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_chestplate"
+              - "<dark_gray>Base Material: <gray>paper"
+            recipe:
+              type: shaped
+              pattern:
+                - "A A"
+                - "AAA"
+                - "AAA"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_CHESTPLATE, name: "<#FF8C00>Topaz Chestplate" }
+          - slot: 14
+            material: CHAINMAIL_LEGGINGS
+            name: "<#FF8C00>Topaz Leggings"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_leggings"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_leggings"
+              - "<dark_gray>Base Material: <gray>paper"
+            recipe:
+              type: shaped
+              pattern:
+                - "AAA"
+                - "A A"
+                - "A A"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_LEGGINGS, name: "<#FF8C00>Topaz Leggings" }
+          - slot: 16
+            material: CHAINMAIL_BOOTS
+            name: "<#FF8C00>Topaz Boots"
+            lore:
+              - "<gray>Custom armor crafted from Topaz."
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:topaz_boots"
+              - "<dark_gray>Model: <gray>horizonsmp:item/topaz_boots"
+              - "<dark_gray>Base Material: <gray>paper"
+            recipe:
+              type: shaped
+              pattern:
+                - "A A"
+                - "A A"
+              ingredients:
+                A: { material: GOLD_INGOT, name: "<#FF8C00>Topaz" }
+              result: { material: CHAINMAIL_BOOTS, name: "<#FF8C00>Topaz Boots" }
+      3:
+        title: "<dark_purple>Furniture & Decorations"
         items:
           - slot: 10
             material: OAK_STAIRS
@@ -846,94 +875,140 @@ categories:
               - "<gray>A placeable bench you can sit on!"
               - "<gray>Seats two players side by side."
               - ""
-              - "<gray>Part of the CraftEngine furniture pack."
-          - slot: 11
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:bench"
+              - "<dark_gray>Model: <gray>horizonsmp:block/bench"
+              - "<dark_gray>Behavior: <gray>block_item (sittable)"
+          - slot: 12
             material: OAK_STAIRS
             name: "<dark_purple>Wooden Chair"
             lore:
               - "<gray>A single-seat wooden chair."
               - "<gray>Can be rotated in 8 directions."
-          - slot: 12
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:wooden_chair"
+              - "<dark_gray>Model: <gray>horizonsmp:block/wooden_chair"
+              - "<dark_gray>Behavior: <gray>block_item (sittable)"
+          - slot: 14
             material: ARMOR_STAND
             name: "<dark_purple>Globe"
             lore:
               - "<gray>A decorative spinning globe!"
               - "<gray>Place it on any surface."
-          - slot: 13
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:globe"
+              - "<dark_gray>Model: <gray>horizonsmp:block/globe"
+              - "<dark_gray>Behavior: <gray>block_item (decorative)"
+          - slot: 16
             material: FLOWER_POT
             name: "<dark_purple>Flower Basket"
             lore:
               - "<gray>A hanging flower basket."
               - "<gray>Can hang from walls, ceilings, or ground."
-          - slot: 14
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:flower_basket"
+              - "<dark_gray>Model: <gray>horizonsmp:block/flower_basket"
+          - slot: 19
             material: RED_WOOL
             name: "<dark_purple>Sofa"
             lore:
               - "<gray>A comfy sleeper sofa!"
               - "<gray>Works as a block you can sit on."
-          - slot: 15
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:sofa"
+              - "<dark_gray>Model: <gray>horizonsmp:block/sofa"
+              - "<dark_gray>Behavior: <gray>block_item (sittable)"
+          - slot: 21
             material: LANTERN
             name: "<dark_purple>Table Lamp"
             lore:
               - "<gray>A toggleable table lamp."
               - "<gray>Click to turn on and off!"
-          - slot: 19
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:table_lamp"
+              - "<dark_gray>Model: <gray>horizonsmp:block/table_lamp"
+              - "<dark_gray>Behavior: <gray>block_item (toggleable)"
+          - slot: 23
             material: OAK_SAPLING
             name: "<dark_purple>Palm Tree"
             lore:
               - "<gray>Custom palm trees with their own"
               - "<gray>log, wood, and plank variants."
-          - slot: 20
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:palm_tree"
+              - "<dark_gray>Model: <gray>horizonsmp:block/palm_tree"
+          - slot: 25
             material: ALLIUM
             name: "<dark_purple>Fairy Flower"
             lore:
               - "<gray>A beautiful animated fairy flower."
               - "<gray>Glows with a soft magical light."
-          - slot: 21
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:fairy_flower"
+              - "<dark_gray>Model: <gray>horizonsmp:block/fairy_flower"
+          - slot: 28
             material: SOUL_LANTERN
             name: "<dark_purple>Chinese Lantern"
             lore:
               - "<gray>An animated hanging lantern."
               - "<gray>Adds an eastern aesthetic."
-          - slot: 22
+              - ""
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:chinese_lantern"
+              - "<dark_gray>Model: <gray>horizonsmp:block/chinese_lantern"
+          - slot: 30
             material: LIGHTNING_ROD
             name: "<dark_purple>Copper Coil"
             lore:
               - "<gray>A decorative copper coil block."
-          - slot: 24
-            material: LAPIS_BLOCK
-            name: "<dark_purple>Chipped Block Variants"
-            lore:
-              - "<gray>Over <yellow>158+ <gray>block variants!"
               - ""
-              - "<gray>Alternative textures for:"
-              - "<yellow>Wool, Terracotta, Glass, Planks,"
-              - "<yellow>Stone, Cobblestone, Bricks, Copper,"
-              - "<yellow>and many more!"
-              - ""
-              - "<gray>Craft them using the base block"
-              - "<gray>with flint, sticks, or string."
-          - slot: 28
+              - "<dark_gray>CraftEngine ID: <gray>horizonsmp:copper_coil"
+              - "<dark_gray>Model: <gray>horizonsmp:block/copper_coil"
+      4:
+        title: "<dark_purple>Custom Utility Items"
+        items:
+          - slot: 10
             material: TRIPWIRE_HOOK
             name: "<dark_purple>Grappling Hook"
             lore:
-              - "<gray>A <yellow>custom item <gray>from HorizonUtilities!"
               - "<gray>Launch yourself in the direction"
               - "<gray>you're looking. Great for mobility!"
               - ""
+              - "<gray>Range: <yellow>30 blocks"
+              - "<gray>Durability: <yellow>50 uses"
+              - "<gray>Cooldown: <yellow>3 seconds"
+              - ""
+              - "<dark_gray>Item ID: <gray>grappling_hook"
+              - "<dark_gray>Base Material: <gray>fishing_rod"
+              - ""
               - "<yellow>/customitem give grappling_hook"
-          - slot: 29
+          - slot: 12
             material: SNOWBALL
             name: "<dark_purple>Ice Bomb"
             lore:
               - "<gray>Throw to create ice blocks on impact!"
-              - "<gray>A fun custom throwable item."
-          - slot: 30
+              - "<gray>Freezes water and slows nearby entities."
+              - ""
+              - "<gray>Freeze Radius: <yellow>5 blocks"
+              - "<gray>Duration: <yellow>10 seconds"
+              - "<gray>Cooldown: <yellow>10 seconds"
+              - ""
+              - "<dark_gray>Item ID: <gray>ice_bomb"
+              - "<dark_gray>Base Material: <gray>snowball"
+              - ""
+              - "<yellow>/customitem give ice_bomb"
+          - slot: 14
             material: BONE
             name: "<dark_purple>Wolf Whistle"
             lore:
-              - "<gray>Use to summon a wolf companion!"
-              - "<gray>A handy custom item."
+              - "<gray>Use to summon all your tamed wolves"
+              - "<gray>from up to 200 blocks away!"
+              - ""
+              - "<gray>Summon Radius: <yellow>200 blocks"
+              - "<gray>Cooldown: <yellow>30 seconds"
+              - ""
+              - "<dark_gray>Item ID: <gray>wolf_whistle"
+              - "<dark_gray>Base Material: <gray>bone"
+              - ""
+              - "<yellow>/customitem give wolf_whistle"
 
   # ── 11. Chat Features ───────────────────────────────────────────────────────
   chat:
@@ -954,11 +1029,11 @@ categories:
             lore:
               - "<gray>Use special placeholders in chat!"
               - ""
-              - "<yellow>{balance} <gray>- Show your money"
-              - "<yellow>{health} <gray>- Show your HP"
-              - "<yellow>{item} <gray>- Show your held item"
-              - "<yellow>{ping} <gray>- Show your ping"
-              - "<yellow>{pos} <gray>- Show your coordinates"
+              - "<yellow>\\<balance> <gray>- Show your money"
+              - "<yellow>\\<health> <gray>- Show your HP"
+              - "<yellow>\\<item> <gray>- Show your held item"
+              - "<yellow>\\<ping> <gray>- Show your ping"
+              - "<yellow>\\<pos> <gray>- Show your coordinates"
           - slot: 12
             material: BELL
             name: "<#FF69B4>Mentions"
@@ -1085,3 +1160,570 @@ categories:
               - "<yellow>This feature is coming soon!"
               - ""
               - "<gray>Stay tuned for updates."
+
+  # ── 15. Enchantments (EcoEnchants) ──────────────────────────────────────────
+  enchantments:
+    display-name: "<#00FF88>Custom Enchantments"
+    icon: ENCHANTED_BOOK
+    slot: 28
+    color: GREEN
+    glass-pane: LIME_STAINED_GLASS_PANE
+    lore:
+      - "<gray>80+ custom enchantments from EcoEnchants"
+      - "<gray>Combat, mining, armor, spells, and more!"
+    pages:
+      1:
+        title: "<#00FF88>Combat Enchantments"
+        items:
+          - slot: 10
+            material: IRON_SWORD
+            name: "<red>Abrasion"
+            lore:
+              - "<gray>Damages opponent's armor on hit."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Sword, Axe"
+          - slot: 12
+            material: REDSTONE
+            name: "<red>Bleed"
+            lore:
+              - "<gray>Chance to cause opponent to bleed,"
+              - "<gray>dealing repeated damage over time."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>7"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 14
+            material: IRON_AXE
+            name: "<red>Carve"
+            lore:
+              - "<gray>Deal AoE damage to entities in a"
+              - "<gray>radius when you swing."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>4"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Axe"
+          - slot: 16
+            material: DIAMOND_SWORD
+            name: "<red>Criticals"
+            lore:
+              - "<gray>Increases critical hit damage by"
+              - "<gray>10% per level."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>Sword, Axe"
+          - slot: 19
+            material: GOLDEN_SWORD
+            name: "<red>Dexterity"
+            lore:
+              - "<gray>Increases attack speed by 10%"
+              - "<gray>per level."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>Sword, Axe"
+          - slot: 21
+            material: ENDER_PEARL
+            name: "<red>Ender Slayer"
+            lore:
+              - "<gray>Bonus melee damage against Endermen,"
+              - "<gray>Endermites, Shulkers, and the Dragon."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>6"
+              - "<dark_gray>Rarity: <white>Uncommon"
+              - "<dark_gray>Targets: <gray>Sword, Axe"
+          - slot: 23
+            material: NETHERITE_SWORD
+            name: "<red>First Strike"
+            lore:
+              - "<gray>Deal bonus damage to targets on"
+              - "<gray>full health."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>5"
+              - "<dark_gray>Rarity: <white>Uncommon"
+              - "<dark_gray>Targets: <gray>Sword, Axe"
+          - slot: 25
+            material: SHIELD
+            name: "<red>Goliath"
+            lore:
+              - "<gray>Deal more damage based on opponent's"
+              - "<gray>health relative to yours."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>6"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 28
+            material: GHAST_TEAR
+            name: "<red>Lifesteal"
+            lore:
+              - "<gray>Heals a percentage of damage dealt"
+              - "<gray>back to you."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 30
+            material: LEATHER_BOOTS
+            name: "<red>Ninja"
+            lore:
+              - "<gray>Deal bonus damage while sneaking."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>5"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 32
+            material: COOKED_BEEF
+            name: "<red>Slaughter"
+            lore:
+              - "<gray>Bonus melee damage against"
+              - "<gray>passive mobs."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>5"
+              - "<dark_gray>Rarity: <gray>Common"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 34
+            material: ELYTRA
+            name: "<red>Wyvern"
+            lore:
+              - "<gray>Bonus melee damage while gliding"
+              - "<gray>on an elytra."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>Elytra"
+      2:
+        title: "<#00FF88>Ranged Enchantments"
+        items:
+          - slot: 10
+            material: WITHER_SKELETON_SKULL
+            name: "<aqua>Boss Hunter"
+            lore:
+              - "<gray>Deal more damage against bosses"
+              - "<gray>(Wither, Dragon, Elder Guardian)."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>8"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Bow, Crossbow"
+          - slot: 12
+            material: GLOWSTONE_DUST
+            name: "<aqua>Flashbang"
+            lore:
+              - "<gray>Chance to blind opponent on"
+              - "<gray>arrow impact."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>6"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Bow, Crossbow"
+          - slot: 14
+            material: FEATHER
+            name: "<aqua>Jumpshot"
+            lore:
+              - "<gray>Deal more damage while mid-air."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>5"
+              - "<dark_gray>Targets: <gray>Bow, Crossbow"
+          - slot: 16
+            material: BOW
+            name: "<aqua>Rapid"
+            lore:
+              - "<gray>Faster bow draw speed."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Targets: <gray>Bow"
+          - slot: 19
+            material: SPYGLASS
+            name: "<aqua>Snipe"
+            lore:
+              - "<gray>Arrows deal more damage the farther"
+              - "<gray>they travel."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>4"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>Bow, Crossbow"
+          - slot: 21
+            material: LIGHTNING_ROD
+            name: "<aqua>Thor"
+            lore:
+              - "<gray>Chance to strike lightning on your"
+              - "<gray>arrow target."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>6"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>Bow, Crossbow"
+          - slot: 23
+            material: ARROW
+            name: "<aqua>Tripleshot"
+            lore:
+              - "<gray>Shoot 3 arrows instead of 1."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Bow"
+          - slot: 25
+            material: TIPPED_ARROW
+            name: "<aqua>Wound"
+            lore:
+              - "<gray>Chance to cause bleeding with arrows."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>7"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Bow, Crossbow"
+      3:
+        title: "<#00FF88>Mining & Gathering"
+        items:
+          - slot: 10
+            material: TNT
+            name: "<yellow>Blast Mining"
+            lore:
+              - "<gray>Chance to mine in a 3x3 area."
+              - ""
+              - "<dark_gray>Type: <light_purple>Special <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Rarity: <gold>Special"
+              - "<dark_gray>Targets: <gray>Pickaxe"
+          - slot: 12
+            material: TNT_MINECART
+            name: "<yellow>Dynamite"
+            lore:
+              - "<gray>Right-click to mine blocks in an area"
+              - "<gray>with an explosion. <red>Spell enchantment."
+              - ""
+              - "<dark_gray>Type: <blue>Spell <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Pickaxe"
+          - slot: 14
+            material: DIAMOND_SHOVEL
+            name: "<yellow>Excavation"
+            lore:
+              - "<gray>Dig extra blocks when shoveling."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>5"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Shovel"
+          - slot: 16
+            material: OAK_LOG
+            name: "<yellow>Foraging"
+            lore:
+              - "<gray>Chance to drop extra logs when"
+              - "<gray>chopping trees."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>4"
+              - "<dark_gray>Targets: <gray>Axe"
+          - slot: 19
+            material: LAVA_BUCKET
+            name: "<yellow>Infernal Touch"
+            lore:
+              - "<gray>Automatically smelts mined blocks"
+              - "<gray>(iron ore drops iron ingots, etc)."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Pickaxe"
+          - slot: 21
+            material: IRON_AXE
+            name: "<yellow>Lumberjack"
+            lore:
+              - "<gray>Chop down an entire tree at once."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>6"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Axe"
+          - slot: 23
+            material: ANCIENT_DEBRIS
+            name: "<yellow>Nether Prospector"
+            lore:
+              - "<gray>Increased chance to find ancient debris"
+              - "<gray>when mining in the Nether."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Pickaxe"
+          - slot: 25
+            material: WHEAT_SEEDS
+            name: "<yellow>Replenish"
+            lore:
+              - "<gray>Automatically replants crops"
+              - "<gray>when you harvest them."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>Hoe"
+          - slot: 28
+            material: ENDER_EYE
+            name: "<yellow>Telekinesis"
+            lore:
+              - "<gray>Drops from mining and killing go"
+              - "<gray>directly to your inventory."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Rarity: <gray>Common"
+              - "<dark_gray>Targets: <gray>Pickaxe, Sword, Axe"
+          - slot: 30
+            material: IRON_PICKAXE
+            name: "<yellow>Veinminer"
+            lore:
+              - "<gray>Mine entire ore veins at once."
+              - "<gray>Max blocks scales with level."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>4"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Pickaxe"
+              - ""
+              - "<dark_gray>Conflicts with: <gray>Blast Mining"
+      4:
+        title: "<#00FF88>Armor & Defense"
+        items:
+          - slot: 10
+            material: ENCHANTED_BOOK
+            name: "<blue>Arcane Defence"
+            lore:
+              - "<gray>Chance to ignore damage from"
+              - "<gray>harmful potion effects."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>5"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>All Armor"
+          - slot: 12
+            material: GLASS
+            name: "<blue>Block Breather"
+            lore:
+              - "<gray>Chance to ignore suffocation damage."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Rarity: <gray>Common"
+              - "<dark_gray>Targets: <gray>Helmet"
+          - slot: 14
+            material: GLOWSTONE
+            name: "<blue>Brightness"
+            lore:
+              - "<gray>Permanent night vision while wearing."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>Helmet"
+          - slot: 16
+            material: FARMLAND
+            name: "<blue>Feather Step"
+            lore:
+              - "<gray>Prevents trampling crops when you"
+              - "<gray>walk or jump on farmland."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Boots"
+          - slot: 19
+            material: DIAMOND_CHESTPLATE
+            name: "<blue>Fortitude"
+            lore:
+              - "<gray>Bonus damage dealt while wearing"
+              - "<gray>armor with this enchantment."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>All Armor"
+          - slot: 21
+            material: FERN
+            name: "<blue>Poison Ivy"
+            lore:
+              - "<gray>Poison attackers based on"
+              - "<gray>damage they deal to you."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <light_purple>Epic"
+              - "<dark_gray>Targets: <gray>Leggings"
+          - slot: 23
+            material: SLIME_BALL
+            name: "<blue>Rebounding"
+            lore:
+              - "<gray>Knock back attackers when they hit you."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Targets: <gray>All Armor"
+          - slot: 25
+            material: GOLDEN_CARROT
+            name: "<blue>Stamina"
+            lore:
+              - "<gray>Decreases hunger lost while sprinting."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>4"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>Chestplate"
+          - slot: 28
+            material: GOLDEN_APPLE
+            name: "<blue>Thrive"
+            lore:
+              - "<gray>Adds +0.5 hearts max health per level."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Targets: <gray>All Armor"
+          - slot: 30
+            material: GLASS_BOTTLE
+            name: "<blue>Vanish"
+            lore:
+              - "<gray>Chance to become invisible briefly"
+              - "<gray>after taking damage."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <blue>Rare"
+              - "<dark_gray>Targets: <gray>All Armor"
+      5:
+        title: "<#00FF88>Spells, Specials & Curses"
+        items:
+          - slot: 10
+            material: FIREWORK_ROCKET
+            name: "<gradient:#5555FF:#55FFFF>Ascend</gradient>"
+            lore:
+              - "<gray>Right-click to levitate in the air."
+              - "<red>Spell — one per item, activated on use."
+              - ""
+              - "<dark_gray>Type: <blue>Spell <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 12
+            material: WITHER_ROSE
+            name: "<gradient:#5555FF:#55FFFF>Soul Storm</gradient>"
+            lore:
+              - "<gray>Right-click for a massive damage bonus"
+              - "<gray>but costs <red>3 hearts <gray>of health."
+              - ""
+              - "<dark_gray>Type: <blue>Spell <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>2"
+              - "<dark_gray>Rarity: <gold>Legendary"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 14
+            material: ENCHANTED_GOLDEN_APPLE
+            name: "<gradient:#5555FF:#55FFFF>Vitality</gradient>"
+            lore:
+              - "<gray>Right-click to fully restore your health."
+              - ""
+              - "<dark_gray>Type: <blue>Spell <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Rarity: <gold>Special"
+              - "<dark_gray>Targets: <gray>Sword, Axe, Pickaxe, Shovel"
+          - slot: 16
+            material: BLAZE_ROD
+            name: "<gradient:#5555FF:#55FFFF>Charge</gradient>"
+            lore:
+              - "<gray>Right-click for a speed boost."
+              - ""
+              - "<dark_gray>Type: <blue>Spell <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Targets: <gray>Sword"
+          - slot: 19
+            material: NETHER_STAR
+            name: "<gradient:#FF55FF:#AA00AA>One For All</gradient>"
+            lore:
+              - "<gray>+50% damage but no other enchants"
+              - "<gray>can be applied."
+              - ""
+              - "<dark_gray>Type: <light_purple>Special <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>Sword, Axe"
+          - slot: 21
+            material: ANVIL
+            name: "<gradient:#FF55FF:#AA00AA>Repairing</gradient>"
+            lore:
+              - "<gray>Item slowly repairs itself over time"
+              - "<gray>(every 1.5 seconds)."
+              - ""
+              - "<dark_gray>Type: <light_purple>Special <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Rarity: <#FFD700>Very Special"
+              - "<dark_gray>Targets: <gray>All Items"
+          - slot: 23
+            material: TOTEM_OF_UNDYING
+            name: "<gradient:#FF55FF:#AA00AA>Soulbound</gradient>"
+            lore:
+              - "<gray>Keep this item when you die."
+              - ""
+              - "<dark_gray>Type: <light_purple>Special <dark_gray>(1 per item)"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Rarity: <#FFD700>Very Special"
+              - "<dark_gray>Targets: <gray>All Items"
+          - slot: 25
+            material: EXPERIENCE_BOTTLE
+            name: "<green>Wisdom"
+            lore:
+              - "<gray>Increased experience drops."
+              - ""
+              - "<dark_gray>Type: <green>Normal"
+              - "<dark_gray>Max Level: <yellow>3"
+              - "<dark_gray>Rarity: <white>Uncommon"
+              - "<dark_gray>Targets: <gray>All Tools/Weapons"
+          - slot: 28
+            material: BEDROCK
+            name: "<red>Curse of Breaklessness"
+            lore:
+              - "<gray>Chance to fail mining blocks."
+              - ""
+              - "<dark_gray>Type: <dark_red>Curse"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>Pickaxe, Axe, Shovel, Hoe"
+          - slot: 30
+            material: ROTTEN_FLESH
+            name: "<red>Curse of Hunger"
+            lore:
+              - "<gray>Increases hunger loss while wearing."
+              - ""
+              - "<dark_gray>Type: <dark_red>Curse"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>Helmet"
+          - slot: 32
+            material: COAL
+            name: "<red>Curse of Misfortune"
+            lore:
+              - "<gray>Chance for blocks to not drop items."
+              - ""
+              - "<dark_gray>Type: <dark_red>Curse"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>Pickaxe, Axe, Shovel, Hoe"
+          - slot: 34
+            material: CHAIN
+            name: "<red>Curse of Permanence"
+            lore:
+              - "<gray>Cannot be removed from items at"
+              - "<gray>a grindstone or anvil."
+              - ""
+              - "<dark_gray>Type: <dark_red>Curse"
+              - "<dark_gray>Max Level: <yellow>1"
+              - "<dark_gray>Targets: <gray>All Items"

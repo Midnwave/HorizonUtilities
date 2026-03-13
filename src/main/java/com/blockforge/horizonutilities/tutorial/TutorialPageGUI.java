@@ -48,9 +48,12 @@ public class TutorialPageGUI implements InventoryHolder {
         this.page = page;
 
         CategoryData cat = manager.getCategory(categoryId);
+        int totalPages = cat != null ? cat.pages.size() : 1;
         String titleStr = cat != null && cat.pages.containsKey(page)
                 ? cat.pages.get(page).title : categoryId;
-        Component title = manager.parseMiniMessage(titleStr);
+        // Append page number to title
+        String pageStr = totalPages > 1 ? " <dark_gray>(" + page + "/" + totalPages + ")" : "";
+        Component title = manager.parseMiniMessage(titleStr + pageStr);
         this.inventory = Bukkit.createInventory(this, SIZE, title);
         build();
     }
