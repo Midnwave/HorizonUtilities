@@ -107,9 +107,9 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
             return handleQuests(player, params.substring(7));
         }
 
-        // ---- %horizon_playername% — small caps ----
+        // ---- %horizon_playername% — small caps (uppercase stays normal) ----
         if (params.equals("playername")) {
-            return toSmallCaps(player.getName() != null ? player.getName() : "");
+            return toSmallCapsKeepUpper(player.getName() != null ? player.getName() : "");
         }
 
         // ---- %horizon_smallcaps_balance% — balance in small caps with commas ----
@@ -209,6 +209,20 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
                 sb.append(SMALL_CAPS_LOWER.charAt(c - 'A'));
             } else {
                 sb.append(c); // digits, special chars stay as-is
+            }
+        }
+        return sb.toString();
+    }
+
+    /** Small caps for lowercase only — uppercase letters stay as normal capitals. */
+    private static String toSmallCapsKeepUpper(String input) {
+        if (input == null) return "";
+        StringBuilder sb = new StringBuilder(input.length());
+        for (char c : input.toCharArray()) {
+            if (c >= 'a' && c <= 'z') {
+                sb.append(SMALL_CAPS_LOWER.charAt(c - 'a'));
+            } else {
+                sb.append(c); // uppercase, digits, special chars stay as-is
             }
         }
         return sb.toString();
