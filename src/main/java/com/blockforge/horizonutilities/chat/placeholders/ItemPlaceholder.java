@@ -3,7 +3,6 @@ package com.blockforge.horizonutilities.chat.placeholders;
 import com.blockforge.horizonutilities.HorizonUtilitiesPlugin;
 import com.blockforge.horizonutilities.chat.PlaceholderHandler;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,9 +30,7 @@ public class ItemPlaceholder implements PlaceholderHandler {
         }
 
         // show item name with full vanilla tooltip on hover (like death messages)
-        return Component.text("[")
-                .color(NamedTextColor.WHITE)
-                .append(held.displayName().hoverEvent(held.asHoverEvent()))
-                .append(Component.text("]").color(NamedTextColor.WHITE));
+        // displayName() already includes [brackets] in vanilla format
+        return held.displayName().hoverEvent(held.asHoverEvent());
     }
 }
