@@ -41,6 +41,11 @@ public class AuctionGUIListener implements Listener {
         GUIType type = openGUIs.get(player.getUniqueId());
         if (type == null) return;
 
+        // Verify the player is actually viewing an AH GUI (chest-sized inventory, >= 9 slots).
+        // The deferred cleanup in onInventoryClose can leave stale entries for 1 tick,
+        // which would otherwise cancel clicks in anvils, crafting tables, etc.
+        if (event.getView().getTopInventory().getSize() < 9) return;
+
         event.setCancelled(true);
 
         if (event.getClickedInventory() != event.getView().getTopInventory()) return;
@@ -61,6 +66,7 @@ public class AuctionGUIListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) return;
         GUIType type = openGUIs.get(player.getUniqueId());
         if (type == null) return;
+        if (event.getView().getTopInventory().getSize() < 9) return;
         event.setCancelled(true);
     }
 
