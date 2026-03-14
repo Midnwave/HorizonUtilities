@@ -4,7 +4,7 @@ version: "${version}"
 api-version: "1.21"
 authors: [BlockForge]
 depend: [GriefPreventionFlagsReborn]
-softdepend: [Vault, AuraSkills, Quests, LuckPerms, PlaceholderAPI, AnimatedScoreboard]
+softdepend: [Vault, AuraSkills, Quests, LuckPerms, PlaceholderAPI, AnimatedScoreboard, MythicMobs]
 commands:
   ah:
     description: Auction House
@@ -126,6 +126,15 @@ commands:
     description: List your homes
     usage: /<command>
     permission: horizonutilities.homes.teleport
+  story:
+    description: The Hollow Chronicle story system
+    aliases: [chronicle, s]
+    usage: /<command> [progress|setstage|setchapter|reset|give|region|setbook|setdoor|setlocation|bypassdoor|reload]
+    permission: horizonutilities.story.use
+  wither:
+    description: Wither Sovereign admin commands
+    usage: /<command> [spawn|kill|reload|stats]
+    permission: horizonutilities.wither.admin
 permissions:
   horizonutilities.ah.use:
     default: true
@@ -408,3 +417,14 @@ permissions:
   horizonutilities.jobs.limit.unlimited:
     description: Unlimited concurrent jobs
     default: false
+  # Story
+  horizonutilities.story.use:
+    description: Use the Hollow Chronicle story system
+    default: true
+  horizonutilities.story.admin:
+    description: Story admin commands
+    default: op
+  # Wither Sovereign
+  horizonutilities.wither.admin:
+    description: Wither Sovereign admin commands (spawn/kill/reload/stats)
+    default: op

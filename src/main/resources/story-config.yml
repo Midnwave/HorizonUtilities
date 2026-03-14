@@ -1,0 +1,293 @@
+# ============================================
+# The Hollow Chronicle - Story Configuration
+# ============================================
+
+settings:
+  enabled: true
+  # First join settings
+  first-join-message-enabled: true
+  first-join-book-enabled: true
+  first-join-delay-ticks: 60
+
+# First join lore intro (MiniMessage format)
+first-join-message:
+  - ""
+  - "<dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  - ""
+  - "<gradient:#7B2FF7:#FF5733>The Hollow Chronicle</gradient>"
+  - ""
+  - "<gray>You feel a pull. Something old watches"
+  - "<gray>from the stones ahead. Something that has"
+  - "<gray>been waiting a very long time for someone"
+  - "<gray>worth watching."
+  - ""
+  - "<gray>There are ruins in this world. They are"
+  - "<gray>older than anyone alive remembers."
+  - "<gray>They were built by people who believed the"
+  - "<gray>horizon was worth reaching."
+  - ""
+  - "<gray>Whether they were right is a question"
+  - "<gray>you will have to answer for yourself."
+  - ""
+  - "<dark_gray>Use <white>/story</white> to view your journey."
+  - ""
+  - "<dark_gray>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  - ""
+
+# First join book
+first-join-book:
+  title: "A Whisper in Stone"
+  author: "Unknown"
+  pages:
+    - "<dark_gray>You found this among your belongings.\n\nYou do not remember placing it there.\n\nThe cover is warm, like something alive. The leather is old. The binding is perfect.\n\nSomeone made this with care, for someone they expected to arrive."
+    - "<dark_gray>There are ruins in this world.\n\nThey were built by people who called themselves the Veilborn. They were explorers. They believed that the unknown was not a threat but an invitation.\n\nThey carved a creed above every gate they ever built:"
+    - "<dark_purple>\"The horizon is not a wall.\nIt is an invitation.\"\n\n<dark_gray>They are gone now.\n\nWhat they left behind is not."
+    - "<dark_gray>If you feel drawn to the old stones, follow the feeling. It is not an accident that you are here.\n\nThere is a keep. It is older than anything else in this land.\n\nSomeone is still inside it.\n\nOr something is.\n\nThe difference may not matter as much as you think."
+    - "<dark_gray>This book will not tell you what to do.\n\nThe horizon never does.\n\nIt only shows you where to look.\n\n<dark_purple>Look east.\n\n<dark_gray>And keep walking."
+
+# Stage definitions
+stages:
+  1:
+    name: "The Forgotten Keep"
+    description: "A crumbling fortress where one of the Veilborn still stands vigil."
+    icon-material: WITHER_SKELETON_SKULL
+    total-chapters: 8
+    chapters:
+      1:
+        name: "The First Step"
+        description: "Explore the outer keep."
+        trigger-type: BOOK_READ
+        trigger-value: "book1"
+        objectives:
+          - id: "explore_gatehouse"
+            type: BOOK_READ
+            description: "Find the Horizon Creed in the gatehouse"
+            target: "book1"
+      2:
+        name: "The Weight of Waiting"
+        description: "Find what the Veilborn left behind."
+        trigger-type: BOOK_READ
+        trigger-value: "book2"
+        objectives:
+          - id: "find_departure"
+            type: BOOK_READ
+            description: "Find The Last Departure in the main hall"
+            target: "book2"
+      3:
+        name: "The Vigil Keeper"
+        description: "A guardian patrols the courtyard."
+        trigger-type: BOOK_READ
+        trigger-value: "book3"
+        objectives:
+          - id: "find_journal"
+            type: BOOK_READ
+            description: "Read Vareth's journal in the watchtower"
+            target: "book3"
+          - id: "kill_sentinel"
+            type: MOB_KILL
+            description: "Defeat the Withered Sentinel"
+            target: "withered_sentinel"
+      4:
+        name: "Echoes in the Stone"
+        description: "Gather what Vareth scattered."
+        trigger-type: ITEM_OBTAIN
+        trigger-value: "vareths_insignia"
+        objectives:
+          - id: "get_ashen_stone"
+            type: INTERACT
+            description: "Find the Ashen Stone in the cold hearth"
+            target: "ashen_stone"
+          - id: "speak_witness"
+            type: NPC_INTERACT
+            description: "Speak to the Witness near the fireplace"
+            target: "the_witness"
+      5:
+        name: "The Sealed Gate"
+        description: "The door remembers those who carry meaning."
+        trigger-type: ITEM_OBTAIN
+        trigger-value: "wardens_key"
+        objectives:
+          - id: "craft_key"
+            type: CRAFT
+            description: "Craft the Warden's Key"
+            target: "wardens_key"
+          - id: "open_door"
+            type: INTERACT
+            description: "Open the sealed door beneath the keep"
+            target: "sealed_door_1"
+      6:
+        name: "Descent"
+        description: "What waits below has been waiting a long time."
+        trigger-type: REGION_ENTER
+        trigger-value: "crypt_sanctum"
+        objectives:
+          - id: "read_vigil"
+            type: BOOK_READ
+            description: "Read Vareth's final vigil"
+            target: "book5"
+          - id: "read_altar_note"
+            type: BOOK_READ
+            description: "Read the note on the altar"
+            target: "book6"
+      7:
+        name: "The Reckoning"
+        description: "End the vigil."
+        trigger-type: ITEM_OBTAIN
+        trigger-value: "soul_of_the_vigil"
+        objectives:
+          - id: "summon_vareth"
+            type: BOSS_SUMMON
+            description: "Place the Soul of the Vigil on the altar"
+            target: "vareth"
+          - id: "defeat_vareth"
+            type: BOSS_KILL
+            description: "Defeat Vareth, Herald of Ruin"
+            target: "vareth"
+      8:
+        name: "The Horizon Holds"
+        description: "The vigil ends. Keep walking."
+        trigger-type: BOSS_KILL
+        trigger-value: "vareth"
+        objectives:
+          - id: "collect_sigil"
+            type: ITEM_OBTAIN
+            description: "Collect Vareth's Sigil"
+            target: "vareths_sigil"
+    side-quests:
+      - id: "evelins_journal"
+        name: "Evelin's Lost Record"
+        description: "Find the record-keeper's journal for Old Seren."
+        icon-material: BOOK
+        objectives:
+          - id: "find_journal"
+            type: ITEM_OBTAIN
+            description: "Find Evelin's Record-Book hidden in the main hall"
+            target: "evelins_record_book"
+          - id: "return_journal"
+            type: NPC_INTERACT
+            description: "Return the journal to Old Seren"
+            target: "old_seren"
+        reward-item: "veilborn_compass"
+      - id: "shards_of_vigil"
+        name: "Shards of the Vigil"
+        description: "Collect the 5 Vigil Shards scattered through the keep."
+        icon-material: PRISMARINE_SHARD
+        objectives:
+          - id: "collect_shards"
+            type: ITEM_COLLECT
+            description: "Collect 5 Vigil Shards"
+            target: "vigil_shards"
+            count: 5
+      - id: "forgotten_fortune"
+        name: "Forgotten Fortune"
+        description: "Collect 10 Forgotten Coins hidden around the keep."
+        icon-material: GOLD_NUGGET
+        objectives:
+          - id: "collect_coins"
+            type: ITEM_COLLECT
+            description: "Collect 10 Forgotten Coins"
+            target: "forgotten_coins"
+            count: 10
+
+  # Stages 2-7 placeholders
+  2: { name: "The Nether Throne", description: "Locked.", icon-material: GRAY_DYE, total-chapters: 0 }
+  3: { name: "The Drowned Archive", description: "Locked.", icon-material: GRAY_DYE, total-chapters: 0 }
+  4: { name: "The Blighted Canopy", description: "Locked.", icon-material: GRAY_DYE, total-chapters: 0 }
+  5: { name: "The Shattered Sanctum", description: "Locked.", icon-material: GRAY_DYE, total-chapters: 0 }
+  6: { name: "The Withering Throne", description: "Locked.", icon-material: GRAY_DYE, total-chapters: 0 }
+  7: { name: "The Hollow Core", description: "Locked.", icon-material: GRAY_DYE, total-chapters: 0 }
+
+# Lore books (MiniMessage color support)
+books:
+  stage-1:
+    book1:
+      title: "The Horizon Creed"
+      author: "Unknown"
+      pages:
+        - "<dark_gray>We did not build walls to keep the world out.\n\nWe built them so we would have somewhere to return to.\n\nThe horizon is our purpose.\nThe keep is our proof that we were here.\n\n<dark_purple>The Veilborn Founding Creed\nYear of the First Step, Day One"
+        - "<dark_gray>Know this, walker who reads these words.\n\nThe horizon is not a wall. It is not an ending. Every horizon you have ever seen is a lie the world tells you. A false edge that retreats at the exact pace you advance.\n\nThis is not cruelty.\n\nThis is invitation."
+        - "<dark_gray>To walk toward the horizon is to be alive in the truest sense.\n\nTo stop walking. To build your walls and call the view from within them enough. That is to mistake the shelter for the journey.\n\nWe are the Veilborn.\nWe do not mistake shelter for journey.\n\nWe keep walking."
+    book2:
+      title: "The Last Departure"
+      author: "Unknown"
+      pages:
+        - "<dark_gray>They left on a grey morning. I remember the fog.\n\nIlyss went first. She always went first. The others followed in the order they always did. The scholars, the merchant, the healer, the archivist. Twelve in all.\n\nVareth stood at the gate until they were gone from sight. He did not move for a long time after."
+        - "<dark_gray>I asked him, later, why he had not gone.\n\nHe said: \"Someone has to hold the door.\"\n\nI thought I understood. I know now I did not.\n\nHe meant it the way a horizon means something to a person who has chosen to stand still."
+        - "<dark_gray>They said they would be back within the year.\n\nThat was twelve years ago.\n\nI named the feeling that sits in my chest now.\n\nHorizon grief.\nThe ache of watching someone walk toward something beautiful that you could not follow.\n\n<dark_purple>Keep records, Year 12. Author unknown."
+    book3:
+      title: "Day 1,447"
+      author: "Unknown"
+      pages:
+        - "<dark_gray>Day 31.\nThe others have not returned. I maintain the watch.\n\nDay 180.\nThe road is empty. I maintain the watch.\n\nDay 365.\nOne year. I sharpened my sword today even though there is nothing left to fight.\nOld habit.\n\nThe horizon holds. I hold it with it."
+        - "<dark_gray>Day 730.\nSomething came from the east last night. It moved wrong.\n\nI watched it from the tower. It stood at the treeline for an hour, perfectly still, looking at the keep. When the fog shifted I saw it clearly.\n\nIt was wearing Mira's face.\n\nI did not go down to greet it.\nI do not think it was Mira."
+        - "<dark_gray>Day 1,100.\nThere are more of them now. They come to the treeline at night.\nEach wearing a face I recognize.\n\nI have a theory about what they are.\nI do not like my theory.\n\nDay 1,447.\nI think I am beginning to understand why Ilyss walked into the dark.\n\nThe horizon holds.\nI hold it with it.\n\nI am not sure either of us is telling the truth.\n\n<dark_purple>V"
+    book4:
+      title: "What Came Back"
+      author: "Unknown"
+      pages:
+        - "<dark_gray>I have catalogued what I know.\n\nThey wear the faces of the twelve, but they are not the twelve. I know this because I knew the twelve. What returns does not remember small things.\n\nMira always tapped her fingers when she was thinking. Three slow taps, then two fast ones.\n\nI watched the thing wearing her face for an hour.\n\nIt never tapped its fingers."
+        - "<dark_gray>I believe there is something on the other side of the last horizon.\n\nNot a place. Not a creature. A condition.\n\nThe absence of all the things that make a place a place and a creature a creature.\n\nThey walked into it. It walked back out wearing them.\n\nI named it, so I would stop being afraid of the unnamed thing.\n\nI called it the Hollow.\n\nIt did not help as much as I hoped."
+        - "<dark_gray>Walker, if you are reading this.\n\nYou are standing in the ruins of something that believed the horizon was worth reaching.\n\nI no longer know if that was wisdom or madness.\n\nThe hollow eyed ones come more frequently now.\n\nI find myself at the treeline at dark with my sword in my hand and no memory of how I got there.\n\nKeep walking.\nDo not look too long at the treeline.\n\n<dark_purple>V"
+    book5:
+      title: "The Last Vigil"
+      author: "Unknown"
+      pages:
+        - "<dark_gray>I found my reflection in a pool of still water in the crypt today.\n\nI looked at it for a long time.\n\nMy eyes are wrong.\n\nNot hollow. Not yet. But the color has drained out of them the way color drains from cloth left too long in sun.\n\nI have been standing vigil for twenty three years.\n\nI did not notice when the vigil started keeping me."
+        - "<dark_gray>I think this is how it works.\n\nI think the Hollow does not need to touch you. It just has to wait long enough for the grief to do the work for it.\n\nGrief is patient.\nThe Hollow is patient.\n\nI was not patient. I was stubborn.\n\nIt turns out those feel the same from the outside.\n\nI have been guarding the threshold for so long that I did not notice the threshold had moved.\n\nIt moved to my chest, somewhere behind my ribs.\nI am the door now."
+        - "<dark_gray>If you are reading this, you came through the sealed gate.\n\nThe key existed because I made one, in a clear moment, and gave it to the stone.\n\nYou are what I made it for.\n\nI am not dangerous yet. But I will be.\n\nSomething wakes in the dark hours and I do not know what it wants. Only that it is made of waiting, and grief, and twenty three years of staring at a horizon that refused to give anything back.\n\nI am asking you something, walker.\n\nI am asking you to come find me.\nI am asking you to end the vigil.\n\nI am asking before the part of me that would ask is gone.\n\n<dark_purple>V, Year 23"
+    book6:
+      title: "To the Next Walker"
+      author: "Unknown"
+      pages:
+        - "<dark_gray>I do not have long.\n\nThe clarity comes and goes. I placed this here in a moment of it.\n\nThere is something I need you to know before you face me.\n\nI was the best of us.\nNot the bravest. Ilyss was braver. Not the wisest. That was Yeleth.\n\nBut I was the one who stayed. I chose the door over the horizon.\n\nI thought that was the noble choice.\nI thought someone had to."
+        - "<dark_gray>The mistake was not staying.\n\nThe mistake was staying still.\n\nIlyss understood something I did not. The horizon moves. You have to move with it.\n\nThe moment you plant your feet and say \"I will guard this place forever\" the place starts to own you instead.\n\nI guarded a door for twenty three years.\nThe door has been closed for twenty two of them.\nThere was nothing left to guard but the habit of guarding.\n\nThe Hollow found that habit and made a home in it."
+        - "<dark_gray>When you defeat me, know this.\n\nThis is the kindest thing anyone has done for me in twenty three years.\n\nYou are not my enemy. You are the answer to the question I stopped being able to ask.\n\nAfter. Look at the horizon.\nKeep walking toward it.\n\nThat is all any of us ever needed to do.\n\n<dark_purple>Vareth, Keeper of the Last Gate\nYear of the Final Understanding"
+
+# Sealed door configuration
+doors:
+  stage-1:
+    crypt-door:
+      width: 2
+      height: 3
+      material: POLISHED_BLACKSTONE_BRICKS
+      animation-speed-ticks: 8
+      required-item: "wardens_key"
+      deny-message: "<red>The door holds fast. You need the Warden's Key."
+      open-message: "<dark_purple>The door remembers."
+
+# Withered Sentinel mini-boss
+sentinel:
+  name: "<dark_red>The Withered Sentinel"
+  health: 80
+  damage: 8.0
+  drop: "vareths_insignia"
+  bone-throw-damage: 6.0
+  vigil-stance-cooldown-seconds: 30
+  vigil-stance-duration-seconds: 5
+  vigil-stance-damage-reduction: 0.5
+
+# Vareth boss
+vareth:
+  mythicmobs-id: "Vareth"
+  boss-bar-title: "<dark_red>☠ Vareth, Herald of Ruin ☠"
+  boss-bar-color: PURPLE
+  cinematic-duration-ticks: 60
+  arena-seal-enabled: true
+  # Drops configured per item
+  drops:
+    - id: "vareths_sigil"
+      guaranteed: true
+    - id: "rune_of_ruin"
+      guaranteed: true
+    - id: "vigils_edge"
+      guaranteed: true
+    - id: "wardens_cuirass"
+      guaranteed: true
+  death-title: "<dark_red>The vigil... ends."
+  death-subtitle: "<gray>Keep walking."
+
+# Completion messages
+completion:
+  stage-1:
+    title: "<gold>Stage I Complete"
+    subtitle: "<gray>The vigil ends. Keep walking."

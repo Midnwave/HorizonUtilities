@@ -17,6 +17,7 @@ repositories {
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://mvn.lumine.io/repository/maven-public/")
     maven { url = uri("file://${rootDir}/../GriefPrevetionFlagsReborn/build/libs") }
 }
 
@@ -29,6 +30,7 @@ dependencies {
     compileOnly(files("libs/Quests-5.2.8.jar"))
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("net.luckperms:api:5.4")
+    compileOnly("io.lumine:Mythic-Dist:5.6.1")
     implementation("org.bstats:bstats-bukkit:3.1.0")
 }
 

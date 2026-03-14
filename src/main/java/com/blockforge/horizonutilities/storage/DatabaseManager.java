@@ -433,6 +433,20 @@ public class DatabaseManager {
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS tutorial_rewards (" +
                 "player_uuid TEXT PRIMARY KEY," +
                 "claimed_at INTEGER NOT NULL)");
+
+            // Hollow Chronicle story progress
+            stmt.executeUpdate("CREATE TABLE IF NOT EXISTS story_progress (" +
+                "player_uuid TEXT PRIMARY KEY," +
+                "current_stage INTEGER NOT NULL DEFAULT 0," +
+                "current_chapter INTEGER NOT NULL DEFAULT 0," +
+                "books_found TEXT NOT NULL DEFAULT ''," +
+                "items_collected TEXT NOT NULL DEFAULT ''," +
+                "side_quests_completed TEXT NOT NULL DEFAULT ''," +
+                "objectives_completed TEXT NOT NULL DEFAULT ''," +
+                "vareth_defeated INTEGER NOT NULL DEFAULT 0," +
+                "started_at INTEGER NOT NULL DEFAULT 0," +
+                "last_updated INTEGER NOT NULL DEFAULT 0)");
+            stmt.executeUpdate("CREATE INDEX IF NOT EXISTS idx_story_player ON story_progress(player_uuid)");
         }
     }
 

@@ -108,6 +108,20 @@ import com.blockforge.horizonutilities.tutorial.TutorialCommand;
 import com.blockforge.horizonutilities.tutorial.TutorialGUIListener;
 import com.blockforge.horizonutilities.tutorial.TutorialManager;
 import com.blockforge.horizonutilities.tax.TaxManager;
+import com.blockforge.horizonutilities.wither.WitherBossManager;
+import com.blockforge.horizonutilities.wither.WitherBossListener;
+import com.blockforge.horizonutilities.wither.WitherCommand;
+import com.blockforge.horizonutilities.wither.WitherSummonListener;
+import com.blockforge.horizonutilities.story.StoryCommand;
+import com.blockforge.horizonutilities.story.StoryGUIListener;
+import com.blockforge.horizonutilities.story.StoryJoinListener;
+import com.blockforge.horizonutilities.story.StoryManager;
+import com.blockforge.horizonutilities.story.StoryProgressListener;
+import com.blockforge.horizonutilities.story.boss.VarethLootHandler;
+import com.blockforge.horizonutilities.story.boss.VarethSummonListener;
+import com.blockforge.horizonutilities.story.effects.HollowWardEffect;
+import com.blockforge.horizonutilities.story.effects.VeilbornCompassEffect;
+import com.blockforge.horizonutilities.story.effects.VigilCrystalEffect;
 import com.blockforge.horizonutilities.jobs.commands.JobsCommand;
 import com.blockforge.horizonutilities.jobs.commands.JobsTabCompleter;
 import com.blockforge.horizonutilities.jobs.gui.JobsGUIListener;
@@ -169,6 +183,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     private RtpManager rtpManager;
     private HomeManager homeManager;
     private TutorialManager tutorialManager;
+    private WitherBossManager witherBossManager;
+    private StoryManager storyManager;
 
     @Override
     public void onEnable() {
@@ -306,6 +322,13 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         // Tutorial
         tutorialManager = new TutorialManager(this);
 
+        // Hollow Chronicle
+        storyManager = new StoryManager(this);
+        storyManager.init();
+
+        // Wither Sovereign
+        witherBossManager = new WitherBossManager(this);
+
         var pm = getServer().getPluginManager();
         pm.registerEvents(new MaintenanceListener(maintenanceManager), this);
         pm.registerEvents(new ChatBubbleListener(this, chatBubbleManager), this);
@@ -346,6 +369,18 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         pm.registerEvents(new QuestEventListener(questManager), this);
         pm.registerEvents(new RtpListener(this, rtpManager), this);
         pm.registerEvents(new TutorialGUIListener(), this);
+        pm.registerEvents(new StoryGUIListener(), this);
+        pm.registerEvents(new StoryJoinListener(this, storyManager), this);
+        pm.registerEvents(new StoryProgressListener(this, storyManager), this);
+        pm.registerEvents(storyManager.getRegionManager(), this);
+        pm.registerEvents(storyManager.getWitheredSentinel(), this);
+        pm.registerEvents(new VarethSummonListener(this, storyManager, storyManager.getVarethBossManager()), this);
+        pm.registerEvents(new VarethLootHandler(this, storyManager, storyManager.getVarethBossManager()), this);
+        pm.registerEvents(new HollowWardEffect(this), this);
+        new VigilCrystalEffect(this).start();
+        new VeilbornCompassEffect(this, storyManager).start();
+        pm.registerEvents(new WitherBossListener(this, witherBossManager), this);
+        pm.registerEvents(new WitherSummonListener(this, witherBossManager), this);
 
         var ahCmd = getCommand("ah");
         if (ahCmd != null) {
@@ -491,6 +526,22 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
             rtpCmd.setTabCompleter(rtpCmdExec);
         }
 
+        // Hollow Chronicle command
+        var storyBukkitCmd = getCommand("story");
+        if (storyBukkitCmd != null) {
+            var storyCmdExec = new StoryCommand(this, storyManager);
+            storyBukkitCmd.setExecutor(storyCmdExec);
+            storyBukkitCmd.setTabCompleter(storyCmdExec);
+        }
+
+        // Wither Sovereign command
+        var witherBukkitCmd = getCommand("wither");
+        if (witherBukkitCmd != null) {
+            var witherCmd = new WitherCommand(this, witherBossManager);
+            witherBukkitCmd.setExecutor(witherCmd);
+            witherBukkitCmd.setTabCompleter(witherCmd);
+        }
+
         // Home commands
         var homeCmd = new HomeCommand(this, homeManager);
         var homeBukkitCmd = getCommand("home");
@@ -532,6 +583,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (storyManager != null) storyManager.shutdown();
+        if (witherBossManager != null) witherBossManager.shutdown();
         if (questManager != null) questManager.shutdown();
         if (scoreboardManager != null) scoreboardManager.shutdown();
         if (rtpManager != null) rtpManager.shutdown();
@@ -561,6 +614,8 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
         if (rtpConfig != null) rtpConfig.load();
         if (homeManager != null) homeManager.loadConfig();
         if (tutorialManager != null) tutorialManager.reload();
+        if (witherBossManager != null) witherBossManager.reload();
+        if (storyManager != null) storyManager.reload();
     }
 
     public static HorizonUtilitiesPlugin getInstance() { return instance; }
@@ -612,4 +667,6 @@ public class HorizonUtilitiesPlugin extends JavaPlugin {
     public RtpManager getRtpManager()                     { return rtpManager; }
     public HomeManager getHomeManager()                   { return homeManager; }
     public TutorialManager getTutorialManager()           { return tutorialManager; }
+    public WitherBossManager getWitherBossManager()       { return witherBossManager; }
+    public StoryManager getStoryManager()                  { return storyManager; }
 }
