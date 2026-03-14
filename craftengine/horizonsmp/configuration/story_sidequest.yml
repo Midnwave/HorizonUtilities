@@ -1,0 +1,32 @@
+items:
+  horizonsmp:veilborn_compass:
+    material: paper
+    custom-model-data: 5010
+    item-model: horizonsmp:veilborn_compass
+    data:
+      item-name: "<!i><#00BFFF>Veilborn Compass"
+      lore:
+        - "<!i><gray>Pulses softly near things"
+        - "<!i><gray>the world has tried to forget."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/veilborn_compass"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/veilborn_compass"
+
+  horizonsmp:evelins_record_book:
+    material: paper
+    custom-model-data: 5011
+    item-model: horizonsmp:evelins_record_book
+    data:
+      item-name: "<!i><#DEB887>Evelin's Record-Book"
+      lore:
+        - "<!i><gray>A water-stained journal hidden"
+        - "<!i><gray>beneath a collapsed table."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/evelins_record_book"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/evelins_record_book"

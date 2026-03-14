@@ -1,0 +1,64 @@
+items:
+  horizonsmp:vareths_insignia:
+    material: paper
+    custom-model-data: 5001
+    item-model: horizonsmp:vareths_insignia
+    data:
+      item-name: "<!i><#8B0000>Vareth's Insignia"
+      lore:
+        - "<!i><gray>A fractured emblem pried from"
+        - "<!i><gray>a fallen sentinel's grasp."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/vareths_insignia"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/vareths_insignia"
+
+  horizonsmp:ashen_stone:
+    material: paper
+    custom-model-data: 5002
+    item-model: horizonsmp:ashen_stone
+    data:
+      item-name: "<!i><#A0522D>Ashen Stone"
+      lore:
+        - "<!i><gray>A smoldering stone pulled from"
+        - "<!i><gray>the cold fireplace. It still hums."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/ashen_stone"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/ashen_stone"
+
+  horizonsmp:wardens_key:
+    material: paper
+    custom-model-data: 5003
+    item-model: horizonsmp:wardens_key
+    data:
+      item-name: "<!i><#4B0082>Warden's Key"
+      lore:
+        - "<!i><gray>Forged from insignia and ash,"
+        - "<!i><gray>it remembers the sealed gate."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/wardens_key"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/wardens_key"
+
+  horizonsmp:soul_of_the_vigil:
+    material: paper
+    custom-model-data: 5004
+    item-model: horizonsmp:soul_of_the_vigil
+    data:
+      item-name: "<!i><#00CED1>Soul of the Vigil"
+      lore:
+        - "<!i><gray>A tear of light that resonates"
+        - "<!i><gray>with the crypt altar below."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/soul_of_the_vigil"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/soul_of_the_vigil"

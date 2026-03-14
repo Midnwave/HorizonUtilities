@@ -1,0 +1,164 @@
+items:
+  horizonsmp:ashen_dust:
+    material: paper
+    custom-model-data: 5020
+    item-model: horizonsmp:ashen_dust
+    data:
+      item-name: "<!i><#A0522D>Ashen Dust"
+      lore:
+        - "<!i><gray>Ground from the Ashen Stone."
+        - "<!i><gray>Useful as a crafting ingredient."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/ashen_dust"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/ashen_dust"
+
+  horizonsmp:vigil_crystal:
+    material: paper
+    custom-model-data: 5021
+    item-model: horizonsmp:vigil_crystal
+    data:
+      item-name: "<!i><#87CEEB>Vigil Crystal"
+      lore:
+        - "<!i><gray>Five shards made whole."
+        - "<!i><gray>Grants sight in the dark."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/vigil_crystal"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/vigil_crystal"
+
+  horizonsmp:veilborn_torch:
+    material: paper
+    custom-model-data: 5022
+    item-model: horizonsmp:veilborn_torch
+    data:
+      item-name: "<!i><#FF8C00>Veilborn Torch"
+      lore:
+        - "<!i><gray>Burns with soul fire and"
+        - "<!i><gray>casts a wider light."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/veilborn_torch"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/veilborn_torch"
+
+  horizonsmp:hollow_ward_charm:
+    material: paper
+    custom-model-data: 5023
+    item-model: horizonsmp:hollow_ward_charm
+    data:
+      item-name: "<!i><#9370DB>Hollow Ward Charm"
+      lore:
+        - "<!i><gray>Crafted protection against"
+        - "<!i><gray>the withering touch."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/hollow_ward_charm"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/hollow_ward_charm"
+
+  horizonsmp:stone_eye_emblem:
+    material: paper
+    custom-model-data: 5024
+    item-model: horizonsmp:stone_eye_emblem
+    data:
+      item-name: "<!i><#708090>Stone Eye Emblem"
+      lore:
+        - "<!i><gray>Chiseled from the keep wall."
+        - "<!i><gray>Its purpose spans stages."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/stone_eye_emblem"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/stone_eye_emblem"
+
+  horizonsmp:vigils_tear:
+    material: paper
+    custom-model-data: 5025
+    item-model: horizonsmp:vigils_tear
+    data:
+      item-name: "<!i><#00CED1>Vigil's Tear"
+      lore:
+        - "<!i><gray>Drawn from the deepest pool."
+        - "<!i><gray>A hint of what Stage 2 holds."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/vigils_tear"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/vigils_tear"
+
+recipes:
+  # Warden's Key: Shaped — Insignia top, Ashen Stone center, 2x Crying Obsidian sides
+  horizonsmp:wardens_key:
+    type: shaped
+    pattern:
+      - " A "
+      - "CBC"
+      - "   "
+    ingredients:
+      A: horizonsmp:vareths_insignia
+      B: horizonsmp:ashen_stone
+      C: minecraft:crying_obsidian
+    result:
+      id: horizonsmp:wardens_key
+      count: 1
+
+  # Ashen Dust: Shapeless — 1 Ashen Stone → 4 Ashen Dust
+  horizonsmp:ashen_dust:
+    type: shapeless
+    ingredients:
+      A: horizonsmp:ashen_stone
+    result:
+      id: horizonsmp:ashen_dust
+      count: 4
+
+  # Vigil Crystal: Shaped cross — 5 Vigil Shards
+  horizonsmp:vigil_crystal:
+    type: shaped
+    pattern:
+      - " A "
+      - "AAA"
+      - " A "
+    ingredients:
+      A: horizonsmp:vigil_shard
+    result:
+      id: horizonsmp:vigil_crystal
+      count: 1
+
+  # Veilborn Torch: Shaped vertical — Ashen Dust + Soul Sand + Stick → 4
+  horizonsmp:veilborn_torch:
+    type: shaped
+    pattern:
+      - "A"
+      - "B"
+      - "C"
+    ingredients:
+      A: horizonsmp:ashen_dust
+      B: minecraft:soul_sand
+      C: minecraft:stick
+    result:
+      id: horizonsmp:veilborn_torch
+      count: 4
+
+  # Hollow Ward Charm: Shaped — 3 Ashen Dust + 2 Gold Nugget + 1 Crying Obsidian
+  horizonsmp:hollow_ward_charm:
+    type: shaped
+    pattern:
+      - "AAA"
+      - "BCB"
+      - "   "
+    ingredients:
+      A: horizonsmp:ashen_dust
+      B: minecraft:gold_nugget
+      C: minecraft:crying_obsidian
+    result:
+      id: horizonsmp:hollow_ward_charm
+      count: 1

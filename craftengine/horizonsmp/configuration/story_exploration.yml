@@ -1,0 +1,111 @@
+items:
+  horizonsmp:keep_guards_blade:
+    material: iron_sword
+    custom-model-data: 5012
+    item-model: horizonsmp:keep_guards_blade
+    data:
+      item-name: "<!i><#808080>Keep Guard's Blade"
+      lore:
+        - "<!i><gray>Still sharp after all these years."
+      enchantment:
+        minecraft:smite: 1
+
+  horizonsmp:hollows_ward:
+    material: paper
+    custom-model-data: 5013
+    item-model: horizonsmp:hollows_ward
+    data:
+      item-name: "<!i><#9370DB>Hollow's Ward"
+      lore:
+        - "<!i><gray>An offhand charm that eases"
+        - "<!i><gray>the sting of withering."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/hollows_ward"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/hollows_ward"
+
+  horizonsmp:vigil_shard:
+    material: paper
+    custom-model-data: 5014
+    item-model: horizonsmp:vigil_shard
+    data:
+      item-name: "<!i><#E0E0E0>Vigil Shard"
+      lore:
+        - "<!i><gray>A fragment of something whole."
+        - "<!i><gray>Collect five to restore it."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/vigil_shard"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/vigil_shard"
+
+  horizonsmp:forgotten_coin:
+    material: paper
+    custom-model-data: 5015
+    item-model: horizonsmp:forgotten_coin
+    data:
+      item-name: "<!i><#DAA520>Forgotten Coin"
+      lore:
+        - "<!i><gray>Old currency from a kingdom"
+        - "<!i><gray>that no longer has a name."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/forgotten_coin"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/forgotten_coin"
+
+  horizonsmp:veilborn_rations:
+    material: paper
+    custom-model-data: 5016
+    item-model: horizonsmp:veilborn_rations
+    data:
+      item-name: "<!i><#D2B48C>Veilborn Rations"
+      lore:
+        - "<!i><gray>Wrapped bread preserved by"
+        - "<!i><gray>means no baker would recognize."
+    settings:
+      food:
+        nutrition: 8
+        saturation: 12.8
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/veilborn_rations"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/veilborn_rations"
+
+  horizonsmp:cracked_veilborn_sigil:
+    material: paper
+    custom-model-data: 5017
+    item-model: horizonsmp:cracked_veilborn_sigil
+    data:
+      item-name: "<!i><#556B2F>Cracked Veilborn Sigil"
+      lore:
+        - "<!i><gray>Broken, but not worthless."
+        - "<!i><gray>A future stage may need this."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/cracked_veilborn_sigil"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/cracked_veilborn_sigil"
+
+  horizonsmp:miras_last_rose:
+    material: wither_rose
+    custom-model-data: 5019
+    item-model: horizonsmp:miras_last_rose
+    data:
+      item-name: "<!i><#FF69B4>Mira's Last Rose"
+      lore:
+        - "<!i><gray>A wither rose that somehow"
+        - "<!i><gray>still holds a blush of pink."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/miras_last_rose"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/miras_last_rose"

@@ -1,0 +1,67 @@
+items:
+  horizonsmp:vareths_sigil:
+    material: paper
+    custom-model-data: 5005
+    item-model: horizonsmp:vareths_sigil
+    data:
+      item-name: "<!i><#800080>Vareth's Sigil"
+      lore:
+        - "<!i><gray>A stage completion token,"
+        - "<!i><gray>proof the chronicle remembers you."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/vareths_sigil"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/vareths_sigil"
+
+  horizonsmp:rune_of_ruin:
+    material: paper
+    custom-model-data: 5006
+    item-model: horizonsmp:rune_of_ruin
+    data:
+      item-name: "<!i><#FF4500>Rune of Ruin"
+      lore:
+        - "<!i><gray>One of seven. The end"
+        - "<!i><gray>will ask for all of them."
+    model:
+      type: "minecraft:model"
+      path: "horizonsmp:item/rune_of_ruin"
+      generation:
+        textures:
+          layer0: "horizonsmp:item/rune_of_ruin"
+
+  horizonsmp:vigils_edge:
+    material: iron_sword
+    custom-model-data: 5007
+    item-model: horizonsmp:vigils_edge
+    data:
+      item-name: "<!i><#C0C0C0>Vigil's Edge"
+      lore:
+        - "<!i><gray>The sword Vareth carried"
+        - "<!i><gray>through centuries of silence."
+      enchantment:
+        minecraft:smite: 3
+        minecraft:unbreaking: 2
+
+  horizonsmp:wardens_cuirass:
+    material: iron_chestplate
+    custom-model-data: 5008
+    item-model: horizonsmp:wardens_cuirass
+    data:
+      item-name: "<!i><#C0C0C0>Warden's Cuirass"
+      lore:
+        - "<!i><gray>Armor that bore the weight"
+        - "<!i><gray>of an eternal watch."
+      enchantment:
+        minecraft:protection: 2
+        minecraft:thorns: 1
+
+  horizonsmp:tome_of_first_herald:
+    material: written_book
+    custom-model-data: 5009
+    data:
+      item-name: "<!i><#DAA520>Tome of the First Herald"
+      lore:
+        - "<!i><gray>Written by Ilyss in the"
+        - "<!i><gray>hours before the vigil began."
