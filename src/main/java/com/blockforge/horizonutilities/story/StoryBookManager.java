@@ -60,7 +60,7 @@ public class StoryBookManager {
     public boolean giveBookById(Player player, String bookId) {
         // Search all stages for this book ID
         for (int s = 1; s <= 7; s++) {
-            String stageKey = String.valueOf(s);
+            String stageKey = "stage-" + s;
             Map<String, StoryConfig.BookData> stageBooks = config.getBooksForStage(stageKey);
             if (stageBooks.containsKey(bookId)) {
                 return giveBook(player, stageKey, bookId);
@@ -75,7 +75,7 @@ public class StoryBookManager {
     public List<String> getAllBookIds() {
         List<String> ids = new ArrayList<>();
         for (int s = 1; s <= 7; s++) {
-            ids.addAll(config.getBooksForStage(String.valueOf(s)).keySet());
+            ids.addAll(config.getBooksForStage("stage-" + s).keySet());
         }
         return ids;
     }
