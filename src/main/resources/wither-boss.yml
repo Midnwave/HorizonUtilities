@@ -1,0 +1,85 @@
+# ============================================
+# The Wither Sovereign - Custom Boss Configuration
+# ============================================
+
+# Boss Stats
+stats:
+  health: 2048
+  armor: 12
+  regeneration-per-second: 2.0
+  regeneration-below-half: 5.0
+  explosion-resistant: true
+  wither-immune: true
+  # Scale HP with nearby player count
+  per-player-health-bonus: 256
+
+# Phase thresholds (% of max health)
+phases:
+  phase1-name: "The Awakening"
+  phase1-threshold: 0.75
+  phase2-name: "Army of the Dead"
+  phase2-threshold: 0.50
+  phase3-name: "Corruption Unleashed"
+  phase3-threshold: 0.25
+  phase4-name: "Death's Last Stand"
+
+# AI
+ai:
+  target-switch-min-seconds: 5
+  target-switch-max-seconds: 10
+  preferred-altitude-min: 8
+  preferred-altitude-max: 15
+  strafe-speed: 0.6
+  charge-speed: 1.8
+  enrage-timer-seconds: 600
+
+# Attack speed multiplier per phase
+attack-speed:
+  phase1: 1.0
+  phase2: 1.3
+  phase3: 1.6
+  phase4: 2.0
+
+# Global attack cooldown (seconds)
+global-cooldown: 1.5
+
+# Vanilla Wither
+allow-vanilla-wither: true
+
+# Summoning Ritual
+summoning:
+  enabled: true
+  bypass-grief-protection: true
+  cinematic-duration-ticks: 100
+
+# Boss Music
+music:
+  enabled: true
+  sound-key: "horizonsmp:boss.wither_sovereign"
+  radius: 64
+  victory-sound: "horizonsmp:boss.wither_sovereign_victory"
+
+# Loot Drops
+drops:
+  guaranteed:
+    - material: NETHER_STAR
+      amount: 1
+  random:
+    - material: NETHERITE_INGOT
+      chance: 0.20
+      amount-min: 1
+      amount-max: 2
+    - material: ENCHANTED_GOLDEN_APPLE
+      chance: 0.25
+      amount-min: 1
+      amount-max: 3
+  xp: 5000
+  money: 10000.0
+  money-per-player: true
+  scale-with-players: true
+
+# Block Restoration
+block-restore:
+  enabled: true
+  timeout-seconds: 300
+  max-radius: 64
