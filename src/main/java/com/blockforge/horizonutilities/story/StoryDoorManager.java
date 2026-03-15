@@ -5,10 +5,16 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +70,18 @@ public class StoryDoorManager {
         plugin.getLogger().info("[Story] Loaded " + doorAnchors.size() + " door anchor(s).");
     }
 
+    /**
+     * Normalizes stage key — accepts "1" or "stage-1" format.
+     */
+    private String normalizeStageKey(String input) {
+        if (!input.startsWith("stage-")) {
+            return "stage-" + input;
+        }
+        return input;
+    }
+
     public void saveDoorAnchor(String stageKey, String doorId, Location loc) {
+        stageKey = normalizeStageKey(stageKey);
         String key = stageKey + ":" + doorId;
         doorAnchors.put(key, loc.clone());
 
@@ -87,6 +104,7 @@ public class StoryDoorManager {
      * Returns true if the door was opened (or is already open).
      */
     public boolean tryOpenDoor(Player player, String stageKey, String doorId) {
+        stageKey = normalizeStageKey(stageKey);
         String key = stageKey + ":" + doorId;
 
         if (openedDoors.contains(key + ":" + player.getUniqueId())) {
@@ -128,6 +146,7 @@ public class StoryDoorManager {
      * Returns true if the door was found and opened.
      */
     public boolean forceOpen(String stageKey, String doorId) {
+        stageKey = normalizeStageKey(stageKey);
         String key = stageKey + ":" + doorId;
 
         StoryConfig.DoorData doorData = config.getDoor(stageKey, doorId);
@@ -148,18 +167,21 @@ public class StoryDoorManager {
     }
 
     /**
-     * Animates a door opening: blocks removed bottom-up, left then right.
+     * Animates a door opening using BlockDisplay entities.
+     * Blocks are replaced with barriers, BlockDisplays slide apart smoothly
+     * with stone grinding sounds, then barriers are cleared.
      */
     private void animateDoorOpen(Location anchor, StoryConfig.DoorData doorData) {
         int width = doorData.width();
         int height = doorData.height();
-        int speed = doorData.animationSpeedTicks();
-
-        // Queue block removals: bottom-up, column by column
-        List<Block> blocksToRemove = new ArrayList<>();
         World world = anchor.getWorld();
         if (world == null) return;
 
+        record DoorBlock(Block block, BlockDisplay display, int col, int row) {}
+        List<DoorBlock> doorBlocks = new ArrayList<>();
+        Quaternionf identity = new Quaternionf();
+
+        // Phase 1: Replace each block with barrier + spawn BlockDisplay in its place
         for (int col = 0; col < width; col++) {
             for (int row = 0; row < height; row++) {
                 Block block = world.getBlockAt(
@@ -167,30 +189,77 @@ public class StoryDoorManager {
                     anchor.getBlockY() + row,
                     anchor.getBlockZ()
                 );
-                blocksToRemove.add(block);
+                if (block.getType().isAir() || block.getType() == Material.BARRIER) continue;
+
+                BlockData blockData = block.getBlockData().clone();
+                block.setType(Material.BARRIER);
+
+                BlockDisplay display = world.spawn(block.getLocation(), BlockDisplay.class, d -> {
+                    d.setBlock(blockData);
+                    d.setTransformation(new Transformation(
+                        new Vector3f(0, 0, 0), identity,
+                        new Vector3f(1, 1, 1), identity
+                    ));
+                });
+
+                doorBlocks.add(new DoorBlock(block, display, col, row));
             }
         }
 
-        // Stagger the removal
-        for (int i = 0; i < blocksToRemove.size(); i++) {
-            Block block = blocksToRemove.get(i);
-            long delay = (long) i * speed;
+        if (doorBlocks.isEmpty()) return;
 
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                // Particle effect
-                Location center = block.getLocation().add(0.5, 0.5, 0.5);
-                world.spawnParticle(Particle.SOUL, center, 8, 0.3, 0.3, 0.3, 0.02);
-                world.playSound(center, Sound.BLOCK_DEEPSLATE_BREAK, 0.8f, 0.6f);
+        Location center = anchor.clone().add(width / 2.0, height / 2.0, 0);
+        int slideDuration = 60; // 3 seconds of smooth sliding
 
-                block.setType(Material.AIR);
-            }, delay);
-        }
+        // Phase 2: Initial rumble — the door shudders before moving
+        world.playSound(center, Sound.BLOCK_STONE_HIT, 1.2f, 0.3f);
+        world.playSound(center, Sound.BLOCK_PISTON_EXTEND, 0.7f, 0.5f);
+        world.spawnParticle(Particle.DUST, center, 15, 0.8, 1.0, 0.3, 0,
+            new Particle.DustOptions(Color.fromRGB(80, 80, 80), 1.5f));
 
-        // Soul lantern flicker effect after door fully opens
-        long totalDelay = (long) blocksToRemove.size() * speed + 10;
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            Location center = anchor.clone().add(width / 2.0, height / 2.0, 0);
+        // Phase 3: After a short pause, start the slide
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (DoorBlock db : doorBlocks) {
+                // Bottom rows start first, staggered upward
+                int rowDelay = (height - 1 - db.row) * 3;
+
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    // Left half slides left, right half slides right
+                    boolean slideLeft = db.col < width / 2.0;
+                    float slideX = slideLeft ? -(width + 0.5f) : (width + 0.5f);
+
+                    db.display.setInterpolationDelay(0);
+                    db.display.setInterpolationDuration(slideDuration);
+                    db.display.setTransformation(new Transformation(
+                        new Vector3f(slideX, -0.05f, 0), identity,
+                        new Vector3f(1, 1, 1), identity
+                    ));
+                }, rowDelay);
+            }
+        }, 12L);
+
+        // Phase 4: Stone grinding sounds + dust particles during slide
+        BukkitTask grindTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            world.playSound(center, Sound.BLOCK_GRINDSTONE_USE, 0.5f, 0.3f);
+            world.playSound(center, Sound.BLOCK_STONE_STEP, 0.4f, 0.4f);
+            world.spawnParticle(Particle.DUST, center, 6, 0.6, 0.8, 0.3, 0,
+                new Particle.DustOptions(Color.fromRGB(100, 100, 100), 1.0f));
+        }, 14L, 10L);
+
+        // Phase 5: Cleanup — remove displays and barriers, final thud
+        long cleanupDelay = 12L + slideDuration + 10L;
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            grindTask.cancel();
+
+            for (DoorBlock db : doorBlocks) {
+                db.display.remove();
+                db.block.setType(Material.AIR);
+            }
+
+            // Heavy stone thud + soul effect
+            world.playSound(center, Sound.BLOCK_STONE_PLACE, 1.2f, 0.4f);
             world.playSound(center, Sound.BLOCK_SOUL_SAND_BREAK, 1.0f, 1.2f);
-        }, totalDelay);
+            world.spawnParticle(Particle.SOUL, center, 25, 1.0, 1.5, 0.5, 0.02);
+        }, cleanupDelay);
     }
 }

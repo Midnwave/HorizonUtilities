@@ -373,20 +373,25 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
                         .filter(s -> s.startsWith(args[2].toLowerCase())).collect(Collectors.toList());
                     yield List.of();
                 }
-                case "setbook", "setdoor" -> {
+                case "setbook" -> {
                     if (args.length == 2) yield stageNumbers(args[1]);
+                    yield List.of();
+                }
+                case "setdoor" -> {
+                    if (args.length == 2) yield stageNumbers(args[1]);
+                    if (args.length == 3) {
+                        String partial = args[2].toLowerCase();
+                        yield manager.getStoryConfig().getDoorsForStage("stage-" + args[1]).keySet().stream()
+                            .filter(d -> d.startsWith(partial)).collect(Collectors.toList());
+                    }
                     yield List.of();
                 }
                 case "opendoor" -> {
                     if (args.length == 2) yield stageNumbers(args[1]);
                     if (args.length == 3) {
-                        String stagePrefix = args[1] + ":";
                         String partial = args[2].toLowerCase();
-                        yield manager.getDoorManager().getDoorKeys().stream()
-                            .filter(k -> k.startsWith(stagePrefix))
-                            .map(k -> k.substring(stagePrefix.length()))
-                            .filter(d -> d.startsWith(partial))
-                            .collect(Collectors.toList());
+                        yield manager.getStoryConfig().getDoorsForStage("stage-" + args[1]).keySet().stream()
+                            .filter(d -> d.startsWith(partial)).collect(Collectors.toList());
                     }
                     yield List.of();
                 }
