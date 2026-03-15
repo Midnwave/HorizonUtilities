@@ -209,7 +209,7 @@ public class StoryDoorManager {
         if (doorBlocks.isEmpty()) return;
 
         Location center = anchor.clone().add(width / 2.0, height / 2.0, 0);
-        int slideDuration = 60; // 3 seconds of smooth sliding
+        int slideDuration = 160; // 8 seconds — super slow grinding slide
 
         // Phase 2: Initial rumble — the door shudders before moving
         world.playSound(center, Sound.BLOCK_STONE_HIT, 1.2f, 0.3f);
@@ -217,37 +217,37 @@ public class StoryDoorManager {
         world.spawnParticle(Particle.DUST, center, 15, 0.8, 1.0, 0.3, 0,
             new Particle.DustOptions(Color.fromRGB(80, 80, 80), 1.5f));
 
-        // Phase 3: After a short pause, start the slide
+        // Phase 3: After a short pause, start the slow slide (1 block distance)
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (DoorBlock db : doorBlocks) {
                 // Bottom rows start first, staggered upward
-                int rowDelay = (height - 1 - db.row) * 3;
+                int rowDelay = (height - 1 - db.row) * 5;
 
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    // Left half slides left, right half slides right
+                    // Left half slides left 1 block, right half slides right 1 block
                     boolean slideLeft = db.col < width / 2.0;
-                    float slideX = slideLeft ? -(width + 0.5f) : (width + 0.5f);
+                    float slideX = slideLeft ? -1.0f : 1.0f;
 
                     db.display.setInterpolationDelay(0);
                     db.display.setInterpolationDuration(slideDuration);
                     db.display.setTransformation(new Transformation(
-                        new Vector3f(slideX, -0.05f, 0), identity,
+                        new Vector3f(slideX, -0.02f, 0), identity,
                         new Vector3f(1, 1, 1), identity
                     ));
                 }, rowDelay);
             }
-        }, 12L);
+        }, 20L);
 
-        // Phase 4: Stone grinding sounds + dust particles during slide
+        // Phase 4: Stone grinding sounds + dust particles during the slow slide
         BukkitTask grindTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            world.playSound(center, Sound.BLOCK_GRINDSTONE_USE, 0.5f, 0.3f);
-            world.playSound(center, Sound.BLOCK_STONE_STEP, 0.4f, 0.4f);
-            world.spawnParticle(Particle.DUST, center, 6, 0.6, 0.8, 0.3, 0,
+            world.playSound(center, Sound.BLOCK_GRINDSTONE_USE, 0.4f, 0.2f);
+            world.playSound(center, Sound.BLOCK_STONE_STEP, 0.3f, 0.3f);
+            world.spawnParticle(Particle.DUST, center, 4, 0.5, 0.6, 0.3, 0,
                 new Particle.DustOptions(Color.fromRGB(100, 100, 100), 1.0f));
-        }, 14L, 10L);
+        }, 22L, 15L);
 
         // Phase 5: Cleanup — remove displays and barriers, final thud
-        long cleanupDelay = 12L + slideDuration + 10L;
+        long cleanupDelay = 20L + slideDuration + 15L;
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             grindTask.cancel();
 
