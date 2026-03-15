@@ -190,6 +190,19 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
             return true;
         }
         String bookId = args[1].toLowerCase();
+
+        // Special case: first join book
+        if (bookId.equals("firstjoin")) {
+            var book = manager.getBookManager().createFirstJoinBook();
+            if (book != null) {
+                player.getInventory().addItem(book);
+                sender.sendMessage(PREFIX.append(Component.text("Gave first-join book.", NamedTextColor.GREEN)));
+            } else {
+                sender.sendMessage(PREFIX.append(Component.text("First-join book not configured.", NamedTextColor.RED)));
+            }
+            return true;
+        }
+
         boolean given = manager.getBookManager().giveBookById(player, bookId);
         if (given) {
             sender.sendMessage(PREFIX.append(Component.text("Gave book '" + bookId + "'.", NamedTextColor.GREEN)));
@@ -401,8 +414,11 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
                 }
                 case "give" -> {
                     if (args.length == 2) {
-                        yield manager.getBookManager().getAllBookIds().stream()
-                            .filter(s -> s.startsWith(args[1].toLowerCase())).collect(Collectors.toList());
+                        String partial = args[1].toLowerCase();
+                        java.util.List<String> bookIds = new java.util.ArrayList<>(manager.getBookManager().getAllBookIds());
+                        bookIds.add("firstjoin");
+                        yield bookIds.stream()
+                            .filter(s -> s.startsWith(partial)).collect(Collectors.toList());
                     }
                     yield List.of();
                 }

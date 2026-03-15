@@ -1,0 +1,384 @@
+# ============================================
+# Hollow Chronicle — Stage 1 Items
+# Namespace: horizonsmp
+# ============================================
+
+items:
+
+  # ── Progression Items (4) ──
+
+  horizonsmp:vareths_insignia:
+    material: paper
+    item-model: horizonsmp:item/vareths_insignia
+    data:
+      item-name: "<!i><color:#8B0000>Vareth's Insignia"
+      lore:
+        - "<!i><gray>A fractured emblem pried from"
+        - "<!i><gray>a fallen sentinel's grasp."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/vareths_insignia
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/vareths_insignia
+
+  horizonsmp:ashen_stone:
+    material: paper
+    item-model: horizonsmp:item/ashen_stone
+    data:
+      item-name: "<!i><color:#A0522D>Ashen Stone"
+      lore:
+        - "<!i><gray>A smoldering stone pulled from"
+        - "<!i><gray>the cold fireplace. It still hums."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/ashen_stone
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/ashen_stone
+
+  horizonsmp:wardens_key:
+    material: paper
+    item-model: horizonsmp:item/wardens_key
+    data:
+      item-name: "<!i><color:#4B0082>Warden's Key"
+      lore:
+        - "<!i><gray>Forged from insignia and ash,"
+        - "<!i><gray>it remembers the sealed gate."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/wardens_key
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/wardens_key
+
+  horizonsmp:soul_of_the_vigil:
+    material: paper
+    item-model: horizonsmp:item/soul_of_the_vigil
+    data:
+      item-name: "<!i><color:#00CED1>Soul of the Vigil"
+      lore:
+        - "<!i><gray>A tear of light that resonates"
+        - "<!i><gray>with the crypt altar below."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/soul_of_the_vigil
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/soul_of_the_vigil
+
+  # ── Completion Drops (5) ──
+
+  horizonsmp:vareths_sigil:
+    material: paper
+    item-model: horizonsmp:item/vareths_sigil
+    data:
+      item-name: "<!i><color:#800080>Vareth's Sigil"
+      lore:
+        - "<!i><gray>A stage completion token,"
+        - "<!i><gray>proof the chronicle remembers you."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/vareths_sigil
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/vareths_sigil
+
+  horizonsmp:rune_of_ruin:
+    material: paper
+    item-model: horizonsmp:item/rune_of_ruin
+    data:
+      item-name: "<!i><color:#FF4500>Rune of Ruin"
+      lore:
+        - "<!i><gray>One of seven. The end"
+        - "<!i><gray>will ask for all of them."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/rune_of_ruin
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/rune_of_ruin
+
+  horizonsmp:vigils_edge:
+    material: iron_sword
+    item-model: horizonsmp:item/vigils_edge
+    data:
+      item-name: "<!i><color:#C0C0C0>Vigil's Edge"
+      lore:
+        - "<!i><gray>The sword Vareth carried"
+        - "<!i><gray>through centuries of silence."
+      enchantment:
+        minecraft:smite: 3
+        minecraft:unbreaking: 2
+
+  horizonsmp:wardens_cuirass:
+    material: iron_chestplate
+    item-model: horizonsmp:item/wardens_cuirass
+    data:
+      item-name: "<!i><color:#C0C0C0>Warden's Cuirass"
+      lore:
+        - "<!i><gray>Armor that bore the weight"
+        - "<!i><gray>of an eternal watch."
+      enchantment:
+        minecraft:protection: 2
+        minecraft:thorns: 1
+
+  horizonsmp:tome_of_first_herald:
+    material: written_book
+    data:
+      item-name: "<!i><color:#DAA520>Tome of the First Herald"
+      lore:
+        - "<!i><gray>Written by Ilyss in the"
+        - "<!i><gray>hours before the vigil began."
+
+  # ── Side Quest Items (2) ──
+
+  horizonsmp:veilborn_compass:
+    material: paper
+    item-model: horizonsmp:item/veilborn_compass
+    data:
+      item-name: "<!i><color:#00BFFF>Veilborn Compass"
+      lore:
+        - "<!i><gray>Pulses softly near things"
+        - "<!i><gray>the world has tried to forget."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/veilborn_compass
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/veilborn_compass
+
+  horizonsmp:evelins_record_book:
+    material: paper
+    item-model: horizonsmp:item/evelins_record_book
+    data:
+      item-name: "<!i><color:#DEB887>Evelin's Record-Book"
+      lore:
+        - "<!i><gray>A water-stained journal hidden"
+        - "<!i><gray>beneath a collapsed table."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/evelins_record_book
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/evelins_record_book
+
+  # ── Exploration Items (8) ──
+
+  horizonsmp:keep_guards_blade:
+    material: iron_sword
+    item-model: horizonsmp:item/keep_guards_blade
+    data:
+      item-name: "<!i><color:#808080>Keep Guard's Blade"
+      lore:
+        - "<!i><gray>Still sharp after all these years."
+      enchantment:
+        minecraft:smite: 1
+
+  horizonsmp:hollows_ward:
+    material: paper
+    item-model: horizonsmp:item/hollows_ward
+    data:
+      item-name: "<!i><color:#9370DB>Hollow's Ward"
+      lore:
+        - "<!i><gray>An offhand charm that eases"
+        - "<!i><gray>the sting of withering."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/hollows_ward
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/hollows_ward
+
+  horizonsmp:vigil_shard:
+    material: paper
+    item-model: horizonsmp:item/vigil_shard
+    data:
+      item-name: "<!i><color:#E0E0E0>Vigil Shard"
+      lore:
+        - "<!i><gray>A fragment of something whole."
+        - "<!i><gray>Collect five to restore it."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/vigil_shard
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/vigil_shard
+
+  horizonsmp:forgotten_coin:
+    material: paper
+    item-model: horizonsmp:item/forgotten_coin
+    data:
+      item-name: "<!i><color:#DAA520>Forgotten Coin"
+      lore:
+        - "<!i><gray>Old currency from a kingdom"
+        - "<!i><gray>that no longer has a name."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/forgotten_coin
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/forgotten_coin
+
+  horizonsmp:veilborn_rations:
+    material: paper
+    item-model: horizonsmp:item/veilborn_rations
+    data:
+      item-name: "<!i><color:#D2B48C>Veilborn Rations"
+      lore:
+        - "<!i><gray>Wrapped bread preserved by"
+        - "<!i><gray>means no baker would recognize."
+      food:
+        nutrition: 8
+        saturation: 8.0
+        can-always-eat: false
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/veilborn_rations
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/veilborn_rations
+
+  horizonsmp:cracked_veilborn_sigil:
+    material: paper
+    item-model: horizonsmp:item/cracked_veilborn_sigil
+    data:
+      item-name: "<!i><color:#556B2F>Cracked Veilborn Sigil"
+      lore:
+        - "<!i><gray>Broken, but not worthless."
+        - "<!i><gray>A future stage may need this."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/cracked_veilborn_sigil
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/cracked_veilborn_sigil
+
+  horizonsmp:veilborn_field_notes:
+    material: written_book
+    data:
+      item-name: "<!i><color:#696969>Veilborn Field Notes"
+      lore:
+        - "<!i><gray>Hasty observations from a"
+        - "<!i><gray>soldier who never returned."
+
+  horizonsmp:miras_last_rose:
+    material: wither_rose
+    data:
+      item-name: "<!i><color:#FF69B4>Mira's Last Rose"
+      lore:
+        - "<!i><gray>A wither rose that somehow"
+        - "<!i><gray>still holds a blush of pink."
+
+  # ── Craftable Items (4) ──
+
+  horizonsmp:ashen_dust:
+    material: paper
+    item-model: horizonsmp:item/ashen_dust
+    data:
+      item-name: "<!i><color:#A0522D>Ashen Dust"
+      lore:
+        - "<!i><gray>Ground from the Ashen Stone."
+        - "<!i><gray>Useful as a crafting ingredient."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/ashen_dust
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/ashen_dust
+
+  horizonsmp:vigil_crystal:
+    material: paper
+    item-model: horizonsmp:item/vigil_crystal
+    data:
+      item-name: "<!i><color:#87CEEB>Vigil Crystal"
+      lore:
+        - "<!i><gray>Five shards made whole."
+        - "<!i><gray>Grants sight in the dark."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/vigil_crystal
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/vigil_crystal
+
+  horizonsmp:veilborn_torch:
+    material: paper
+    item-model: horizonsmp:item/veilborn_torch
+    data:
+      item-name: "<!i><color:#FF8C00>Veilborn Torch"
+      lore:
+        - "<!i><gray>Burns with soul fire and"
+        - "<!i><gray>casts a wider light."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/veilborn_torch
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/veilborn_torch
+
+  horizonsmp:hollow_ward_charm:
+    material: paper
+    item-model: horizonsmp:item/hollow_ward_charm
+    data:
+      item-name: "<!i><color:#9370DB>Hollow Ward Charm"
+      lore:
+        - "<!i><gray>Crafted protection against"
+        - "<!i><gray>the withering touch."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/hollow_ward_charm
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/hollow_ward_charm
+
+  # ── Special Items (2) ──
+
+  horizonsmp:stone_eye_emblem:
+    material: paper
+    item-model: horizonsmp:item/stone_eye_emblem
+    data:
+      item-name: "<!i><color:#708090>Stone Eye Emblem"
+      lore:
+        - "<!i><gray>Chiseled from the keep wall."
+        - "<!i><gray>Its purpose spans stages."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/stone_eye_emblem
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/stone_eye_emblem
+
+  horizonsmp:vigils_tear:
+    material: paper
+    item-model: horizonsmp:item/vigils_tear
+    data:
+      item-name: "<!i><color:#00CED1>Vigil's Tear"
+      lore:
+        - "<!i><gray>Drawn from the deepest pool."
+        - "<!i><gray>A hint of what Stage 2 holds."
+    model:
+      type: minecraft:model
+      path: horizonsmp:item/vigils_tear
+      generation:
+        parent: minecraft:item/generated
+        textures:
+          layer0: horizonsmp:item/vigils_tear

@@ -1,0 +1,91 @@
+# ============================================
+# Hollow Chronicle — Stage 1 Recipes
+# Namespace: horizonsmp
+# ============================================
+
+recipes:
+
+  # Warden's Key — Shaped
+  # Vareth's Insignia on top, Ashen Stone center, Crying Obsidian sides
+  #   I
+  #  OAO
+  #
+  horizonsmp:wardens_key:
+    type: shaped
+    pattern:
+      - " I "
+      - "OAO"
+    ingredients:
+      I: "horizonsmp:vareths_insignia"
+      A: "horizonsmp:ashen_stone"
+      O: "minecraft:crying_obsidian"
+    result:
+      id: horizonsmp:wardens_key
+      count: 1
+    category: misc
+    unlock-on-ingredient-obtained: true
+
+  # Ashen Dust — Shapeless (1 Ashen Stone -> 4 Ashen Dust)
+  horizonsmp:ashen_dust:
+    type: shapeless
+    ingredients:
+      - "horizonsmp:ashen_stone"
+    result:
+      id: horizonsmp:ashen_dust
+      count: 4
+    category: misc
+    unlock-on-ingredient-obtained: true
+
+  # Vigil Crystal — Shapeless (5 Vigil Shards)
+  horizonsmp:vigil_crystal:
+    type: shapeless
+    ingredients:
+      - "horizonsmp:vigil_shard"
+      - "horizonsmp:vigil_shard"
+      - "horizonsmp:vigil_shard"
+      - "horizonsmp:vigil_shard"
+      - "horizonsmp:vigil_shard"
+    result:
+      id: horizonsmp:vigil_crystal
+      count: 1
+    category: misc
+    unlock-on-ingredient-obtained: true
+
+  # Veilborn Torch — Shaped (Ashen Dust + Soul Sand + Stick -> 4 torches)
+  #  D
+  #  S
+  #  T
+  horizonsmp:veilborn_torch:
+    type: shaped
+    pattern:
+      - "D"
+      - "S"
+      - "T"
+    ingredients:
+      D: "horizonsmp:ashen_dust"
+      S: "minecraft:soul_sand"
+      T: "minecraft:stick"
+    result:
+      id: horizonsmp:veilborn_torch
+      count: 4
+    category: misc
+    unlock-on-ingredient-obtained: true
+
+  # Hollow Ward Charm — Shaped
+  # 3 Ashen Dust top + 2 Gold Nugget sides + 1 Crying Obsidian center
+  # DDD
+  # GOG
+  horizonsmp:hollow_ward_charm:
+    type: shaped
+    pattern:
+      - "DDD"
+      - "GOG"
+    ingredients:
+      D: "horizonsmp:ashen_dust"
+      G: "minecraft:gold_nugget"
+      O: "minecraft:crying_obsidian"
+    result:
+      id: horizonsmp:hollow_ward_charm
+      count: 1
+    category: misc
+    unlock-on-ingredient-obtained: true
