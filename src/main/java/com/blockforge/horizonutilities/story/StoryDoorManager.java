@@ -124,6 +124,30 @@ public class StoryDoorManager {
     }
 
     /**
+     * Force-opens a door without requiring a key (admin command).
+     * Returns true if the door was found and opened.
+     */
+    public boolean forceOpen(String stageKey, String doorId) {
+        String key = stageKey + ":" + doorId;
+
+        StoryConfig.DoorData doorData = config.getDoor(stageKey, doorId);
+        if (doorData == null) return false;
+
+        Location anchor = doorAnchors.get(key);
+        if (anchor == null) return false;
+
+        animateDoorOpen(anchor, doorData);
+        return true;
+    }
+
+    /**
+     * Returns all door keys ("stage:doorId") that have anchors set.
+     */
+    public Set<String> getDoorKeys() {
+        return Collections.unmodifiableSet(doorAnchors.keySet());
+    }
+
+    /**
      * Animates a door opening: blocks removed bottom-up, left then right.
      */
     private void animateDoorOpen(Location anchor, StoryConfig.DoorData doorData) {

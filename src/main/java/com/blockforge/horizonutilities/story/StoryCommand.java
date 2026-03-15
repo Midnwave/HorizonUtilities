@@ -27,7 +27,7 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
 
     private static final List<String> ADMIN_SUBS = List.of(
         "setstage", "setchapter", "reset", "give", "region", "setbook",
-        "setdoor", "setlocation", "bypassdoor", "reloadbooks", "reload"
+        "setdoor", "opendoor", "setlocation", "bypassdoor", "reloadbooks", "reload"
     );
     private static final List<String> USER_SUBS = List.of("progress");
     private static final List<String> REGION_SUBS = List.of("pos1", "pos2", "save");
@@ -71,6 +71,7 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
             case "region" -> handleRegion(sender, args);
             case "setbook" -> handleSetBook(sender, args);
             case "setdoor" -> handleSetDoor(sender, args);
+            case "opendoor" -> handleOpenDoor(sender, args);
             case "setlocation" -> handleSetLocation(sender, args);
             case "bypassdoor" -> handleBypassDoor(sender, args);
             case "reloadbooks", "reload" -> handleReload(sender);
@@ -266,6 +267,23 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    private boolean handleOpenDoor(CommandSender sender, String[] args) {
+        if (!requireAdmin(sender)) return true;
+        if (args.length < 3) {
+            sender.sendMessage(PREFIX.append(Component.text("Usage: /story opendoor <stage> <doorid>", NamedTextColor.GRAY)));
+            return true;
+        }
+        String stageKey = args[1];
+        String doorId = args[2];
+        boolean opened = manager.getDoorManager().forceOpen(stageKey, doorId);
+        if (opened) {
+            sender.sendMessage(PREFIX.append(Component.text("Opened door '" + doorId + "' for stage " + stageKey + ".", NamedTextColor.GREEN)));
+        } else {
+            sender.sendMessage(PREFIX.append(Component.text("Door not found. Check stage key and door ID, and ensure the anchor is set.", NamedTextColor.RED)));
+        }
+        return true;
+    }
+
     private boolean handleSetLocation(CommandSender sender, String[] args) {
         if (!requireAdmin(sender)) return true;
         if (!(sender instanceof Player player)) {
@@ -315,7 +333,7 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
     private void sendUsage(CommandSender sender) {
         sender.sendMessage(PREFIX.append(Component.text("Usage: /story [progress]", NamedTextColor.GRAY)));
         if (sender.hasPermission(ADMIN_PERM)) {
-            sender.sendMessage(PREFIX.append(Component.text("Admin: setstage | setchapter | reset | give | region | setbook | setdoor | setlocation | bypassdoor | reload", NamedTextColor.GRAY)));
+            sender.sendMessage(PREFIX.append(Component.text("Admin: setstage | setchapter | reset | give | region | setbook | setdoor | opendoor | bypassdoor | reload", NamedTextColor.GRAY)));
         }
     }
 
@@ -357,6 +375,19 @@ public class StoryCommand implements CommandExecutor, TabCompleter {
                 }
                 case "setbook", "setdoor" -> {
                     if (args.length == 2) yield stageNumbers(args[1]);
+                    yield List.of();
+                }
+                case "opendoor" -> {
+                    if (args.length == 2) yield stageNumbers(args[1]);
+                    if (args.length == 3) {
+                        String stagePrefix = args[1] + ":";
+                        String partial = args[2].toLowerCase();
+                        yield manager.getDoorManager().getDoorKeys().stream()
+                            .filter(k -> k.startsWith(stagePrefix))
+                            .map(k -> k.substring(stagePrefix.length()))
+                            .filter(d -> d.startsWith(partial))
+                            .collect(Collectors.toList());
+                    }
                     yield List.of();
                 }
                 case "bypassdoor" -> {
