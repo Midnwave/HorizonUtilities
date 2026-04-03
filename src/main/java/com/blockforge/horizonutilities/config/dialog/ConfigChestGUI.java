@@ -181,6 +181,14 @@ public class ConfigChestGUI implements Listener {
         String guiType = openGUIs.get(player.getUniqueId());
         if (guiType == null) return;
 
+        // Verify the player is actually viewing a config GUI, not an anvil/other inventory
+        String title = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+                .plainText().serialize(event.getView().title());
+        if (!title.endsWith("Config")) {
+            cleanup(player.getUniqueId());
+            return;
+        }
+
         event.setCancelled(true);
         int slot = event.getRawSlot();
         if (slot < 0 || slot >= event.getInventory().getSize()) return;
@@ -196,9 +204,15 @@ public class ConfigChestGUI implements Listener {
     @EventHandler
     public void onDrag(InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (openGUIs.containsKey(player.getUniqueId())) {
-            event.setCancelled(true);
+        if (!openGUIs.containsKey(player.getUniqueId())) return;
+
+        String title = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
+                .plainText().serialize(event.getView().title());
+        if (!title.endsWith("Config")) {
+            cleanup(player.getUniqueId());
+            return;
         }
+        event.setCancelled(true);
     }
 
     @EventHandler

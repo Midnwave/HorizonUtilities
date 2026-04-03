@@ -30,10 +30,18 @@ public class MessagesManager {
         return messages.getString(key, "<red>Missing message: " + key);
     }
 
+    private static final String[] PREFIX_KEYS = {
+            "prefix", "game-prefix", "lottery-prefix", "quest-prefix", "sb-prefix", "rtp-prefix"
+    };
+
     public Component format(String key, TagResolver... resolvers) {
         String raw = getRaw(key);
-        String prefix = messages.getString("prefix", "");
-        raw = raw.replace("<prefix>", prefix);
+        for (String pk : PREFIX_KEYS) {
+            String tag = "<" + pk + ">";
+            if (raw.contains(tag)) {
+                raw = raw.replace(tag, messages.getString(pk, ""));
+            }
+        }
         return miniMessage.deserialize(raw, resolvers);
     }
 
