@@ -2,18 +2,19 @@
 # HorizonUtilities — Homes Configuration
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Default maximum homes per player (overridden by permissions below)
+# Default maximum homes when a player has no horizonutilities.homes.<n> node.
 default-max-homes: 1
 
-# Permission-based home limits.
-# Players with the permission node get the corresponding max homes.
-# Checked in order — first matching permission wins.
-# Use "unlimited" for no limit.
-max-homes:
-  horizonutilities.homes.3: 3
-  horizonutilities.homes.5: 5
-  horizonutilities.homes.10: 10
-  horizonutilities.homes.unlimited: -1
+# Max homes are resolved from LuckPerms permissions:
+#   horizonutilities.homes.<number>     (e.g. .5, .10, .25)
+#   horizonutilities.homes.unlimited
+# The highest numeric node the player effectively has wins, so higher LuckPerms
+# group weights naturally override lower ones through inheritance.
+# Examples:
+#   /lp group default permission set horizonutilities.homes.1 true
+#   /lp group vip     permission set horizonutilities.homes.5 true
+#   /lp group mvp     permission set horizonutilities.homes.10 true
+#   /lp group admin   permission set horizonutilities.homes.unlimited true
 
 # Cooldown in seconds between teleporting to homes
 teleport-cooldown-seconds: 5

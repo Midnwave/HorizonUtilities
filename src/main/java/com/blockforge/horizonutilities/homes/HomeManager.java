@@ -18,12 +18,13 @@ public class HomeManager {
 
     private final HorizonUtilitiesPlugin plugin;
 
+    private static final String PERM_PREFIX = "horizonutilities.homes.";
+
     private int defaultMaxHomes;
     private int cooldownSeconds;
     private int warmupSeconds;
     private boolean allowCrossWorld;
     private int maxNameLength;
-    private final Map<String, Integer> permissionMaxHomes = new LinkedHashMap<>();
 
     private final Map<UUID, Long> cooldowns = new ConcurrentHashMap<>();
     private final Map<UUID, BukkitTask> warmupTasks = new ConcurrentHashMap<>();
@@ -43,31 +44,33 @@ public class HomeManager {
         warmupSeconds   = cfg.getInt("teleport-warmup-seconds", 3);
         allowCrossWorld = cfg.getBoolean("allow-cross-world", true);
         maxNameLength   = cfg.getInt("max-name-length", 16);
-
-        // Bukkit YAML treats dots as path separators, so permission keys like
-        // "horizonutilities.homes.5" become a nested structure. Walk the deep
-        // keys and only keep leaf entries that resolve to a numeric value.
-        permissionMaxHomes.clear();
-        var maxSection = cfg.getConfigurationSection("max-homes");
-        if (maxSection != null) {
-            for (String key : maxSection.getKeys(true)) {
-                Object val = maxSection.get(key);
-                if (val instanceof Number num) {
-                    permissionMaxHomes.put(key, num.intValue());
-                }
-            }
-        }
     }
 
+    /**
+     * Resolves the player's max-homes by scanning their effective permissions
+     * for {@code horizonutilities.homes.<n>} (or {@code .unlimited}). The
+     * highest numeric value wins, so LuckPerms group weight naturally
+     * determines the limit when ranks inherit. Returns the configured default
+     * when no matching permission is set.
+     */
     public int getMaxHomes(Player player) {
-        for (Map.Entry<String, Integer> entry : permissionMaxHomes.entrySet()) {
-            if (player.hasPermission(entry.getKey())) {
-                int val = entry.getValue();
-                if (val < 0) return Integer.MAX_VALUE; // unlimited
-                return val;
+        int best = -1;
+        boolean found = false;
+        for (var attachment : player.getEffectivePermissions()) {
+            if (!attachment.getValue()) continue;
+            String node = attachment.getPermission().toLowerCase(Locale.ROOT);
+            if (!node.startsWith(PERM_PREFIX)) continue;
+            String suffix = node.substring(PERM_PREFIX.length());
+            if (suffix.equals("unlimited")) return Integer.MAX_VALUE;
+            try {
+                int val = Integer.parseInt(suffix);
+                if (val > best) best = val;
+                found = true;
+            } catch (NumberFormatException ignored) {
+                // permissions like .set, .delete, .teleport, .bypass.cooldown
             }
         }
-        return defaultMaxHomes;
+        return found ? best : defaultMaxHomes;
     }
 
     // -------------------------------------------------------------------------
