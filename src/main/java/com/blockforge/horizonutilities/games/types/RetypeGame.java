@@ -50,7 +50,7 @@ public class RetypeGame extends ChatGame {
 
     @Override
     public boolean checkAnswer(String input) {
-        return input.equals(text);
+        return input.equalsIgnoreCase(text);
     }
 
     @Override

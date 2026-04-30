@@ -44,11 +44,17 @@ public class HomeManager {
         allowCrossWorld = cfg.getBoolean("allow-cross-world", true);
         maxNameLength   = cfg.getInt("max-name-length", 16);
 
+        // Bukkit YAML treats dots as path separators, so permission keys like
+        // "horizonutilities.homes.5" become a nested structure. Walk the deep
+        // keys and only keep leaf entries that resolve to a numeric value.
         permissionMaxHomes.clear();
         var maxSection = cfg.getConfigurationSection("max-homes");
         if (maxSection != null) {
-            for (String key : maxSection.getKeys(false)) {
-                permissionMaxHomes.put(key, maxSection.getInt(key));
+            for (String key : maxSection.getKeys(true)) {
+                Object val = maxSection.get(key);
+                if (val instanceof Number num) {
+                    permissionMaxHomes.put(key, num.intValue());
+                }
             }
         }
     }
